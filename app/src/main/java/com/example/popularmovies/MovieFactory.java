@@ -1,5 +1,7 @@
 package com.example.popularmovies;
 
+import com.example.popularmovies.model.Movie;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

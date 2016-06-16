@@ -1,4 +1,4 @@
-package com.example.popularmovies;
+package com.example.popularmovies.util;
 
 import android.net.Uri;
 import android.util.Log;

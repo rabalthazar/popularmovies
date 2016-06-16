@@ -1,29 +1,27 @@
 package com.example.popularmovies;
 
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.example.popularmovies.model.Movie;
+import com.example.popularmovies.util.MovieArrayAdapter;
+
+import java.util.ArrayList;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MoviesFragment extends Fragment {
+
+    protected MovieArrayAdapter mMoviesAdapter;
 
     public MoviesFragment() {
     }
@@ -37,7 +35,21 @@ public class MoviesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.movies_fragment, container, false);
+        // The ArrayAdapter will take data from a source and
+        // use it to populate the ListView it's attached to.
+        mMoviesAdapter =
+                new MovieArrayAdapter(
+                        getActivity(), // The current context (this activity)
+                        R.layout.grid_item_poster, // The name of the layout ID.
+                        new ArrayList<Movie>());
+
+        View rootView = inflater.inflate(R.layout.movies_fragment, container, false);
+
+        // Get a reference to the ListView, and attach this adapter to it.
+        GridView gridView = (GridView) rootView.findViewById(R.id.grid_movies);
+        gridView.setAdapter(mMoviesAdapter);
+
+        return rootView;
     }
 
     @Override
@@ -54,23 +66,10 @@ public class MoviesFragment extends Fragment {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
             FetchMoviesTask task = new FetchMoviesTask();
+            task.setAdapter(mMoviesAdapter);
             task.execute();
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
-        final private String LOG_TAG = "FetchMovieTask";
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            MovieFetchTask task = new MovieFetchTask();
-            Movie[] movies = task.fetchByPopularity();
-            for (Movie movie : movies) {
-                Log.v(LOG_TAG, movie.getTitle());
-            }
-            return null;
-        }
     }
 }

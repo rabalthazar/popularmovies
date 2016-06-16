@@ -1,4 +1,4 @@
-package com.example.popularmovies;
+package com.example.popularmovies.model;
 
 import java.util.Date;
 
