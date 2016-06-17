@@ -1,7 +1,6 @@
 package com.example.popularmovies.util;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +16,6 @@ import java.util.ArrayList;
  * Created by rafael on 16/06/16.
  */
 public class MovieArrayAdapter extends BaseAdapter {
-
-    /**
-     * Lock used to modify the content of {@link #mMovies}. Any write operation
-     * performed on the array should be synchronized on this lock.
-     */
-    private final Object mLock = new Object();
 
     /**
      * Resource ID for the item layout where an item is going to be drawn
@@ -65,7 +58,9 @@ public class MovieArrayAdapter extends BaseAdapter {
             imageView = createFromLayoutResource(parent);
         }
 
-        Picasso.with(parent.getContext())
+        Context context = mContext != null ? mContext : parent.getContext();
+
+        Picasso.with(context)
                 .load(MoviePosterUriBuilder.from(getItem(position)))
                 .into(imageView);
 
@@ -79,7 +74,7 @@ public class MovieArrayAdapter extends BaseAdapter {
     }
 
     public void add(Movie movie) {
-        synchronized (mLock) {
+        synchronized (mMovies) {
             if (mMovies != null) {
                 mMovies.add(movie);
             }
@@ -87,7 +82,7 @@ public class MovieArrayAdapter extends BaseAdapter {
     }
 
     public void clear() {
-        synchronized (mLock) {
+        synchronized (mMovies) {
             if (mMovies != null) {
                 mMovies.clear();
             }

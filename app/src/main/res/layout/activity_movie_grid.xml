@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.popularmovies.MainActivity">
+    tools:context=".MovieGridActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -24,11 +24,11 @@
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/fragment"
-        android:name="com.example.popularmovies.MoviesFragment"
+        android:id="@+id/movie_grid_fragment"
+        android:name="com.example.popularmovies.MovieGridFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:layout="@layout/movies_fragment" />
+        tools:layout="@layout/fragment_movie_grid" />
 
 </android.support.design.widget.CoordinatorLayout>

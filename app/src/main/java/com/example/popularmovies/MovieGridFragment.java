@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.example.popularmovies.model.Movie;
+import com.example.popularmovies.util.FetchMoviesTask;
 import com.example.popularmovies.util.MovieArrayAdapter;
 
 import java.util.ArrayList;
@@ -19,11 +20,11 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MoviesFragment extends Fragment {
+public class MovieGridFragment extends Fragment {
 
     protected MovieArrayAdapter mMoviesAdapter;
 
-    public MoviesFragment() {
+    public MovieGridFragment() {
     }
 
     @Override
@@ -40,10 +41,10 @@ public class MoviesFragment extends Fragment {
         mMoviesAdapter =
                 new MovieArrayAdapter(
                         getActivity(), // The current context (this activity)
-                        R.layout.grid_item_poster, // The name of the layout ID.
+                        R.layout.grid_item_movie, // The name of the layout ID.
                         new ArrayList<Movie>());
 
-        View rootView = inflater.inflate(R.layout.movies_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_movie_grid, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
         GridView gridView = (GridView) rootView.findViewById(R.id.grid_movies);

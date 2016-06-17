@@ -1,12 +1,11 @@
-package com.example.popularmovies;
+package com.example.popularmovies.util;
 
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.popularmovies.BuildConfig;
 import com.example.popularmovies.model.Movie;
-import com.example.popularmovies.util.FetchUri;
-import com.example.popularmovies.util.MovieArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;

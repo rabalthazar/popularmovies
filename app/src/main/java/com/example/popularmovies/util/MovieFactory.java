@@ -1,4 +1,4 @@
-package com.example.popularmovies;
+package com.example.popularmovies.util;
 
 import com.example.popularmovies.model.Movie;
 
