@@ -60,9 +60,7 @@ public class MovieArrayAdapter extends BaseAdapter {
 
         Context context = mContext != null ? mContext : parent.getContext();
 
-        Picasso.with(context)
-                .load(MoviePosterUriBuilder.from(getItem(position)))
-                .into(imageView);
+        ImageLoader.loadFromMovie(context, getItem(position), imageView);
 
         return imageView;
     }

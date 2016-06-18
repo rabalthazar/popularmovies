@@ -1,5 +1,6 @@
 package com.example.popularmovies;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -9,11 +10,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.util.FetchMoviesTask;
 import com.example.popularmovies.util.MovieArrayAdapter;
+import com.example.popularmovies.util.MovieFactory;
 
 import java.util.ArrayList;
 
@@ -21,6 +24,7 @@ import java.util.ArrayList;
  * A placeholder fragment containing a simple view.
  */
 public class MovieGridFragment extends Fragment {
+    public static final String EXTRA_MOVIE = "movie_intent_bundle";
 
     protected MovieArrayAdapter mMoviesAdapter;
 
@@ -36,8 +40,6 @@ public class MovieGridFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // The ArrayAdapter will take data from a source and
-        // use it to populate the ListView it's attached to.
         mMoviesAdapter =
                 new MovieArrayAdapter(
                         getActivity(), // The current context (this activity)
@@ -49,6 +51,16 @@ public class MovieGridFragment extends Fragment {
         // Get a reference to the ListView, and attach this adapter to it.
         GridView gridView = (GridView) rootView.findViewById(R.id.grid_movies);
         gridView.setAdapter(mMoviesAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Movie movie = mMoviesAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), MovieDetailActivity.class)
+                        .putExtra(EXTRA_MOVIE, MovieFactory.toBundle(movie));
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }

@@ -36,6 +36,11 @@ public class Movie {
      */
     protected Boolean adult;
 
+    /**
+     * User rating
+     */
+    protected Double voteAverage;
+
     public Long getId() {
         return id;
     }
@@ -87,6 +92,15 @@ public class Movie {
 
     public Movie setAdult(Boolean adult) {
         this.adult = adult;
+        return this;
+    }
+
+    public Double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public Movie setVoteAverage(Double voteAverage) {
+        this.voteAverage = voteAverage;
         return this;
     }
 }
