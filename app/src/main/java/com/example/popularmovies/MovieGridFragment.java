@@ -1,6 +1,8 @@
 package com.example.popularmovies;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -66,6 +68,12 @@ public class MovieGridFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        fillGrid();
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.movies_menu, menu);
@@ -78,11 +86,18 @@ public class MovieGridFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            FetchMoviesTask task = new FetchMoviesTask();
-            task.setAdapter(mMoviesAdapter);
-            task.execute();
+            fillGrid();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void fillGrid() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String moviesOrder = prefs.getString(getString(R.string.pref_order_key),
+                getString(R.string.pref_order_default));
+        FetchMoviesTask task = new FetchMoviesTask();
+        task.setAdapter(mMoviesAdapter);
+        task.execute(moviesOrder);
     }
 }

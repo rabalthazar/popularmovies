@@ -2,41 +2,48 @@ package com.example.popularmovies.util;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.popularmovies.BuildConfig;
 import com.example.popularmovies.model.Movie;
+import com.example.popularmovies.model.MovieList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by rafael on 23/05/16.
  */
-public class FetchMoviesTask extends AsyncTask<Void, Void, ArrayList<Movie>> {
+public class FetchMoviesTask extends AsyncTask<String, Void, MovieList> {
     final private String LOG_TAG = FetchMoviesTask.class.getSimpleName();
 
     MovieArrayAdapter mAdapter;
 
     final private String MOVIES_BASE_URL = "http://api.themoviedb.org/3/movie";
-    final private String MOVIES_POPULAR_PATH = "popular";
     final private String API_KEY_PARAM = "api_key";
 
     @Override
-    protected ArrayList<Movie> doInBackground(Void... params) {
-        return fetchByPopularity();
+    protected MovieList doInBackground(String... params) {
+        // The order param is required
+        if (params.length == 0) {
+            return null;
+        }
+
+        return fetchMovies(params[0]);
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Movie> movies) {
-        if (mAdapter == null) {
+    protected void onPostExecute(MovieList movies) {
+        if (mAdapter == null || movies == null) {
             return;
         }
         mAdapter.clear();
-        for(Movie movie: movies) {
+        for(Movie movie: movies.getMovies()) {
             mAdapter.add(movie);
         }
         mAdapter.notifyDataSetChanged();
@@ -47,9 +54,14 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, ArrayList<Movie>> {
         return this;
     }
 
-    public ArrayList<Movie> fetchByPopularity() {
+    @Nullable
+    private MovieList fetchMovies(String order) {
+        if (!order.equals("popular") && !order.equals("top_rated")) {
+            return null;
+        }
+
         Uri uri = Uri.parse(MOVIES_BASE_URL).buildUpon()
-                .appendPath(MOVIES_POPULAR_PATH)
+                .appendPath(order)
                 .appendQueryParameter(API_KEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                 .build();
 
@@ -57,14 +69,20 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, ArrayList<Movie>> {
         if (jsonMovieListStr == null) {
             return null;
         }
-        return parseMovieListJson(jsonMovieListStr);
+        MovieList movies = parseMovieListJson(jsonMovieListStr);
+        if (movies != null) {
+            movies.setDateFetched(new Date())
+                  .setOrder(order);
+        }
+        return movies;
     }
 
-    private ArrayList<Movie> parseMovieListJson(String jsonStr) {
+    @Nullable
+    private MovieList parseMovieListJson(String jsonStr) {
         final String TMDB_RESULTS = "results";
 
         JSONObject json;
-        ArrayList<Movie> movies = new ArrayList<>();
+        MovieList movies = new MovieList();
         try {
             json = new JSONObject(jsonStr);
             JSONArray resultsJson = json.getJSONArray(TMDB_RESULTS);
@@ -74,7 +92,7 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, ArrayList<Movie>> {
 
             }
         } catch (JSONException e) {
-            Log.v(LOG_TAG, e.getMessage(), e);
+            Log.d(LOG_TAG, e.getMessage(), e);
             return null;
         }
         return movies;
