@@ -13,17 +13,24 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 /**
+ * An adapter to fill lists that display movie posters
  * Created by rafael on 16/06/16.
  */
 public class MovieArrayAdapter extends BaseAdapter {
 
     /**
-     * Resource ID for the item layout where an item is going to be drawn
+     * Resource ID for the item layout where to draw a movie poster
      */
     private int mItemResource;
 
+    /**
+     * Activity context
+     */
     private Context mContext;
 
+    /**
+     * The list of movies
+     */
     private ArrayList<Movie> mMovies;
 
     public MovieArrayAdapter(Context context, int resource, ArrayList<Movie> movies) {
@@ -65,12 +72,21 @@ public class MovieArrayAdapter extends BaseAdapter {
         return imageView;
     }
 
+    /**
+     * Creates an ImageView from the constructor given item resource
+     * @param parent The ImageView parent
+     * @return The new ImageView
+     */
     private ImageView createFromLayoutResource(ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ImageView view = (ImageView) inflater.inflate(mItemResource, parent, false);
         return view;
     }
 
+    /**
+     * Adds a movie to the adapter
+     * @param movie
+     */
     public void add(Movie movie) {
         synchronized (mMovies) {
             if (mMovies != null) {
@@ -79,6 +95,9 @@ public class MovieArrayAdapter extends BaseAdapter {
         }
     }
 
+    /**
+     * Clears the list of movies
+     */
     public void clear() {
         synchronized (mMovies) {
             if (mMovies != null) {

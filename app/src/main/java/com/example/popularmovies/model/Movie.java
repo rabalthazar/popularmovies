@@ -3,6 +3,7 @@ package com.example.popularmovies.model;
 import java.util.Date;
 
 /**
+ * Model class for a movie
  * Created by rafael on 23/05/16.
  */
 public class Movie {

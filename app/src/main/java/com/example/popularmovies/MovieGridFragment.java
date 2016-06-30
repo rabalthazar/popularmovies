@@ -23,15 +23,15 @@ import com.example.popularmovies.util.MovieFactory;
 import java.util.ArrayList;
 
 /**
- * A placeholder fragment containing a simple view.
+ * Displays a grid with a list of movie posters
  */
 public class MovieGridFragment extends Fragment {
     public static final String EXTRA_MOVIE = "movie_intent_bundle";
 
+    /**
+     * The adapter that feeds the movie grid
+     */
     protected MovieArrayAdapter mMoviesAdapter;
-
-    public MovieGridFragment() {
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class MovieGridFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_movie_grid, container, false);
 
-        // Get a reference to the ListView, and attach this adapter to it.
+        // Get a reference to the GridView, and attach this adapter to it.
         GridView gridView = (GridView) rootView.findViewById(R.id.grid_movies);
         gridView.setAdapter(mMoviesAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -92,6 +92,9 @@ public class MovieGridFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Starts an async task to fill the grid adapter
+     */
     private void fillGrid() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String moviesOrder = prefs.getString(getString(R.string.pref_order_key),

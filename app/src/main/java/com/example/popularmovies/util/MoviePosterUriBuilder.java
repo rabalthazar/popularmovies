@@ -6,6 +6,7 @@ import com.example.popularmovies.BuildConfig;
 import com.example.popularmovies.model.Movie;
 
 /**
+ * Helper class to build movie posters' URI
  * Created by rafael on 16/06/16.
  */
 public class MoviePosterUriBuilder {

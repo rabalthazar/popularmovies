@@ -7,6 +7,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * Holds the movie grid fragment
+ * @see MovieGridFragment
+ */
 public class MovieGridActivity extends AppCompatActivity {
 
     @Override

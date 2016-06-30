@@ -8,17 +8,26 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
+/**
+ * Activity that holds the settings fragment
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        // Adds the general preferences fragment to the view
         getFragmentManager().beginTransaction()
                 .replace(R.id.settings_container, new GeneralPreferenceFragment())
                 .commit();
     }
 
+    /**
+     * General preferences fragment inner class.
+     * This class implements the OnPreferenceChangeListener interface to show the current preference
+     * value as a preference summary
+     */
     public static class GeneralPreferenceFragment extends PreferenceFragment
             implements Preference.OnPreferenceChangeListener {
         @Override

@@ -4,22 +4,35 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
+ * Holds a list of movies, given an determined order: most popular or top rated
  * Created by rafael on 23/06/16.
  */
-public class MovieList {
+public class List {
+    /**
+     * Movie list id
+     */
     protected Long id;
 
+    /**
+     * List order. Actually popular (@string/pref_order_popular) or top_rated (@string/pref_order_toprated)
+     */
     protected String order;
 
+    /**
+     * Date the list was fetched
+     */
     protected Date dateFetched;
 
+    /**
+     * List of movies in the list
+     */
     protected ArrayList<Movie> movies = new ArrayList<>();
 
     public Long getId() {
         return id;
     }
 
-    public MovieList setId(Long id) {
+    public List setId(Long id) {
         this.id = id;
         return this;
     }
@@ -28,7 +41,7 @@ public class MovieList {
         return order;
     }
 
-    public MovieList setOrder(String order) {
+    public List setOrder(String order) {
         this.order = order;
         return this;
     }
@@ -37,7 +50,7 @@ public class MovieList {
         return dateFetched;
     }
 
-    public MovieList setDateFetched(Date dateFetched) {
+    public List setDateFetched(Date dateFetched) {
         this.dateFetched = dateFetched;
         return this;
     }
@@ -51,22 +64,22 @@ public class MovieList {
                 movies.get(idx) : null;
     }
 
-    public MovieList add(Movie movie) {
+    public List add(Movie movie) {
         movies.add(movie);
         return this;
     }
 
-    public MovieList remove(Movie movie) {
+    public List remove(Movie movie) {
         movies.remove(movie);
         return this;
     }
 
-    public MovieList remove(Integer idx) {
+    public List remove(Integer idx) {
         movies.remove(idx);
         return this;
     }
 
-    public MovieList clear() {
+    public List clear() {
         movies.clear();
         return this;
     }

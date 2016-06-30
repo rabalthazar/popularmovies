@@ -15,11 +15,14 @@ import com.example.popularmovies.util.MovieFactory;
 
 import java.text.DateFormat;
 
-
+/**
+ * Shows a movie details as original title, release date, movie overview, etc.
+ */
 public class MovieDetailFragment extends Fragment {
+    /**
+     * Holds the movie data to be displayed
+     */
     protected Movie mMovie;
-    public MovieDetailFragment() {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class MovieDetailFragment extends Fragment {
 
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(MovieGridFragment.EXTRA_MOVIE)) {
+            // Loads movie data from Intent and assign its data to the UI elements
             Bundle movieBundle = intent.getBundleExtra(MovieGridFragment.EXTRA_MOVIE);
             mMovie = MovieFactory.fromBundle(movieBundle);
             ImageView moviePoster = (ImageView) rootView.findViewById(R.id.movie_poster);
