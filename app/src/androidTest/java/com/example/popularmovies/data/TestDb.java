@@ -7,27 +7,25 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.HashSet;
 
+import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.hamcrest.Matchers.greaterThan;
 
-/**
- * Created by rafael on 24/06/16.
- */
 @RunWith(AndroidJUnit4.class)
-public class TestDb {
+class TestDb {
     public static final String LOG_TAG = TestDb.class.getSimpleName();
 
     private Context mContext = InstrumentationRegistry.getTargetContext();
 
-    //@Before
+    @Before
     public void deleteDatabase() {
         mContext.deleteDatabase(MoviesDbHelper.DATABASE_NAME);
     }
@@ -51,6 +49,7 @@ public class TestDb {
         do {
             tableNameHashSet.remove(c.getString(0));
         } while( c.moveToNext() );
+        c.close();
         assertTrue("Error: Your database was created without movie, list and movie_list entry tables",
                 tableNameHashSet.isEmpty());
 
@@ -77,7 +76,7 @@ public class TestDb {
             String columnName = c.getString(columnNameIndex);
             movieColumnHashSet.remove(columnName);
         } while(c.moveToNext());
-
+        c.close();
         // if this fails, it means that your database doesn't contain all of the required location
         // entry columns
         assertTrue("Error: The database doesn't contain all of the required movie entry columns",
@@ -100,7 +99,7 @@ public class TestDb {
             String columnName = c.getString(columnNameIndex);
             listColumnHashSet.remove(columnName);
         } while(c.moveToNext());
-
+        c.close();
         // if this fails, it means that your database doesn't contain all of the required location
         // entry columns
         assertTrue("Error: The database doesn't contain all of the required list entry columns",
@@ -124,7 +123,7 @@ public class TestDb {
             String columnName = c.getString(columnNameIndex);
             listColumnHashSet.remove(columnName);
         } while(c.moveToNext());
-
+        c.close();
         // if this fails, it means that your database doesn't contain all of the required location
         // entry columns
         assertTrue("Error: The database doesn't contain all of the required movie list entry columns",

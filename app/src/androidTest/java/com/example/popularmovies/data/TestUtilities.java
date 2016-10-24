@@ -2,11 +2,8 @@ package com.example.popularmovies.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.support.test.runner.AndroidJUnit4;
 
 import com.example.popularmovies.data.MoviesContract.MovieEntry;
-
-import org.junit.runner.RunWith;
 
 import java.util.Map;
 import java.util.Set;
@@ -14,11 +11,7 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-/**
- * Created by rafael on 25/06/16.
- */
-@RunWith(AndroidJUnit4.class)
-public class TestUtilities {
+class TestUtilities {
     public static final Long TEST_MOVIE_REF = 1891L;
     public static final String TEST_MOVIE_TITLE = "The Empire Strikes Back";
     public static final String TEST_MOVIE_OVERVIEW = "The epic saga continues as Luke Skywalker, " +
