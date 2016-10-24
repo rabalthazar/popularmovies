@@ -5,7 +5,6 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.util.MoviePosterUriBuilder;
 
 /**
@@ -66,11 +65,6 @@ public class MoviesContract {
         public static final String TABLE_NAME = "movie";
 
         /**
-         * Movie API reference
-         */
-        public static final String COLUMN_REF = "ref";
-
-        /**
          * Movie title column
          */
         public static final String COLUMN_TITLE = "title";
@@ -101,18 +95,16 @@ public class MoviesContract {
          */
         public static final String COLUMN_VOTE_AVG = "vote_avg";
 
-        public static Long getIdFromUri(Uri uri) {
-            return Long.parseLong(uri.getPathSegments().get(2));
+        public static Long getIdFromUri(Uri movieByIdUri) {
+            try {
+                return Long.parseLong(movieByIdUri.getPathSegments().get(1));
+            } catch (Exception exception) {
+                return -1L;
+            }
         }
 
-        public static Uri buildMovieUri(long id) {
+        public static Uri buildUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
-        }
-
-        public static Uri buildMoviesBySelectionUri(String selection) {
-            return CONTENT_URI.buildUpon()
-                    .appendPath(selection)
-                    .build();
         }
     }
 
@@ -153,11 +145,15 @@ public class MoviesContract {
          */
         public static final String COLUMN_DATE_FETCHED = "date_fetched";
 
-        public static String getListSelectionFromUri(Uri uri) {
-            return uri.getPathSegments().get(2);
+        public static Long getIdFromUri(Uri listByIdUri) {
+            try {
+                return Long.parseLong(listByIdUri.getPathSegments().get(1));
+            } catch (Exception exception){
+                return -1L;
+            }
         }
 
-        public static Uri buildListUri(Long id) {
+        public static Uri buildUri(Long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
@@ -205,7 +201,16 @@ public class MoviesContract {
          */
         public static final String COLUMN_ORDER = "movie_order";
 
-        public static Uri buildMovieListUri(long id) {
+        public static Long getIdFromUri(Uri movieListByIdUri) {
+            try {
+                return Long.parseLong(movieListByIdUri.getPathSegments().get(1));
+            } catch (Exception exception){
+                return -1L;
+            }
+        }
+
+
+        public static Uri buildUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }

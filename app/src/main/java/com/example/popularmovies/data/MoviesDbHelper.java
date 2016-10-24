@@ -4,10 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.popularmovies.data.MoviesContract.MovieEntry;
 import com.example.popularmovies.data.MoviesContract.ListEntry;
+import com.example.popularmovies.data.MoviesContract.MovieEntry;
 import com.example.popularmovies.data.MoviesContract.MovieListEntry;
-import com.example.popularmovies.model.Movie;
 
 /**
  * A SQLite helper to create, update and instance the app's database
@@ -36,8 +35,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Movie table creation command
         final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + MovieEntry.TABLE_NAME + " (" +
-                MovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                MovieEntry.COLUMN_REF + " TEXT NOT NULL," +
+                MovieEntry._ID + " INTEGER PRIMARY KEY," +
                 MovieEntry.COLUMN_TITLE + " TEXT NOT NULL," +
                 MovieEntry.COLUMN_OVERVIEW + " TEXT NOT NULL," +
                 MovieEntry.COLUMN_RELEASE_DATE + " INTEGER NOT NULL," +

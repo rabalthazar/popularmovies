@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 
 import java.util.HashSet;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -63,7 +64,6 @@ public class TestDb {
         // Build a HashSet of all of the column names we want to look for
         final HashSet<String> movieColumnHashSet = new HashSet<>();
         movieColumnHashSet.add(MoviesContract.MovieEntry._ID);
-        movieColumnHashSet.add(MoviesContract.MovieEntry.COLUMN_REF);
         movieColumnHashSet.add(MoviesContract.MovieEntry.COLUMN_TITLE);
         movieColumnHashSet.add(MoviesContract.MovieEntry.COLUMN_OVERVIEW);
         movieColumnHashSet.add(MoviesContract.MovieEntry.COLUMN_POSTER_PATH);
@@ -133,14 +133,14 @@ public class TestDb {
     }
 
     @Test
-    public void testListTable() {
+    public void testMovieTable() {
         MoviesDbHelper dbHelper = new MoviesDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues movie = TestUtilities.createEmpireStrikesBackValues();
         Long movieId;
         movieId = db.insert(MoviesContract.MovieEntry.TABLE_NAME, null, movie);
-        assertThat(movieId, greaterThan((long) 0));
+        assertThat(movieId, equalTo(TestUtilities.TEST_MOVIE2_ID));
 
         // Fourth Step: Query the database and receive a Cursor back
         // A cursor is your primary interface to the query results.
@@ -161,6 +161,98 @@ public class TestDb {
 
         // Move the cursor to demonstrate that there is only one record in the database
         assertFalse( "Error: More than one record returned from movie query",
+                cursor.moveToNext() );
+
+        // Close Cursor and Database
+        cursor.close();
+        db.close();
+    }
+
+    @Test
+    public void testListTable() {
+        MoviesDbHelper dbHelper = new MoviesDbHelper(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues list = TestUtilities.createMostPopularListValues();
+        Long listId;
+        listId = db.insert(MoviesContract.ListEntry.TABLE_NAME, null, list);
+        assertThat(listId, greaterThan(0L));
+
+        // Fourth Step: Query the database and receive a Cursor back
+        // A cursor is your primary interface to the query results.
+        Cursor cursor = db.query(
+                MoviesContract.ListEntry.TABLE_NAME,  // Table to Query
+                null, // all columns
+                null, // Columns for the "where" clause
+                null, // Values for the "where" clause
+                null, // columns to group by
+                null, // columns to filter by row groups
+                null // sort order
+        );
+
+        assertTrue( "Error: No Records returned from movie query", cursor.moveToFirst() );
+
+        TestUtilities.validateCurrentRecord("Error: Movie Query Validation Failed",
+                cursor, list);
+
+        // Move the cursor to demonstrate that there is only one record in the database
+        assertFalse( "Error: More than one record returned from movie query",
+                cursor.moveToNext() );
+
+        // Close Cursor and Database
+        cursor.close();
+        db.close();
+    }
+
+    @Test
+    public void testMovieListTable() {
+        MoviesDbHelper dbHelper = new MoviesDbHelper(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues list = TestUtilities.createTopRatedListValues();
+        Long listId = db.insert(MoviesContract.ListEntry.TABLE_NAME, null, list);
+        assertThat(listId, greaterThan(0L));
+
+        ContentValues movie1 = TestUtilities.createReturnOfTheJediValues();
+        Long movieId1 = db.insert(MoviesContract.MovieEntry.TABLE_NAME, null, movie1);
+        assertThat(movieId1, equalTo(TestUtilities.TEST_MOVIE3_ID));
+
+        ContentValues movie2 = TestUtilities.createStarWarsValues();
+        Long movieId2 = db.insert(MoviesContract.MovieEntry.TABLE_NAME, null, movie2);
+        assertThat(movieId2, equalTo(TestUtilities.TEST_MOVIE1_ID));
+
+        ContentValues movieList1 = TestUtilities.createMovieListValues(listId, movieId1, 0);
+        Long movieListId1 = db.insert(MoviesContract.MovieListEntry.TABLE_NAME, null, movieList1);
+        assertThat(movieListId1, greaterThan(0L));
+
+        ContentValues movieList2 = TestUtilities.createMovieListValues(listId, movieId2, 1);
+        Long movieListId2 = db.insert(MoviesContract.MovieListEntry.TABLE_NAME, null, movieList2);
+        assertThat(movieListId2, greaterThan(0L));
+
+        // Fourth Step: Query the database and receive a Cursor back
+        // A cursor is your primary interface to the query results.
+        Cursor cursor = db.query(
+                MoviesContract.MovieListEntry.TABLE_NAME,  // Table to Query
+                null, // all columns
+                null, // Columns for the "where" clause
+                null, // Values for the "where" clause
+                null, // columns to group by
+                null, // columns to filter by row groups
+                MoviesContract.MovieListEntry.COLUMN_ORDER + " ASC"
+        );
+
+        assertTrue( "Error: No Records returned from movie list query", cursor.moveToFirst() );
+
+        TestUtilities.validateCurrentRecord("Error: Movie List Query Validation Failed",
+                cursor, movieList1);
+
+        assertTrue( "Error: Just one record returned from movie list query",
+                cursor.moveToNext() );
+
+        TestUtilities.validateCurrentRecord("Error: Movie List Query Validation Failed",
+                cursor, movieList2);
+
+        assertFalse( "Error: More than two records returned from movie list query",
                 cursor.moveToNext() );
 
         // Close Cursor and Database

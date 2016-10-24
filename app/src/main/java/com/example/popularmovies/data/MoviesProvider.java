@@ -8,11 +8,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 
 import com.example.popularmovies.model.List;
-
-import java.util.Date;
 
 /**
  * A content provider for movies and list of movies
@@ -53,9 +52,7 @@ public class MoviesProvider extends ContentProvider {
 
     private MoviesDbHelper mDbOpener;
 
-    private static final String sMovieSelection = MoviesContract.MovieEntry._ID + "=?";
-
-    private static final String sListSelection = MoviesContract.ListEntry.COLUMN_SELECTION + "=?";
+    private static final String BY_ID_SELECTION = BaseColumns._ID + "=?";
 
     private static final SQLiteQueryBuilder sMoviesByListQueryBuilder = new SQLiteQueryBuilder();
 
@@ -118,8 +115,16 @@ public class MoviesProvider extends ContentProvider {
                 );
                 break;
             case LIST_BY_ID:
-                String listSelector = MoviesContract.ListEntry.getListSelectionFromUri(uri);
-                retCursor = getMovies(projection, listSelector, sortOrder);
+                Long listId = MoviesContract.ListEntry.getIdFromUri(uri);
+                retCursor = db.query(
+                        MoviesContract.ListEntry.TABLE_NAME,
+                        projection,
+                        BY_ID_SELECTION,
+                        new String[] {Long.toString(listId)},
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             case MOVIE:
                 retCursor = db.query(
@@ -141,6 +146,18 @@ public class MoviesProvider extends ContentProvider {
                         projection,
                         selection,
                         selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            case MOVIE_LIST_BY_ID:
+                Long movieListId = MoviesContract.MovieListEntry.getIdFromUri(uri);
+                retCursor = db.query(
+                        MoviesContract.MovieListEntry.TABLE_NAME,
+                        projection,
+                        BY_ID_SELECTION,
+                        new String[] {Long.toString(movieListId)},
                         null,
                         null,
                         sortOrder
@@ -184,24 +201,25 @@ public class MoviesProvider extends ContentProvider {
         Uri returnUri;
         switch (match) {
             case LIST:
-                Long _id = database.insert(MoviesContract.MovieEntry.TABLE_NAME, null, values);
+                Long _id = database.insert(MoviesContract.ListEntry.TABLE_NAME, null, values);
                 if (_id <= 0) {
-                    throw new SQLException("Failed to insert row into" + uri);
+                    throw new SQLException("Failed to insert row into " + uri);
                 }
-                returnUri = MoviesContract.ListEntry.buildListUri(_id);
+                returnUri = MoviesContract.ListEntry.buildUri(_id);
                 break;
             case MOVIE:
                 _id = database.insert(MoviesContract.MovieEntry.TABLE_NAME, null, values);
                 if (_id <= 0) {
-                    throw new SQLException("Failed to insert row into" + uri);
+                    throw new SQLException("Failed to insert row into " + uri);
                 }
-                returnUri = MoviesContract.MovieEntry.buildMovieUri(_id);
+                returnUri = MoviesContract.MovieEntry.buildUri(_id);
+                break;
             case MOVIE_LIST:
                 _id = database.insert(MoviesContract.MovieListEntry.TABLE_NAME, null, values);
                 if (_id <= 0) {
-                    throw new SQLException("Failed to insert row into" + uri);
+                    throw new SQLException("Failed to insert row into " + uri);
                 }
-                returnUri = MoviesContract.MovieListEntry.buildMovieListUri(_id);
+                returnUri = MoviesContract.MovieListEntry.buildUri(_id);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -245,7 +263,7 @@ public class MoviesProvider extends ContentProvider {
         return mDbOpener.getReadableDatabase().query(
                 MoviesContract.MovieEntry.TABLE_NAME,
                 projection,
-                sMovieSelection,
+                BY_ID_SELECTION,
                 new String[] { Long.toString(id) },
                 null,
                 null,
@@ -260,43 +278,11 @@ public class MoviesProvider extends ContentProvider {
         return sMoviesByListQueryBuilder.query(
                 db,
                 projection,
-                sListSelection,
+                BY_ID_SELECTION,
                 new String[] { listSelector },
                 null,
                 null,
                 sortOrder
-        );
-    }
-
-    private Long insertOrUpdateList(SQLiteDatabase database, String listOrder) {
-        Cursor listCursor = database.query(
-                MoviesContract.ListEntry.TABLE_NAME,
-                null,
-                sListSelection,
-                new String[] {listOrder},
-                null,
-                null,
-                null
-        );
-        if (false == listCursor.moveToFirst()) {
-            ContentValues newList = new ContentValues();
-            newList.put(MoviesContract.ListEntry.COLUMN_SELECTION, listOrder);
-            newList.put(MoviesContract.ListEntry.COLUMN_DATE_FETCHED, new Date().getTime());
-            Long listId = database.insert(MoviesContract.ListEntry.TABLE_NAME, null, newList);
-            if (listId <= 0) {
-                throw new SQLException("Unable to insert new list");
-            }
-            return listId;
-        }
-        int idColumnIndex = listCursor.getColumnIndex(MoviesContract.ListEntry._ID);
-        return listCursor.getLong(idColumnIndex);
-    }
-
-    private int clearListMovies(SQLiteDatabase database, Long listId) {
-        return database.delete(
-                MoviesContract.MovieListEntry.TABLE_NAME,
-                sMovieListSelectionByOrder,
-                new String[] {Long.toString(listId)}
         );
     }
 }
