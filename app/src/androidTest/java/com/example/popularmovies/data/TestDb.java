@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-class TestDb {
+public class TestDb {
     public static final String LOG_TAG = TestDb.class.getSimpleName();
 
     private Context mContext = InstrumentationRegistry.getTargetContext();
