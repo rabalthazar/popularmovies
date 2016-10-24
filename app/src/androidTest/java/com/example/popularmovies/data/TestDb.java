@@ -1,27 +1,38 @@
 package com.example.popularmovies.data;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.test.AndroidTestCase;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.HashSet;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.greaterThan;
 
 /**
  * Created by rafael on 24/06/16.
  */
-public class TestDb extends AndroidTestCase {
+@RunWith(AndroidJUnit4.class)
+public class TestDb {
     public static final String LOG_TAG = TestDb.class.getSimpleName();
 
-    private void deleteDatabase() {
+    private Context mContext = InstrumentationRegistry.getTargetContext();
+
+    //@Before
+    public void deleteDatabase() {
         mContext.deleteDatabase(MoviesDbHelper.DATABASE_NAME);
     }
 
-    @Override
-    public void setUp() {
-        deleteDatabase();
-    }
-
+    @Test
     public void testCreateDb() {
         final HashSet<String> tableNameHashSet = new HashSet<>();
         tableNameHashSet.add(MoviesContract.MovieEntry.TABLE_NAME);
@@ -53,6 +64,7 @@ public class TestDb extends AndroidTestCase {
         // Build a HashSet of all of the column names we want to look for
         final HashSet<String> movieColumnHashSet = new HashSet<>();
         movieColumnHashSet.add(MoviesContract.MovieEntry._ID);
+        movieColumnHashSet.add(MoviesContract.MovieEntry.COLUMN_REF);
         movieColumnHashSet.add(MoviesContract.MovieEntry.COLUMN_TITLE);
         movieColumnHashSet.add(MoviesContract.MovieEntry.COLUMN_OVERVIEW);
         movieColumnHashSet.add(MoviesContract.MovieEntry.COLUMN_POSTER_PATH);
@@ -80,7 +92,7 @@ public class TestDb extends AndroidTestCase {
         // Build a HashSet of all of the column names we want to look for
         final HashSet<String> listColumnHashSet = new HashSet<>();
         movieColumnHashSet.add(MoviesContract.ListEntry._ID);
-        movieColumnHashSet.add(MoviesContract.ListEntry.COLUMN_ORDER);
+        movieColumnHashSet.add(MoviesContract.ListEntry.COLUMN_SELECTION);
         movieColumnHashSet.add(MoviesContract.ListEntry.COLUMN_DATE_FETCHED);
 
         columnNameIndex = c.getColumnIndex("name");
@@ -121,6 +133,7 @@ public class TestDb extends AndroidTestCase {
         db.close();
     }
 
+    @Test
     public void testListTable() {
         MoviesDbHelper dbHelper = new MoviesDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -128,7 +141,7 @@ public class TestDb extends AndroidTestCase {
         ContentValues movie = TestUtilities.createEmpireStrikesBackValues();
         Long movieId;
         movieId = db.insert(MoviesContract.MovieEntry.TABLE_NAME, null, movie);
-        assertEquals(TestUtilities.TEST_MOVIE_ID, movieId);
+        assertThat(movieId, greaterThan((long) 0));
 
         // Fourth Step: Query the database and receive a Cursor back
         // A cursor is your primary interface to the query results.

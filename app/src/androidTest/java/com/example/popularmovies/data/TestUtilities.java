@@ -2,18 +2,24 @@ package com.example.popularmovies.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.test.AndroidTestCase;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.example.popularmovies.data.MoviesContract.MovieEntry;
+
+import org.junit.runner.RunWith;
 
 import java.util.Map;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 /**
  * Created by rafael on 25/06/16.
  */
-public class TestUtilities extends AndroidTestCase {
-    public static final Long TEST_MOVIE_ID = 1891L;
+@RunWith(AndroidJUnit4.class)
+public class TestUtilities {
+    public static final Long TEST_MOVIE_REF = 1891L;
     public static final String TEST_MOVIE_TITLE = "The Empire Strikes Back";
     public static final String TEST_MOVIE_OVERVIEW = "The epic saga continues as Luke Skywalker, " +
             "in hopes of defeating the evil Galactic Empire, learns the ways of the Jedi from " +
@@ -25,7 +31,7 @@ public class TestUtilities extends AndroidTestCase {
 
     public static ContentValues createEmpireStrikesBackValues() {
         ContentValues movieValues = new ContentValues();
-        movieValues.put(MovieEntry._ID, TEST_MOVIE_ID);
+        movieValues.put(MovieEntry.COLUMN_REF, TEST_MOVIE_REF);
         movieValues.put(MovieEntry.COLUMN_TITLE, TEST_MOVIE_TITLE);
         movieValues.put(MovieEntry.COLUMN_OVERVIEW, TEST_MOVIE_OVERVIEW);
         movieValues.put(MovieEntry.COLUMN_RELEASE_DATE, TEST_MOVIE_RELEASE);
@@ -47,5 +53,4 @@ public class TestUtilities extends AndroidTestCase {
                     expectedValue + "'. " + error, expectedValue, valueCursor.getString(idx));
         }
     }
-
 }

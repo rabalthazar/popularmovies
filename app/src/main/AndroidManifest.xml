@@ -35,6 +35,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.popularmovies.MovieGridActivity" />
         </activity>
+        <provider
+            android:authorities="com.example.popularmovies"
+            android:name=".data.MoviesProvider" />
+
     </application>
 
 </manifest>
