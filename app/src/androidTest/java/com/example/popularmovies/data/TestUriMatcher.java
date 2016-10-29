@@ -12,7 +12,6 @@ import static org.junit.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class TestUriMatcher {
     private static final long LIST_ID = 12;
-    private static final String LIST_SELECTOR_POPULAR = "popular";
     private static final long MOVIE_ID = 234;
     private static final long MOVIE_LIST_ID = 5;
 

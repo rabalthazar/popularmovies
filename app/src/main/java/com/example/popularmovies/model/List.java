@@ -8,10 +8,6 @@ import java.util.Date;
  * Created by rafael on 23/06/16.
  */
 public class List {
-    public static final String POPULAR = "popular";
-
-    public static final String TOPRATED = "toprated";
-
     /**
      * Movie list id
      */

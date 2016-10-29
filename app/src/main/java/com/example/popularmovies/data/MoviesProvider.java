@@ -11,8 +11,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 
-import com.example.popularmovies.model.List;
-
 /**
  * A content provider for movies and list of movies
  * Created by rafael on 01/07/16.
@@ -273,7 +271,7 @@ public class MoviesProvider extends ContentProvider {
 
     private Cursor getMovies(String[] projection, @Nullable String listSelector, @Nullable  String sortOrder) {
         SQLiteDatabase db = mDbOpener.getReadableDatabase();
-        if (null == listSelector) listSelector = List.POPULAR;
+        if (null == listSelector) listSelector = MoviesContract.ListSelections.MOST_POPULAR.toString();
         if (null == sortOrder) sortOrder = sMovieOrder;
         return sMoviesByListQueryBuilder.query(
                 db,

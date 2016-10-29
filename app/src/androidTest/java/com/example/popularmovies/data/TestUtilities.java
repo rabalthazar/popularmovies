@@ -14,10 +14,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 class TestUtilities {
-    public static final String TEST_LIST1_SELECTION = "popular";
+    public static final String TEST_LIST1_SELECTION = MoviesContract.ListSelections.MOST_POPULAR.toString();
     public static final Integer TEST_LIST1_DATE = 1477326793; // Oct 24, 2016 14:33:13 (GMT-02)
 
-    public static final String TEST_LIST2_SELECTION = "toprated";
+    public static final String TEST_LIST2_SELECTION = MoviesContract.ListSelections.TOP_RATED.toString();
     public static final Integer TEST_LIST2_DATE = 1477326979; // Oct 24, 2016 14:36:19 (GMT-02)
 
     public static final Long TEST_MOVIE1_ID = 11L;

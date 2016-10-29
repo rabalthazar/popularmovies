@@ -12,6 +12,31 @@ import com.example.popularmovies.util.MoviePosterUriBuilder;
  * Created by rafael on 24/06/16.
  */
 public class MoviesContract {
+    public enum ListSelections {
+        MOST_POPULAR("popular"),
+        TOP_RATED("top_rated");
+
+        private final String selection;
+
+        ListSelections(final String selection) {
+            this.selection = selection;
+        }
+
+        @Override
+        public String toString() {
+            return selection;
+        }
+
+        public static boolean contais(String test) {
+            for (ListSelections selection: ListSelections.values()) {
+                if (test.equals(selection.toString())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
     /**
      * Content provider authority domain
      */

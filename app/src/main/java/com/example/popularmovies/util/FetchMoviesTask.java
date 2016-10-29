@@ -6,8 +6,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.popularmovies.BuildConfig;
-import com.example.popularmovies.model.Movie;
+import com.example.popularmovies.data.MoviesContract;
 import com.example.popularmovies.model.List;
+import com.example.popularmovies.model.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,7 +88,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List> {
      */
     @Nullable
     private List fetchMovies(String order) {
-        if (!order.equals("popular") && !order.equals("top_rated")) {
+        if (!MoviesContract.ListSelections.contais(order)) {
             return null;
         }
 
