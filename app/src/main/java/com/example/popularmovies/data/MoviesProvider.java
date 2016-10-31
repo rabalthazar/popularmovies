@@ -26,6 +26,8 @@ public class MoviesProvider extends ContentProvider {
      */
     public static final int LIST_BY_ID = 101;
 
+    public static final int LIST_BY_SELECTION = 102;
+
     /**
      * Constant for specific movie requests
      */
@@ -51,6 +53,8 @@ public class MoviesProvider extends ContentProvider {
     private MoviesDbHelper mDbOpener;
 
     private static final String BY_ID_SELECTION = BaseColumns._ID + "=?";
+
+    private static final String LIST_SELECTION = MoviesContract.ListEntry.COLUMN_SELECTION + "=?";
 
     private static final SQLiteQueryBuilder sMoviesByListQueryBuilder = new SQLiteQueryBuilder();
 
@@ -78,6 +82,7 @@ public class MoviesProvider extends ContentProvider {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(authority, MoviesContract.LIST_LOCATION, LIST);
         uriMatcher.addURI(authority, MoviesContract.LIST_LOCATION + "/#", LIST_BY_ID);
+        uriMatcher.addURI(authority, MoviesContract.LIST_LOCATION + "/*", LIST_BY_SELECTION);
         uriMatcher.addURI(authority, MoviesContract.MOVIE_LOCATION, MOVIE);
         uriMatcher.addURI(authority, MoviesContract.MOVIE_LOCATION + "/#", MOVIE_BY_ID);
         uriMatcher.addURI(authority, MoviesContract.MOVIE_LOCATION + "/*", MOVIES_BY_SELECTION);
@@ -119,6 +124,18 @@ public class MoviesProvider extends ContentProvider {
                         projection,
                         BY_ID_SELECTION,
                         new String[] {Long.toString(listId)},
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            case LIST_BY_SELECTION:
+                String listSelection = MoviesContract.ListEntry.getSelectionFromUri(uri);
+                retCursor = db.query(
+                        MoviesContract.ListEntry.TABLE_NAME,
+                        projection,
+                        LIST_SELECTION,
+                        new String[] {listSelection},
                         null,
                         null,
                         sortOrder
@@ -176,6 +193,8 @@ public class MoviesProvider extends ContentProvider {
             case LIST:
                 return MoviesContract.ListEntry.CONTENT_TYPE;
             case LIST_BY_ID:
+                return MoviesContract.ListEntry.CONTENT_ITEM_TYPE;
+            case LIST_BY_SELECTION:
                 return MoviesContract.ListEntry.CONTENT_ITEM_TYPE;
             case MOVIE:
                 return MoviesContract.MovieEntry.CONTENT_TYPE;

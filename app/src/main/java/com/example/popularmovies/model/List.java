@@ -16,7 +16,7 @@ public class List {
     /**
      * List order. Actually popular (@string/pref_order_popular) or top_rated (@string/pref_order_toprated)
      */
-    protected String order;
+    protected String selection;
 
     /**
      * Date the list was fetched
@@ -37,12 +37,12 @@ public class List {
         return this;
     }
 
-    public String getOrder() {
-        return order;
+    public String getSelection() {
+        return selection;
     }
 
-    public List setOrder(String order) {
-        this.order = order;
+    public List setSelection(String selection) {
+        this.selection = selection;
         return this;
     }
 

@@ -1,5 +1,9 @@
 package com.example.popularmovies.util;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
@@ -26,6 +30,8 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List> {
      */
     final private String LOG_TAG = FetchMoviesTask.class.getSimpleName();
 
+    private final Context mContext;
+
     /**
      * The adapter to which the fetched list will be added to
      */
@@ -40,6 +46,10 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List> {
      * TMDB API key parameter name
      */
     final private String API_KEY_PARAM = "api_key";
+
+    public FetchMoviesTask(Context context) {
+        mContext = context;
+    }
 
     /**
      * AsyncTask invoker method
@@ -83,17 +93,17 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List> {
 
     /**
      * Fetches the json movie list from the TMDB API and returns it a List class
-     * @param order The list from where to fetch
+     * @param selection The list from where to fetch
      * @return A List of fetched movies
      */
     @Nullable
-    private List fetchMovies(String order) {
-        if (!MoviesContract.ListSelections.contais(order)) {
+    private List fetchMovies(String selection) {
+        if (!MoviesContract.ListSelections.contains(selection)) {
             return null;
         }
 
         Uri uri = Uri.parse(MOVIES_BASE_URL).buildUpon()
-                .appendPath(order)
+                .appendPath(selection)
                 .appendQueryParameter(API_KEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                 .build();
 
@@ -104,7 +114,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List> {
         List movies = parseMovieListJson(jsonMovieListStr);
         if (movies != null) {
             movies.setDateFetched(new Date())
-                  .setOrder(order);
+                  .setSelection(selection);
         }
         return movies;
     }
@@ -128,5 +138,32 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List> {
             return null;
         }
         return movies;
+    }
+
+    private Long addMovieList(List list) {
+        Uri listUri = MoviesContract.ListEntry.buildBySelectionUri(list.getSelection());
+        Cursor listCursor = mContext.getContentResolver().query(listUri, null, null, null, null);
+        Long listId;
+        if (!listCursor.moveToFirst()) {
+            listId = insertList(list);
+        } else {
+            Integer listIdCol = listCursor.getColumnIndex(MoviesContract.ListEntry._ID);
+            listId = listCursor.getLong(listIdCol);
+        }
+        return null;
+    }
+
+    private Long insertList(List list) {
+        ContentValues listValues = new ContentValues();
+        listValues.put(MoviesContract.ListEntry.COLUMN_SELECTION, list.getSelection());
+        listValues.put(MoviesContract.ListEntry.COLUMN_DATE_FETCHED, list.getDateFetched().getTime());
+        Uri listUri;
+        try {
+            listUri = mContext.getContentResolver().insert(MoviesContract.ListEntry.CONTENT_URI, listValues);
+        } catch (SQLException exception) {
+            Log.d(LOG_TAG, "Failed to insert list into database");
+            return -1L;
+        }
+        return MoviesContract.ListEntry.getIdFromUri(listUri);
     }
 }

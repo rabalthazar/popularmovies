@@ -27,7 +27,7 @@ public class MoviesContract {
             return selection;
         }
 
-        public static boolean contais(String test) {
+        public static boolean contains(String test) {
             for (ListSelections selection: ListSelections.values()) {
                 if (test.equals(selection.toString())) {
                     return true;
@@ -178,8 +178,16 @@ public class MoviesContract {
             }
         }
 
+        public static String getSelectionFromUri(Uri listBySelectionUri) {
+            return listBySelectionUri.getPathSegments().get(1);
+        }
+
         public static Uri buildUri(Long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildBySelectionUri(String selection) {
+            return BASE_CONTENT_URI.buildUpon().appendPath(selection).build();
         }
     }
 

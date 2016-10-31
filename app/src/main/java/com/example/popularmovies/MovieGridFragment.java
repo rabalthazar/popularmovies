@@ -2,10 +2,10 @@ package com.example.popularmovies;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -99,7 +99,7 @@ public class MovieGridFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String moviesOrder = prefs.getString(getString(R.string.pref_order_key),
                 getString(R.string.pref_order_default));
-        FetchMoviesTask task = new FetchMoviesTask();
+        FetchMoviesTask task = new FetchMoviesTask(getContext());
         task.setAdapter(mMoviesAdapter);
         task.execute(moviesOrder);
     }
