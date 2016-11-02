@@ -187,7 +187,7 @@ public class MoviesContract {
         }
 
         public static Uri buildBySelectionUri(String selection) {
-            return BASE_CONTENT_URI.buildUpon().appendPath(selection).build();
+            return CONTENT_URI.buildUpon().appendPath(selection).build();
         }
     }
 
@@ -242,9 +242,23 @@ public class MoviesContract {
             }
         }
 
+        public static String getSelectionFromUri(Uri movieListBySelection) {
+            return movieListBySelection.getPathSegments().get(1);
+        }
 
         public static Uri buildUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildBySelectionUri(String selection) {
+            return CONTENT_URI.buildUpon().appendPath(selection).build();
+        }
+
+        public static Uri buildByListAndMovieId(Long listId, Long movieId) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(Long.toString(listId))
+                    .appendPath(Long.toString(movieId))
+                    .build();
         }
     }
 }
