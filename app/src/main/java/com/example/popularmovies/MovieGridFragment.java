@@ -1,11 +1,9 @@
 package com.example.popularmovies;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -23,12 +21,13 @@ import android.widget.GridView;
 import com.example.popularmovies.data.MoviesContract;
 import com.example.popularmovies.util.FetchMoviesTask;
 import com.example.popularmovies.util.MovieArrayAdapter;
+import com.example.popularmovies.util.Utilities;
 
 /**
  * Displays a grid with a list of movie posters
  */
 public class MovieGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    public static final String EXTRA_MOVIE = "movie_intent_bundle";
+    public static String FRAGMENT_TAG = MovieGridFragment.class.getSimpleName();
 
     private static final Integer MOVIES_LOADER = 0;
 
@@ -95,12 +94,6 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        fillGrid();
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.movies_menu, menu);
@@ -113,7 +106,7 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            fillGrid();
+            updateMovies();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -122,19 +115,15 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
     /**
      * Starts an async task to fill the grid adapter
      */
-    private void fillGrid() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String moviesOrder = prefs.getString(getString(R.string.pref_order_key),
-                getString(R.string.pref_order_default));
+    private void updateMovies() {
+        String moviesOrder = Utilities.getPreferredSelection(getContext());
         FetchMoviesTask task = new FetchMoviesTask(getContext());
         task.execute(moviesOrder);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String moviesOrder = prefs.getString(getString(R.string.pref_order_key),
-                getString(R.string.pref_order_default));
+        String moviesOrder = Utilities.getPreferredSelection(getContext());
         Uri moviesUri = MoviesContract.MovieEntry.buildBySelectionUri(moviesOrder);
         return new CursorLoader(getActivity(), moviesUri, MOVIE_COLUMNS, null, null, null);
     }
@@ -147,5 +136,10 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mMoviesAdapter.swapCursor(null);
+    }
+
+    public void onSelectionChanged() {
+        updateMovies();
+        getLoaderManager().restartLoader(MOVIES_LOADER, null, this);
     }
 }

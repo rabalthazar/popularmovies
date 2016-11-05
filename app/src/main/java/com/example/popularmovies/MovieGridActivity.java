@@ -7,11 +7,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.popularmovies.util.Utilities;
+
 /**
  * Holds the movie grid fragment
  * @see MovieGridFragment
  */
 public class MovieGridActivity extends AppCompatActivity {
+    private String mSelectionOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +22,13 @@ public class MovieGridActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_grid);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.movie_grid_fragment, new MovieGridFragment(), MovieGridFragment.FRAGMENT_TAG)
+                    .commit();
+        }
 
+        mSelectionOrder = Utilities.getPreferredSelection(this);
     }
 
     @Override
@@ -43,5 +52,19 @@ public class MovieGridActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String selection = Utilities.getPreferredSelection(this);
+        if (!selection.equals(mSelectionOrder)) {
+            MovieGridFragment movieGridFragment = (MovieGridFragment) getSupportFragmentManager()
+                    .findFragmentByTag(MovieGridFragment.FRAGMENT_TAG);
+            if (movieGridFragment != null) {
+                movieGridFragment.onSelectionChanged();
+            }
+            mSelectionOrder = selection;
+        }
     }
 }
