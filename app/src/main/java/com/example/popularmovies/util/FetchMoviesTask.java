@@ -25,18 +25,13 @@ import java.util.Date;
  * An asynchronous task class that loads data from the TMDB API
  * Created by rafael on 23/05/16.
  */
-public class FetchMoviesTask extends AsyncTask<String, Void, List> {
+public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
     /**
      * Log tag for debugging purposes
      */
     final private String LOG_TAG = FetchMoviesTask.class.getSimpleName();
 
     private final Context mContext;
-
-    /**
-     * The adapter to which the fetched list will be added to
-     */
-    private MovieArrayAdapter mAdapter;
 
     /**
      * TMDB base API URL
@@ -58,38 +53,14 @@ public class FetchMoviesTask extends AsyncTask<String, Void, List> {
      * @return The fetched movie list
      */
     @Override
-    protected List doInBackground(String... params) {
+    protected Void doInBackground(String... params) {
         // The order param is required
         if (params.length == 0) {
             return null;
         }
 
-        return fetchMovies(params[0]);
-    }
-
-    /**
-     * Fills the adapter with the fetched movies
-     * @param movies Downloaded list of movies
-     */
-    @Override
-    protected void onPostExecute(List movies) {
-        if (mAdapter == null) {
-            return;
-        }
-        mAdapter.clear();
-        if (movies == null) {
-            mAdapter.notifyDataSetChanged();
-            return;
-        }
-        for(Movie movie: movies.getMovies()) {
-            mAdapter.add(movie);
-        }
-        mAdapter.notifyDataSetChanged();
-    }
-
-    public FetchMoviesTask setAdapter(MovieArrayAdapter adapter) {
-        this.mAdapter = adapter;
-        return this;
+        fetchMovies(params[0]);
+        return null;
     }
 
     /**

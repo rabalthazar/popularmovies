@@ -1,75 +1,35 @@
 package com.example.popularmovies.util;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.example.popularmovies.model.Movie;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
+import com.example.popularmovies.MovieGridFragment;
+import com.example.popularmovies.R;
 
 /**
  * An adapter to fill lists that display movie posters
  * Created by rafael on 16/06/16.
  */
-public class MovieArrayAdapter extends BaseAdapter {
-
-    /**
-     * Resource ID for the item layout where to draw a movie poster
-     */
-    private int mItemResource;
-
-    /**
-     * Activity context
-     */
-    private Context mContext;
-
-    /**
-     * The list of movies
-     */
-    private ArrayList<Movie> mMovies;
-
-    public MovieArrayAdapter(Context context, int resource, ArrayList<Movie> movies) {
-        mContext = context;
-        mItemResource = resource;
-        mMovies = movies;
+public class MovieArrayAdapter extends CursorAdapter {
+    public MovieArrayAdapter(Context context, Cursor c, int flags) {
+        super(context, c, flags);
     }
 
     @Override
-    public int getCount() {
-        return mMovies.size();
-    }
-
-    @Override
-    public Movie getItem(int position) {
-        return mMovies.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return getItem(position).getId();
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        ImageView imageView;
-
-        if ((convertView != null) && (convertView instanceof ImageView)) {
-            imageView = (ImageView) convertView;
-        } else {
-            imageView = createFromLayoutResource(parent);
-        }
-
-        Context context = mContext != null ? mContext : parent.getContext();
-
-        ImageLoader.loadFromMovie(context, getItem(position), imageView);
-
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        ImageView imageView = createFromLayoutResource(parent);
         return imageView;
+    }
+
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+        ImageView imageView = (ImageView) view;
+        ImageLoader.loadFromPosterPath(context, cursor.getString(MovieGridFragment.COL_MOVIE_POSTER_PATH), imageView);
     }
 
     /**
@@ -79,30 +39,7 @@ public class MovieArrayAdapter extends BaseAdapter {
      */
     private ImageView createFromLayoutResource(ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ImageView view = (ImageView) inflater.inflate(mItemResource, parent, false);
+        ImageView view = (ImageView) inflater.inflate(R.layout.grid_item_movie, parent, false);
         return view;
-    }
-
-    /**
-     * Adds a movie to the adapter
-     * @param movie
-     */
-    public void add(Movie movie) {
-        synchronized (mMovies) {
-            if (mMovies != null) {
-                mMovies.add(movie);
-            }
-        }
-    }
-
-    /**
-     * Clears the list of movies
-     */
-    public void clear() {
-        synchronized (mMovies) {
-            if (mMovies != null) {
-                mMovies.clear();
-            }
-        }
     }
 }

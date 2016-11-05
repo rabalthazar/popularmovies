@@ -57,27 +57,30 @@ public class MoviesProvider extends ContentProvider {
 
     private static final String BY_ID_SELECTION = BaseColumns._ID + "=?";
 
-    private static final String LIST_SELECTION = MoviesContract.ListEntry.COLUMN_SELECTION + "=?";
+    private static final String LIST_SELECTION = MoviesContract.ListEntry.TABLE_NAME + "." +
+            MoviesContract.ListEntry.COLUMN_SELECTION + "=?";
 
     private static final String BY_LIST_SELECTION_SELECTION = MoviesContract.MovieListEntry.COLUMN_LIST_KEY +
             " IN (SELECT " + MoviesContract.ListEntry.TABLE_NAME + "." + MoviesContract.ListEntry._ID +
             " FROM " + MoviesContract.ListEntry.TABLE_NAME + " WHERE " + MoviesContract.ListEntry.TABLE_NAME +
             "." + MoviesContract.ListEntry.COLUMN_SELECTION + "=?)";
 
-    private static final SQLiteQueryBuilder sMoviesByListQueryBuilder = new SQLiteQueryBuilder();
-
     private static final String sMovieListSelectionByOrder =
             MoviesContract.MovieListEntry.COLUMN_LIST_KEY + "=?";
 
     private static final String sMovieOrder = MoviesContract.MovieEntry.COLUMN_VOTE_AVG + " DESC";
 
+    private static final SQLiteQueryBuilder sMoviesByListQueryBuilder = new SQLiteQueryBuilder();
+
     static {
         sMoviesByListQueryBuilder.setTables(
                 MoviesContract.MovieEntry.TABLE_NAME + " INNER JOIN " +
                 MoviesContract.MovieListEntry.TABLE_NAME + " ON " +
-                MoviesContract.MovieEntry._ID + "=" + MoviesContract.MovieListEntry.COLUMN_MOVIE_KEY +
+                MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry._ID + "=" +
+                MoviesContract.MovieListEntry.TABLE_NAME + "." + MoviesContract.MovieListEntry.COLUMN_MOVIE_KEY +
                 " INNER JOIN " + MoviesContract.ListEntry.TABLE_NAME + " ON " +
-                MoviesContract.ListEntry._ID + "=" + MoviesContract.MovieListEntry.COLUMN_LIST_KEY
+                MoviesContract.ListEntry.TABLE_NAME + "." + MoviesContract.ListEntry._ID + "=" +
+                MoviesContract.MovieListEntry.TABLE_NAME + "." + MoviesContract.MovieListEntry.COLUMN_LIST_KEY
         );
     }
 
@@ -163,6 +166,10 @@ public class MoviesProvider extends ContentProvider {
                 break;
             case MOVIE_BY_ID:
                 retCursor = getMovieById(uri, projection);
+                break;
+            case MOVIES_BY_SELECTION:
+                listSelection = MoviesContract.MovieEntry.getSelectionFromUri(uri);
+                retCursor = getMovies(projection, listSelection, sortOrder);
                 break;
             case MOVIE_LIST:
                 retCursor = db.query(
@@ -348,7 +355,7 @@ public class MoviesProvider extends ContentProvider {
         return sMoviesByListQueryBuilder.query(
                 db,
                 projection,
-                BY_ID_SELECTION,
+                LIST_SELECTION,
                 new String[] { listSelector },
                 null,
                 null,
@@ -363,7 +370,9 @@ public class MoviesProvider extends ContentProvider {
         int rowsDeleted, rowsInserted = 0;
         switch (match) {
             case MOVIE_LIST_BY_SELECTION:
-                rowsDeleted = clearMovieListBySelection(uri);
+                String listSelection = MoviesContract.MovieListEntry.getSelectionFromUri(uri);
+                Uri listByIdUri = MoviesContract.ListEntry.buildBySelectionUri(listSelection);
+                rowsDeleted = clearMovieListBySelection(listByIdUri);
                 for (ContentValues movieList : values) {
                     Long movieListId = db.insert(MoviesContract.MovieListEntry.TABLE_NAME, null, movieList);
                     if (movieListId > 0) rowsInserted++;

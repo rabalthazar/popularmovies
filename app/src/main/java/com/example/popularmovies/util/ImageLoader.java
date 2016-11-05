@@ -18,8 +18,12 @@ public class ImageLoader {
      * @param imageView The ImageView to load image into
      */
     public static void loadFromMovie(Context context, Movie movie, ImageView imageView) {
+        loadFromPosterPath(context, movie.getPosterPath(), imageView);
+    }
+
+    public static void loadFromPosterPath(Context context, String posterPath, ImageView imageView) {
         Picasso.with(context)
-            .load(MoviePosterUriBuilder.from(movie))
-            .into(imageView);
+                .load(MoviePosterUriBuilder.from(posterPath))
+                .into(imageView);
     }
 }

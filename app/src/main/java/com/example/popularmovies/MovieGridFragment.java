@@ -2,10 +2,15 @@ package com.example.popularmovies;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,23 +20,46 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.example.popularmovies.model.Movie;
+import com.example.popularmovies.data.MoviesContract;
 import com.example.popularmovies.util.FetchMoviesTask;
 import com.example.popularmovies.util.MovieArrayAdapter;
-import com.example.popularmovies.util.MovieFactory;
-
-import java.util.ArrayList;
 
 /**
  * Displays a grid with a list of movie posters
  */
-public class MovieGridFragment extends Fragment {
+public class MovieGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String EXTRA_MOVIE = "movie_intent_bundle";
+
+    private static final Integer MOVIES_LOADER = 0;
+
+    public static final String[] MOVIE_COLUMNS = new String[] {
+            MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry._ID,
+            MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_TITLE,
+            MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_OVERVIEW,
+            MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_RELEASE_DATE,
+            MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_VOTE_AVG,
+            MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_POSTER_PATH,
+            MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_ADULT
+    };
+
+    public static final int COL_MOVIE_ID = 0;
+    public static final int COL_MOVIE_TITLE = 1;
+    public static final int COL_MOVIE_OVERVIEW = 2;
+    public static final int COL_MOVIE_RELEASE_DATE = 3;
+    public static final int COL_MOVIE_VOTE_AVG = 4;
+    public static final int COL_MOVIE_POSTER_PATH = 5;
+    public static final int COL_MOVIE_ADULT = 6;
 
     /**
      * The adapter that feeds the movie grid
      */
     protected MovieArrayAdapter mMoviesAdapter;
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(MOVIES_LOADER, null, this);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,11 +70,7 @@ public class MovieGridFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mMoviesAdapter =
-                new MovieArrayAdapter(
-                        getActivity(), // The current context (this activity)
-                        R.layout.grid_item_movie, // The name of the layout ID.
-                        new ArrayList<Movie>());
+        mMoviesAdapter = new MovieArrayAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_movie_grid, container, false);
 
@@ -57,10 +81,13 @@ public class MovieGridFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Movie movie = mMoviesAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), MovieDetailActivity.class)
-                        .putExtra(EXTRA_MOVIE, MovieFactory.toBundle(movie));
-                startActivity(intent);
+                Cursor cursor = (Cursor) mMoviesAdapter.getItem(position);
+                if (cursor != null) {
+                    Uri movieUri = MoviesContract.MovieEntry.buildUri(cursor.getLong(COL_MOVIE_ID));
+                    Intent intent = new Intent(getActivity(), MovieDetailActivity.class)
+                            .setData(movieUri);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -100,7 +127,25 @@ public class MovieGridFragment extends Fragment {
         String moviesOrder = prefs.getString(getString(R.string.pref_order_key),
                 getString(R.string.pref_order_default));
         FetchMoviesTask task = new FetchMoviesTask(getContext());
-        task.setAdapter(mMoviesAdapter);
         task.execute(moviesOrder);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String moviesOrder = prefs.getString(getString(R.string.pref_order_key),
+                getString(R.string.pref_order_default));
+        Uri moviesUri = MoviesContract.MovieEntry.buildBySelectionUri(moviesOrder);
+        return new CursorLoader(getActivity(), moviesUri, MOVIE_COLUMNS, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mMoviesAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mMoviesAdapter.swapCursor(null);
     }
 }
