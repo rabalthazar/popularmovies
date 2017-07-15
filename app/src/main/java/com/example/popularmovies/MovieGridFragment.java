@@ -93,9 +93,13 @@ public class MovieGridFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            getLoaderManager().restartLoader(MoviesLoader.MOVIES_LOADER, null, mMoviesLoader);
+            onSelectionChanged();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onSelectionChanged() {
+        getLoaderManager().restartLoader(MoviesLoader.MOVIES_LOADER, null, mMoviesLoader);
     }
 }
