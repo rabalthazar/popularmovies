@@ -6,9 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,27 +16,14 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.popularmovies.data.MoviesContract;
-import com.example.popularmovies.util.FetchMoviesTask;
+import com.example.popularmovies.data.MoviesLoader;
 import com.example.popularmovies.util.MovieArrayAdapter;
-import com.example.popularmovies.util.Utilities;
 
 /**
  * Displays a grid with a list of movie posters
  */
-public class MovieGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MovieGridFragment extends Fragment {
     public static String FRAGMENT_TAG = MovieGridFragment.class.getSimpleName();
-
-    private static final Integer MOVIES_LOADER = 0;
-
-    public static final String[] MOVIE_COLUMNS = new String[] {
-            MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry._ID,
-            MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_TITLE,
-            MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_OVERVIEW,
-            MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_RELEASE_DATE,
-            MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_VOTE_AVG,
-            MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_POSTER_PATH,
-            MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_ADULT
-    };
 
     public static final int COL_MOVIE_ID = 0;
     public static final int COL_MOVIE_TITLE = 1;
@@ -54,10 +38,13 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
      */
     protected MovieArrayAdapter mMoviesAdapter;
 
+    protected MoviesLoader mMoviesLoader;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(MOVIES_LOADER, null, this);
+        mMoviesLoader = new MoviesLoader(getActivity(), mMoviesAdapter);
+        getLoaderManager().initLoader(MoviesLoader.MOVIES_LOADER, null, mMoviesLoader);
     }
 
     @Override
@@ -106,40 +93,9 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            updateMovies();
+            getLoaderManager().restartLoader(MoviesLoader.MOVIES_LOADER, null, mMoviesLoader);
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Starts an async task to fill the grid adapter
-     */
-    private void updateMovies() {
-        String moviesOrder = Utilities.getPreferredSelection(getContext());
-        FetchMoviesTask task = new FetchMoviesTask(getContext());
-        task.execute(moviesOrder);
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String moviesOrder = Utilities.getPreferredSelection(getContext());
-        Uri moviesUri = MoviesContract.MovieEntry.buildBySelectionUri(moviesOrder);
-        return new CursorLoader(getActivity(), moviesUri, MOVIE_COLUMNS, null, null, null);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mMoviesAdapter.swapCursor(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mMoviesAdapter.swapCursor(null);
-    }
-
-    public void onSelectionChanged() {
-        updateMovies();
-        getLoaderManager().restartLoader(MOVIES_LOADER, null, this);
     }
 }
