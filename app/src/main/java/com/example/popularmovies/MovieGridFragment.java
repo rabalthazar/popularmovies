@@ -43,6 +43,8 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
      */
     protected MovieArrayAdapter mMoviesAdapter;
 
+    protected Boolean mForceFetch = false;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -95,6 +97,7 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
+            mForceFetch = true;
             onSelectionChanged();
             return true;
         }
@@ -104,12 +107,13 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
 
     public void onSelectionChanged() {
         getLoaderManager().restartLoader(MOVIES_LOADER, null, this).forceLoad();
+        mForceFetch = false;
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.d(FRAGMENT_TAG, "CreateLoader");
-        return new MoviesLoader(getContext());
+        return new MoviesLoader(getContext(), mForceFetch);
     }
 
     @Override
