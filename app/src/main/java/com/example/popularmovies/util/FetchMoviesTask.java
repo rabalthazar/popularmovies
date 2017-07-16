@@ -25,7 +25,7 @@ import java.util.Date;
  * An asynchronous task class that loads data from the TMDB API
  * Created by rafael on 23/05/16.
  */
-public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
+public class FetchMoviesTask extends AsyncTask<String, Void, Cursor> {
     /**
      * Log tag for debugging purposes
      */
@@ -53,7 +53,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
      * @return The fetched movie list
      */
     @Override
-    protected Void doInBackground(String... params) {
+    protected Cursor doInBackground(String... params) {
         // The order param is required
         if (params.length == 0) {
             return null;
@@ -66,12 +66,10 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
     /**
      * Fetches the json movie list from the TMDB API and returns it a List class
      * @param selection The list from where to fetch
-     * @return A List of fetched movies
      */
-    @Nullable
-    private List fetchMovies(String selection) {
+    public void fetchMovies(String selection) {
         if (!MoviesContract.ListSelections.contains(selection)) {
-            return null;
+            return;
         }
 
         Uri uri = Uri.parse(MOVIES_BASE_URL).buildUpon()
@@ -81,7 +79,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
 
         String jsonMovieListStr = FetchUri.fetch(uri);
         if (jsonMovieListStr == null) {
-            return null;
+            return;
         }
         List movies = parseMovieListJson(jsonMovieListStr);
         if (movies != null) {
@@ -89,7 +87,6 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
                   .setSelection(selection);
         }
         addMovieList(movies);
-        return movies;
     }
 
     @Nullable

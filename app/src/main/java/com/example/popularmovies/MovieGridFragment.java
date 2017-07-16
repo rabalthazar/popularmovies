@@ -6,6 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,8 +25,10 @@ import com.example.popularmovies.util.MovieArrayAdapter;
 /**
  * Displays a grid with a list of movie posters
  */
-public class MovieGridFragment extends Fragment {
+public class MovieGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     public static String FRAGMENT_TAG = MovieGridFragment.class.getSimpleName();
+
+    private static final int MOVIES_LOADER = 0;
 
     public static final int COL_MOVIE_ID = 0;
     public static final int COL_MOVIE_TITLE = 1;
@@ -38,13 +43,10 @@ public class MovieGridFragment extends Fragment {
      */
     protected MovieArrayAdapter mMoviesAdapter;
 
-    protected MoviesLoader mMoviesLoader;
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mMoviesLoader = new MoviesLoader(getActivity(), mMoviesAdapter);
-        getLoaderManager().initLoader(MoviesLoader.MOVIES_LOADER, null, mMoviesLoader);
+        getLoaderManager().initLoader(MOVIES_LOADER, null, this).forceLoad();
     }
 
     @Override
@@ -99,7 +101,24 @@ public class MovieGridFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+
     public void onSelectionChanged() {
-        getLoaderManager().restartLoader(MoviesLoader.MOVIES_LOADER, null, mMoviesLoader);
+        getLoaderManager().restartLoader(MOVIES_LOADER, null, this).forceLoad();
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.d(FRAGMENT_TAG, "CreateLoader");
+        return new MoviesLoader(getContext());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mMoviesAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mMoviesAdapter.swapCursor(null);
     }
 }
