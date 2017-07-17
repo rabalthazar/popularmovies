@@ -90,9 +90,9 @@ public class TestDb {
 
         // Build a HashSet of all of the column names we want to look for
         final HashSet<String> listColumnHashSet = new HashSet<>();
-        movieColumnHashSet.add(MoviesContract.ListEntry._ID);
-        movieColumnHashSet.add(MoviesContract.ListEntry.COLUMN_SELECTION);
-        movieColumnHashSet.add(MoviesContract.ListEntry.COLUMN_DATE_FETCHED);
+        listColumnHashSet.add(MoviesContract.ListEntry._ID);
+        listColumnHashSet.add(MoviesContract.ListEntry.COLUMN_SELECTION);
+        listColumnHashSet.add(MoviesContract.ListEntry.COLUMN_DATE_FETCHED);
 
         columnNameIndex = c.getColumnIndex("name");
         do {
@@ -113,21 +113,21 @@ public class TestDb {
 
         // Build a HashSet of all of the column names we want to look for
         final HashSet<String> movieListColumnHashSet = new HashSet<>();
-        movieColumnHashSet.add(MoviesContract.MovieListEntry._ID);
-        movieColumnHashSet.add(MoviesContract.MovieListEntry.COLUMN_LIST_KEY);
-        movieColumnHashSet.add(MoviesContract.MovieListEntry.COLUMN_MOVIE_KEY);
-        movieColumnHashSet.add(MoviesContract.MovieListEntry.COLUMN_ORDER);
+        movieListColumnHashSet.add(MoviesContract.MovieListEntry._ID);
+        movieListColumnHashSet.add(MoviesContract.MovieListEntry.COLUMN_LIST_KEY);
+        movieListColumnHashSet.add(MoviesContract.MovieListEntry.COLUMN_MOVIE_KEY);
+        movieListColumnHashSet.add(MoviesContract.MovieListEntry.COLUMN_ORDER);
 
         columnNameIndex = c.getColumnIndex("name");
         do {
             String columnName = c.getString(columnNameIndex);
-            listColumnHashSet.remove(columnName);
+            movieListColumnHashSet.remove(columnName);
         } while(c.moveToNext());
         c.close();
         // if this fails, it means that your database doesn't contain all of the required location
         // entry columns
         assertTrue("Error: The database doesn't contain all of the required movie list entry columns",
-                listColumnHashSet.isEmpty());
+                movieListColumnHashSet.isEmpty());
 
         db.close();
     }

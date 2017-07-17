@@ -1,6 +1,7 @@
 package com.example.popularmovies.util;
 
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -22,10 +23,11 @@ public class FetchUri {
      * @param uri URI Object wiht the
      * @return
      */
+    @Nullable
     public static String fetch(Uri uri) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         try {
             URL url = new URL(uri.toString());
 
@@ -40,7 +42,7 @@ public class FetchUri {
             reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line = reader.readLine()) != null) {
-                buffer.append(line + "\n");
+                buffer.append(line).append("\n");
             }
             if (buffer.length() == 0) {
                 return null;
@@ -48,15 +50,17 @@ public class FetchUri {
         } catch (IOException e) {
             Log.d(LOG_TAG, e.getMessage(), e);
         } finally {
-            if (connection != null) {
-                connection.disconnect();
+            if (connection == null) {
+                return null;
             }
-            if(reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    Log.d(LOG_TAG, e.getMessage(), e);
-                }
+            connection.disconnect();
+            if(reader == null) {
+                return null;
+            }
+            try {
+                reader.close();
+            } catch (IOException e) {
+                Log.d(LOG_TAG, e.getMessage(), e);
             }
         }
 

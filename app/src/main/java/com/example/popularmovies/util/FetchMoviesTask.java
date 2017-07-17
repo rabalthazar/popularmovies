@@ -85,8 +85,8 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Cursor> {
         if (movies != null) {
             movies.setDateFetched(new Date())
                   .setSelection(selection);
+            addMovieList(movies);
         }
-        addMovieList(movies);
     }
 
     @Nullable
@@ -110,6 +110,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Cursor> {
         return movies;
     }
 
+    @Nullable
     private Integer addMovieList(List list) {
         Long listId = insertOrUpdateList(list);
         if (listId <= 0) {
@@ -129,10 +130,10 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Cursor> {
         listValues.put(MoviesContract.ListEntry.COLUMN_SELECTION, list.getSelection());
         listValues.put(MoviesContract.ListEntry.COLUMN_DATE_FETCHED, list.getDateFetched().getTime());
         Cursor listCursor = mContext.getContentResolver().query(listUri, null, null, null, null);
-        if (!listCursor.moveToFirst()) {
+        if (listCursor == null || !listCursor.moveToFirst()) {
             try {
                 listUriById = mContext.getContentResolver().insert(MoviesContract.ListEntry.CONTENT_URI, listValues);
-                listCursor.close();
+                if (listCursor != null) listCursor.close();
                 return MoviesContract.ListEntry.getIdFromUri(listUriById);
             } catch (SQLException exception) {
                 Log.d(LOG_TAG, "Failed to insert list into database");
@@ -160,13 +161,13 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Cursor> {
         movieValues.put(MoviesContract.MovieEntry.COLUMN_POSTER_PATH, movie.getPosterPath());
         movieValues.put(MoviesContract.MovieEntry.COLUMN_VOTE_AVG, movie.getVoteAverage());
         Cursor movieCursor = mContext.getContentResolver().query(movieUri, null, null, null, null);
-        if (!movieCursor.moveToFirst()) {
+        if (movieCursor == null || !movieCursor.moveToFirst()) {
             try {
                 Uri newMovieUri = mContext.getContentResolver().insert(
                         MoviesContract.MovieEntry.CONTENT_URI,
                         movieValues
                 );
-                movieCursor.close();
+                if (movieCursor!= null) movieCursor.close();
                 return MoviesContract.MovieEntry.getIdFromUri(newMovieUri);
             } catch (SQLException exception) {
                 Log.d(LOG_TAG, "Failed to insert movie into database");

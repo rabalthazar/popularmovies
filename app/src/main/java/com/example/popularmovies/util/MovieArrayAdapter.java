@@ -22,8 +22,7 @@ public class MovieArrayAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        ImageView imageView = createFromLayoutResource(parent);
-        return imageView;
+        return createFromLayoutResource(parent);
     }
 
     @Override

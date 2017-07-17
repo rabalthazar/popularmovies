@@ -37,7 +37,8 @@
         </activity>
         <provider
             android:authorities="com.example.popularmovies"
-            android:name=".data.MoviesProvider" />
+            android:name=".data.MoviesProvider"
+            android:exported="false" />
 
     </application>
 

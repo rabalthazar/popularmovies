@@ -65,7 +65,7 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
         View rootView = inflater.inflate(R.layout.fragment_movie_grid, container, false);
 
         // Get a reference to the GridView, and attach this adapter to it.
-        GridView gridView = (GridView) rootView.findViewById(R.id.grid_movies);
+        GridView gridView = rootView.findViewById(R.id.grid_movies);
         gridView.setAdapter(mMoviesAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

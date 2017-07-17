@@ -52,11 +52,6 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     public static final int COL_MOVIE_ADULT = 6;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(MOVIE_LOADER, null, this);
@@ -81,16 +76,19 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
             return;
         }
         View view = getView();
-        ImageView moviePoster = (ImageView) view.findViewById(R.id.movie_poster);
+        if (view == null) {
+            return;
+        }
+        ImageView moviePoster = view.findViewById(R.id.movie_poster);
         ImageLoader.loadFromPosterPath(getContext(), data.getString(COL_MOVIE_POSTER_PATH), moviePoster);
-        TextView movieTitle = (TextView) view.findViewById(R.id.movie_title);
+        TextView movieTitle = view.findViewById(R.id.movie_title);
         movieTitle.setText(data.getString(COL_MOVIE_TITLE));
-        TextView movieOverview = (TextView) view.findViewById(R.id.movie_overview);
+        TextView movieOverview = view.findViewById(R.id.movie_overview);
         movieOverview.setText(data.getString(COL_MOVIE_OVERVIEW));
-        TextView movieRelease = (TextView) view.findViewById(R.id.movie_release);
+        TextView movieRelease = view.findViewById(R.id.movie_release);
         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
         movieRelease.setText(dateFormat.format(new Date(data.getLong(COL_MOVIE_RELEASE_DATE))));
-        TextView movieRating = (TextView) view.findViewById(R.id.movie_rating);
+        TextView movieRating = view.findViewById(R.id.movie_rating);
         movieRating.setText(Double.toString(data.getDouble(COL_MOVIE_VOTE_AVG)));
     }
 

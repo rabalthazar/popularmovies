@@ -1,11 +1,9 @@
 package com.example.popularmovies.data;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
 import com.example.popularmovies.util.FetchMoviesTask;
 import com.example.popularmovies.util.Utilities;
@@ -98,7 +96,8 @@ public class MoviesLoader extends AsyncTaskLoader<Cursor> {
         }
     }
 
-    protected void finalize() {
+    protected void finalize() throws Throwable {
+        super.finalize();
         onReleaseResources(mMoviesCursor);
     }
 }
