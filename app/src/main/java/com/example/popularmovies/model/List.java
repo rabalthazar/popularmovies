@@ -11,22 +11,22 @@ public class List {
     /**
      * Movie list id
      */
-    protected Long id;
+    private Long id;
 
     /**
      * List order. Actually popular (@string/pref_order_popular) or top_rated (@string/pref_order_toprated)
      */
-    protected String selection;
+    private String selection;
 
     /**
      * Date the list was fetched
      */
-    protected Date dateFetched;
+    private Date dateFetched;
 
     /**
      * List of movies in the list
      */
-    protected ArrayList<Movie> movies = new ArrayList<>();
+    private final ArrayList<Movie> movies = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -71,11 +71,6 @@ public class List {
 
     public List remove(Movie movie) {
         movies.remove(movie);
-        return this;
-    }
-
-    public List remove(Integer idx) {
-        movies.remove(idx);
         return this;
     }
 

@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.support.annotation.NonNull;
 
 import com.example.popularmovies.util.MoviePosterUriBuilder;
 
@@ -178,6 +179,7 @@ public class MoviesContract {
          */
         public static final String COLUMN_DATE_FETCHED = "date_fetched";
 
+        @NonNull
         public static Long getIdFromUri(Uri listByIdUri) {
             try {
                 return Long.parseLong(listByIdUri.getPathSegments().get(1));

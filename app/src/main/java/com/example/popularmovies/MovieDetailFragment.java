@@ -16,22 +16,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.popularmovies.data.MoviesContract;
-import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.util.ImageLoader;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.util.Date;
 
 /**
  * Shows a movie details as original title, release date, movie overview, etc.
  */
 public class MovieDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    /**
-     * Holds the movie data to be displayed
-     */
-    protected Movie mMovie;
-
-    private static int MOVIE_LOADER = 0;
+    private static final int MOVIE_LOADER = 0;
 
     public static final String[] MOVIE_COLUMNS = new String[] {
             MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry._ID,
@@ -89,11 +84,11 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
         movieRelease.setText(dateFormat.format(new Date(data.getLong(COL_MOVIE_RELEASE_DATE))));
         TextView movieRating = view.findViewById(R.id.movie_rating);
-        movieRating.setText(Double.toString(data.getDouble(COL_MOVIE_VOTE_AVG)));
+        movieRating.setText(NumberFormat.getNumberInstance().format(data.getDouble(COL_MOVIE_VOTE_AVG)));
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        return;
+        // Method is not necessary. Just here for interface implementation completeness
     }
 }

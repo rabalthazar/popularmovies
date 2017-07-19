@@ -49,6 +49,9 @@ public class MoviesLoader extends AsyncTaskLoader<Cursor> {
         }
         final Uri listUri = MoviesContract.ListEntry.buildBySelectionUri(moviesOrder);
         Cursor listCursor = getContext().getContentResolver().query(listUri, null, null, null, null);
+        if (listCursor == null) {
+            return true;
+        }
         if (!listCursor.moveToFirst()) {
             listCursor.close();
             return true;

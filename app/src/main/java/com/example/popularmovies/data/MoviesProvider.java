@@ -1,6 +1,7 @@
 package com.example.popularmovies.data;
 
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -64,9 +65,6 @@ public class MoviesProvider extends ContentProvider {
             " IN (SELECT " + MoviesContract.ListEntry.TABLE_NAME + "." + MoviesContract.ListEntry._ID +
             " FROM " + MoviesContract.ListEntry.TABLE_NAME + " WHERE " + MoviesContract.ListEntry.TABLE_NAME +
             "." + MoviesContract.ListEntry.COLUMN_SELECTION + "=?)";
-
-    private static final String sMovieListSelectionByOrder =
-            MoviesContract.MovieListEntry.COLUMN_LIST_KEY + "=?";
 
     private static final String sMovieOrder = MoviesContract.MovieEntry.COLUMN_VOTE_AVG + " DESC";
 
@@ -209,7 +207,10 @@ public class MoviesProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown query uri: " + uri);
         }
-        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        ContentResolver contentResolver = getContext() != null ? getContext().getContentResolver() : null;
+        if (contentResolver != null) {
+            retCursor.setNotificationUri(contentResolver, uri);
+        }
         return retCursor;
     }
 
@@ -294,8 +295,9 @@ public class MoviesProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-        if (rowsDeleted > 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+        ContentResolver contentResolver = getContext() != null ? getContext().getContentResolver() : null;
+        if (rowsDeleted > 0 && contentResolver != null) {
+            contentResolver.notifyChange(uri, null);
         }
         return rowsDeleted;
     }
@@ -328,8 +330,9 @@ public class MoviesProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown update uri: " + uri);
         }
-        if (rowsUpdated > 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+        ContentResolver contentResolver = getContext() != null ? getContext().getContentResolver() : null;
+        if (rowsUpdated > 0 && contentResolver != null) {
+            contentResolver.notifyChange(uri, null);
         }
 
         return rowsUpdated;
@@ -382,14 +385,19 @@ public class MoviesProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown bulk insert uri: " + uri);
         }
-        if (rowsDeleted + rowsInserted > 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+        ContentResolver contentResolver = getContext() != null ? getContext().getContentResolver() : null;
+        if (rowsDeleted + rowsInserted > 0 && contentResolver != null) {
+            contentResolver.notifyChange(uri, null);
         }
         return rowsInserted;
     }
 
+    @NonNull
     private Integer clearMovieListBySelection(final Uri listBySelectionUri) {
         Cursor listCursor = query(listBySelectionUri, null, null, null, null);
+        if (listCursor == null) {
+            return 0;
+        }
         if (!listCursor.moveToFirst()) {
             listCursor.close();
             return 0;

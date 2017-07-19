@@ -26,7 +26,7 @@ import com.example.popularmovies.util.MovieArrayAdapter;
  * Displays a grid with a list of movie posters
  */
 public class MovieGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    public static String FRAGMENT_TAG = MovieGridFragment.class.getSimpleName();
+    public static final String FRAGMENT_TAG = MovieGridFragment.class.getSimpleName();
 
     private static final int MOVIES_LOADER = 0;
 

@@ -20,13 +20,14 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
 public class TestProvider {
-    private Context mContext = InstrumentationRegistry.getTargetContext();
+    private final Context mContext = InstrumentationRegistry.getTargetContext();
 
     @Before
     public void deleteAllRecordsFromProvider() {
@@ -56,14 +57,17 @@ public class TestProvider {
     public void testProviderIsEmpty() {
         ContentResolver contentResolver = mContext.getContentResolver();
         Cursor listCursor = contentResolver.query(MoviesContract.ListEntry.CONTENT_URI, null, null, null, null);
+        assertNotNull(listCursor);
         assertEquals("Error: List table is not empty", 0, listCursor.getCount());
         listCursor.close();
 
         Cursor movieCursor = contentResolver.query(MoviesContract.MovieEntry.CONTENT_URI, null, null, null, null);
+        assertNotNull(movieCursor);
         assertEquals("Error: Movie table is not empty", 0, movieCursor.getCount());
         movieCursor.close();
 
         Cursor movieListCursor = contentResolver.query(MoviesContract.MovieListEntry.CONTENT_URI, null, null, null, null);
+        assertNotNull(movieListCursor);
         assertEquals("Error: Movie List table is not empty", 0, movieListCursor.getCount());
         movieListCursor.close();
     }
@@ -75,6 +79,7 @@ public class TestProvider {
 
         ContentValues list = TestUtilities.createTopRatedListValues();
         Uri listUri = contentResolver.insert(MoviesContract.ListEntry.CONTENT_URI, list);
+        assertNotNull(listUri);
         Integer listMatch = uriMatcher.match(listUri);
         assertThat(listMatch, equalTo(MoviesProvider.LIST_BY_ID));
 
@@ -82,6 +87,7 @@ public class TestProvider {
         assertThat(listId, greaterThan(0L));
 
         Cursor cursor = contentResolver.query(listUri, null, null, null, null);
+        assertNotNull(cursor);
         assertTrue("Error: No Records returned from list query for uri " + listUri, cursor.moveToFirst());
 
         int idx = cursor.getColumnIndex(MoviesContract.ListEntry._ID);
@@ -95,6 +101,7 @@ public class TestProvider {
         cursor.close();
 
         cursor = contentResolver.query(MoviesContract.ListEntry.CONTENT_URI, null, null, null, null);
+        assertNotNull(cursor);
         assertTrue("Error: No Records returned from list query for uri " + listUri, cursor.moveToFirst());
 
         TestUtilities.validateCurrentRecord("Error: List Query Validation Failed",
@@ -112,6 +119,7 @@ public class TestProvider {
 
         ContentValues movie = TestUtilities.createEmpireStrikesBackValues();
         Uri movieUri = contentResolver.insert(MoviesContract.MovieEntry.CONTENT_URI, movie);
+        assertNotNull(movieUri);
         Integer movieMatch = uriMatcher.match(movieUri);
         assertThat(movieMatch, equalTo(MoviesProvider.MOVIE_BY_ID));
 
@@ -119,6 +127,7 @@ public class TestProvider {
         assertThat(movieId, equalTo(TestUtilities.TEST_MOVIE2_ID));
 
         Cursor cursor = contentResolver.query(movieUri, null, null, null, null);
+        assertNotNull(cursor);
         assertTrue("Error: No Records returned from movie query for uri " + movieUri, cursor.moveToFirst());
 
         int idx = cursor.getColumnIndex(MoviesContract.MovieEntry._ID);
@@ -130,6 +139,7 @@ public class TestProvider {
         cursor.close();
 
         cursor = contentResolver.query(MoviesContract.MovieEntry.CONTENT_URI, null, null, null, null);
+        assertNotNull(cursor);
         assertTrue("Error: No Records returned from movie query for movie uri ", cursor.moveToFirst());
         TestUtilities.validateCurrentRecord("Error: Movie Query Validation Failed",
                 cursor, movie);
@@ -166,6 +176,7 @@ public class TestProvider {
 
         ContentValues movieList1 = TestUtilities.createMovieListValues(listId, movie1Id, 0);
         Uri movieList1Uri = contentResolver.insert(MoviesContract.MovieListEntry.CONTENT_URI, movieList1);
+        assertNotNull(movieList1Uri);
         Integer movieList1Match = uriMatcher.match(movieList1Uri);
         assertThat(movieList1Match, equalTo(MoviesProvider.MOVIE_LIST_BY_ID));
         Long movieList1Id = MoviesContract.MovieListEntry.getIdFromUri(movieList1Uri);
@@ -176,6 +187,7 @@ public class TestProvider {
         assertThat(movieList2Match, equalTo(MoviesProvider.MOVIE_LIST_BY_ID));
 
         Cursor cursor = contentResolver.query(movieList1Uri, null, null, null, null);
+        assertNotNull(cursor);
         assertTrue("Error: No Records returned from movie query for uri " + movieList1Uri, cursor.moveToFirst());
 
         int idx = cursor.getColumnIndex(MoviesContract.MovieListEntry._ID);
@@ -188,6 +200,7 @@ public class TestProvider {
 
         cursor = contentResolver.query(MoviesContract.MovieListEntry.CONTENT_URI, null, null, null,
                 MoviesContract.MovieListEntry.COLUMN_ORDER + " ASC");
+        assertNotNull(cursor);
         assertTrue("Error: No Records returned from movie query for movie list uri ", cursor.moveToFirst());
 
         TestUtilities.validateCurrentRecord("Error: Movie List Query Validation Failed",

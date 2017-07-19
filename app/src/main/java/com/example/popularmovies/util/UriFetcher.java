@@ -16,12 +16,12 @@ import java.net.URL;
  * Created by rafael on 23/05/16.
  */
 public class UriFetcher {
-    private static String LOG_TAG = UriFetcher.class.getSimpleName();
+    private static final String LOG_TAG = UriFetcher.class.getSimpleName();
 
     /**
      * Fetchs the text content from an URI via HTTP
-     * @param uri URI Object wiht the
-     * @return
+     * @param uri URI to be fetched
+     * @return the fetched contents of the URI
      */
     @Nullable
     public static String fetch(Uri uri) {
@@ -49,19 +49,18 @@ public class UriFetcher {
             }
         } catch (IOException e) {
             Log.d(LOG_TAG, e.getMessage(), e);
-        } finally {
-            if (connection == null) {
-                return null;
-            }
-            connection.disconnect();
-            if(reader == null) {
-                return null;
-            }
-            try {
-                reader.close();
-            } catch (IOException e) {
-                Log.d(LOG_TAG, e.getMessage(), e);
-            }
+        }
+        if (connection == null) {
+            return null;
+        }
+        connection.disconnect();
+        if(reader == null) {
+            return null;
+        }
+        try {
+            reader.close();
+        } catch (IOException e) {
+            Log.d(LOG_TAG, e.getMessage(), e);
         }
 
         return buffer.toString();

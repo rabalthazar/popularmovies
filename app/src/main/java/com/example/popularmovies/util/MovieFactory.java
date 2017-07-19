@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Helper Factory class to convert movies to and from the various formats used in the app
@@ -28,10 +29,10 @@ public class MovieFactory {
      * Creates a Movie object from a JSON in the TMDB format
      * @param movieJson Movie JSON object
      * @return Movie object
-     * @throws JSONException
+     * @throws JSONException if JSON can't be parsed
      */
     public static Movie fromTMDBJsonObject(JSONObject movieJson) throws JSONException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date releaseDate;
         try {
             releaseDate = format.parse(movieJson.getString(MOVIE_RELEASE));

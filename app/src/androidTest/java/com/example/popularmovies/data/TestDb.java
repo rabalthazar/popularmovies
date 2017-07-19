@@ -22,9 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class TestDb {
-    public static final String LOG_TAG = TestDb.class.getSimpleName();
-
-    private Context mContext = InstrumentationRegistry.getTargetContext();
+    private final Context mContext = InstrumentationRegistry.getTargetContext();
 
     @Before
     public void deleteDatabase() {

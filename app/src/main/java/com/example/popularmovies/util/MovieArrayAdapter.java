@@ -38,7 +38,6 @@ public class MovieArrayAdapter extends CursorAdapter {
      */
     private ImageView createFromLayoutResource(ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ImageView view = (ImageView) inflater.inflate(R.layout.grid_item_movie, parent, false);
-        return view;
+        return (ImageView) inflater.inflate(R.layout.grid_item_movie, parent, false);
     }
 }

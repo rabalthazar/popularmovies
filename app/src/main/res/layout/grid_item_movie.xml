@@ -2,4 +2,5 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/grid_poster_imageview" />
+    android:id="@+id/grid_poster_imageview"
+    android:contentDescription="@string/a11y_poster_image" />

@@ -14,45 +14,45 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 class TestUtilities {
-    public static final String TEST_LIST1_SELECTION = MoviesContract.ListSelections.MOST_POPULAR.toString();
-    public static final Integer TEST_LIST1_DATE = 1477326793; // Oct 24, 2016 14:33:13 (GMT-02)
+    private static final String TEST_LIST1_SELECTION = MoviesContract.ListSelections.MOST_POPULAR.toString();
+    private static final Integer TEST_LIST1_DATE = 1477326793; // Oct 24, 2016 14:33:13 (GMT-02)
 
-    public static final String TEST_LIST2_SELECTION = MoviesContract.ListSelections.TOP_RATED.toString();
-    public static final Integer TEST_LIST2_DATE = 1477326979; // Oct 24, 2016 14:36:19 (GMT-02)
+    private static final String TEST_LIST2_SELECTION = MoviesContract.ListSelections.TOP_RATED.toString();
+    private static final Integer TEST_LIST2_DATE = 1477326979; // Oct 24, 2016 14:36:19 (GMT-02)
 
     public static final Long TEST_MOVIE1_ID = 11L;
-    public static final String TEST_MOVIE1_TITLE = "Star Wars";
-    public static final String TEST_MOVIE1_OVERVIEW = "Princess Leia is captured and held hostage " +
+    private static final String TEST_MOVIE1_TITLE = "Star Wars";
+    private static final String TEST_MOVIE1_OVERVIEW = "Princess Leia is captured and held hostage " +
             "by the evil Imperial forces in their effort to take over the galactic Empire. " +
             "Venturesome Luke Skywalker and dashing captain Han Solo team together with the loveable " +
             "robot duo R2-D2 and C-3PO to rescue the beautiful princess and restore peace and justice in the Empire.";
-    public static final Integer TEST_MOVIE1_RELEASE = 227674800; // Mar 20, 1977
-    public static final Double TEST_MOVIE1_VOTE_AVG = 7.9;
-    public static final String TEST_MOVIE1_POSTER_PATH = "/tvSlBzAdRE29bZe5yYWrJ2ds137.jpg";
+    private static final Integer TEST_MOVIE1_RELEASE = 227674800; // Mar 20, 1977
+    private static final Double TEST_MOVIE1_VOTE_AVG = 7.9;
+    private static final String TEST_MOVIE1_POSTER_PATH = "/tvSlBzAdRE29bZe5yYWrJ2ds137.jpg";
 
     public static final Long TEST_MOVIE2_ID = 1891L;
-    public static final String TEST_MOVIE2_TITLE = "The Empire Strikes Back";
-    public static final String TEST_MOVIE2_OVERVIEW = "The epic saga continues as Luke Skywalker, " +
+    private static final String TEST_MOVIE2_TITLE = "The Empire Strikes Back";
+    private static final String TEST_MOVIE2_OVERVIEW = "The epic saga continues as Luke Skywalker, " +
             "in hopes of defeating the evil Galactic Empire, learns the ways of the Jedi from " +
             "aging master Yoda. But Darth Vader is more determined than ever to capture Luke. " +
             "Meanwhile, rebel leader Princess Leia, cocky Han Solo, Chewbacca, and droids C-3PO " +
             "and R2-D2 are thrown into various stages of capture, betrayal and despair.";
-    public static final Integer TEST_MOVIE2_RELEASE = 327380400; // May 17, 1980
-    public static final Double TEST_MOVIE2_VOTE_AVG = 5.8;
-    public static final String TEST_MOVIE2_POSTER_PATH = "/6u1fYtxG5eqjhtCPDx04pJphQRW.jpg";
+    private static final Integer TEST_MOVIE2_RELEASE = 327380400; // May 17, 1980
+    private static final Double TEST_MOVIE2_VOTE_AVG = 5.8;
+    private static final String TEST_MOVIE2_POSTER_PATH = "/6u1fYtxG5eqjhtCPDx04pJphQRW.jpg";
 
     public static final Long TEST_MOVIE3_ID = 1892L;
-    public static final String TEST_MOVIE3_TITLE = "Return of the Jedi";
-    public static final String TEST_MOVIE3_OVERVIEW = "As Rebel leaders map their strategy for " +
+    private static final String TEST_MOVIE3_TITLE = "Return of the Jedi";
+    private static final String TEST_MOVIE3_OVERVIEW = "As Rebel leaders map their strategy for " +
             "an all-out attack on the Emperor's newer, bigger Death Star. Han Solo remains frozen " +
             "in the cavernous desert fortress of Jabba the Hutt, the most loathsome outlaw in " +
             "the universe, who is also keeping Princess Leia as a slave girl. Now a master of the " +
             "Force, Luke Skywalker rescues his friends, but he cannot become a true Jedi Knight " +
             "until he wages his own crucial battle against Darth Vader, who has sworn to win Luke " +
             "over to the dark side of the Force.";
-    public static final Integer TEST_MOVIE3_RELEASE = 422506800; // May 23, 1983
-    public static final Double TEST_MOVIE3_VOTE_AVG = 7.7;
-    public static final String TEST_MOVIE3_POSTER_PATH = "/ghd5zOQnDaDW1mxO7R5fXXpZMu.jpg";
+    private static final Integer TEST_MOVIE3_RELEASE = 422506800; // May 23, 1983
+    private static final Double TEST_MOVIE3_VOTE_AVG = 7.7;
+    private static final String TEST_MOVIE3_POSTER_PATH = "/ghd5zOQnDaDW1mxO7R5fXXpZMu.jpg";
 
     public static ContentValues createMostPopularListValues() {
         ContentValues listValues = new ContentValues();

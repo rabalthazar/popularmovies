@@ -10,37 +10,37 @@ public class Movie {
     /**
      * TMDB movie id
      */
-    protected Long id;
+    private Long id;
 
     /**
      * Movie title
      */
-    protected String title;
+    private String title;
 
     /**
      * Movie release date
      */
-    protected Date releaseDate;
+    private Date releaseDate;
 
     /**
      * Poster path in TMDB
      */
-    protected String posterPath;
+    private String posterPath;
 
     /**
      * Movie overview
      */
-    protected String overview;
+    private String overview;
 
     /**
      * Adult rated?
      */
-    protected Boolean adult;
+    private Boolean adult;
 
     /**
      * User rating
      */
-    protected Double voteAverage;
+    private Double voteAverage;
 
     public Long getId() {
         return id;

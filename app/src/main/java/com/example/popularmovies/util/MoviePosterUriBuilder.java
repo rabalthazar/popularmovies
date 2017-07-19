@@ -3,7 +3,6 @@ package com.example.popularmovies.util;
 import android.net.Uri;
 
 import com.example.popularmovies.BuildConfig;
-import com.example.popularmovies.model.Movie;
 
 /**
  * Helper class to build movie posters' URI
@@ -14,10 +13,6 @@ public class MoviePosterUriBuilder {
     // TODO: use a dynamic image size according to the screen size
     private static final String IMG_SIZE = "w185";
     private static final String API_KEY_PARAM = "api_key";
-
-    public static Uri from(Movie movie) {
-        return from(movie.getPosterPath());
-    }
 
     public static Uri from(String posterPath) {
         return Uri.parse(BASE_URI).buildUpon()
