@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.example.popularmovies.util.FetchMoviesTask;
+import com.example.popularmovies.util.MoviesFetcher;
 import com.example.popularmovies.util.Utilities;
 
 import java.util.Date;
@@ -36,8 +36,8 @@ public class MoviesLoader extends AsyncTaskLoader<Cursor> {
     public Cursor loadInBackground() {
         final String moviesOrder = Utilities.getPreferredSelection(getContext());
         if (needsFetching(moviesOrder)) {
-            FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(getContext());
-            fetchMoviesTask.fetchMovies(moviesOrder);
+            MoviesFetcher moviesFetcher = new MoviesFetcher(getContext());
+            moviesFetcher.fetchMovies(moviesOrder);
         }
         final Uri moviesUri = MoviesContract.MovieEntry.buildBySelectionUri(moviesOrder);
         return getContext().getContentResolver().query(moviesUri, MOVIE_COLUMNS, null, null, null);

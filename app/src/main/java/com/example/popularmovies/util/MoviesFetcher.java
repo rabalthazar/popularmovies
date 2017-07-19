@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -22,14 +21,14 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * An asynchronous task class that loads data from the TMDB API
+ * Loads data from the TMDB API
  * Created by rafael on 23/05/16.
  */
-public class FetchMoviesTask extends AsyncTask<String, Void, Cursor> {
+public class MoviesFetcher {
     /**
      * Log tag for debugging purposes
      */
-    final private String LOG_TAG = FetchMoviesTask.class.getSimpleName();
+    final private String LOG_TAG = MoviesFetcher.class.getSimpleName();
 
     private final Context mContext;
 
@@ -43,24 +42,8 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Cursor> {
      */
     final private String API_KEY_PARAM = "api_key";
 
-    public FetchMoviesTask(Context context) {
+    public MoviesFetcher(Context context) {
         mContext = context;
-    }
-
-    /**
-     * AsyncTask invoker method
-     * @param params params[0] must be the fetch order: popular or top_rated
-     * @return The fetched movie list
-     */
-    @Override
-    protected Cursor doInBackground(String... params) {
-        // The order param is required
-        if (params.length == 0) {
-            return null;
-        }
-
-        fetchMovies(params[0]);
-        return null;
     }
 
     /**
@@ -77,7 +60,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Cursor> {
                 .appendQueryParameter(API_KEY_PARAM, BuildConfig.THE_MOVIE_DB_API_KEY)
                 .build();
 
-        String jsonMovieListStr = FetchUri.fetch(uri);
+        String jsonMovieListStr = UriFetcher.fetch(uri);
         if (jsonMovieListStr == null) {
             return;
         }

@@ -15,8 +15,8 @@ import java.net.URL;
  * Content fetcher
  * Created by rafael on 23/05/16.
  */
-public class FetchUri {
-    private static String LOG_TAG = FetchUri.class.getSimpleName();
+public class UriFetcher {
+    private static String LOG_TAG = UriFetcher.class.getSimpleName();
 
     /**
      * Fetchs the text content from an URI via HTTP
