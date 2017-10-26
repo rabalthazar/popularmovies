@@ -64,20 +64,17 @@ public class MoviesFetcher {
         if (jsonMovieListStr == null) {
             return;
         }
-        List movies = parseMovieListJson(jsonMovieListStr);
-        if (movies != null) {
-            movies.setDateFetched(new Date())
-                  .setSelection(selection);
+        List movies = new List(selection, new Date(), null);
+        if (parseMovieListJson(movies, jsonMovieListStr)) {
             addMovieList(movies);
         }
     }
 
     @Nullable
-    private List parseMovieListJson(String jsonStr) {
+    private Boolean parseMovieListJson(List movies, String jsonStr) {
         final String TMDB_RESULTS = "results";
 
         JSONObject json;
-        List movies = new List();
         try {
             json = new JSONObject(jsonStr);
             JSONArray resultsJson = json.getJSONArray(TMDB_RESULTS);
@@ -88,9 +85,9 @@ public class MoviesFetcher {
             }
         } catch (JSONException e) {
             Log.d(LOG_TAG, e.getMessage(), e);
-            return null;
+            return false;
         }
-        return movies;
+        return true;
     }
 
     @Nullable
@@ -139,7 +136,7 @@ public class MoviesFetcher {
         movieValues.put(MoviesContract.MovieEntry._ID, movie.getId());
         movieValues.put(MoviesContract.MovieEntry.COLUMN_TITLE, movie.getTitle());
         movieValues.put(MoviesContract.MovieEntry.COLUMN_OVERVIEW, movie.getOverview());
-        movieValues.put(MoviesContract.MovieEntry.COLUMN_ADULT, movie.isAdult());
+        movieValues.put(MoviesContract.MovieEntry.COLUMN_ADULT, movie.getAdult());
         movieValues.put(MoviesContract.MovieEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate().getTime());
         movieValues.put(MoviesContract.MovieEntry.COLUMN_POSTER_PATH, movie.getPosterPath());
         movieValues.put(MoviesContract.MovieEntry.COLUMN_VOTE_AVG, movie.getVoteAverage());

@@ -39,14 +39,15 @@ public class MovieFactory {
         } catch (ParseException e) {
             releaseDate = null;
         }
-        return new Movie()
-                .setId(movieJson.getLong(MOVIE_ID))
-                .setTitle(movieJson.getString(MOVIE_TITLE))
-                .setOverview(movieJson.getString(MOVIE_OVERVIEW))
-                .setReleaseDate(releaseDate)
-                .setAdult(movieJson.getBoolean(MOVIE_ADULT))
-                .setPosterPath(movieJson.getString(MOVIE_POSTER))
-                .setVoteAverage(movieJson.getDouble(MOVIE_RATING));
+        return new Movie(
+                movieJson.getLong(MOVIE_ID),
+                movieJson.getString(MOVIE_TITLE),
+                releaseDate,
+                movieJson.getString(MOVIE_POSTER),
+                movieJson.getString(MOVIE_OVERVIEW),
+                movieJson.getBoolean(MOVIE_ADULT),
+                movieJson.getDouble(MOVIE_RATING)
+        );
     }
 
     /**
@@ -60,7 +61,7 @@ public class MovieFactory {
         movieBundle.putString(MOVIE_TITLE, movie.getTitle());
         movieBundle.putString(MOVIE_OVERVIEW, movie.getOverview());
         movieBundle.putLong(MOVIE_RELEASE, movie.getReleaseDate().getTime());
-        movieBundle.putBoolean(MOVIE_ADULT, movie.isAdult());
+        movieBundle.putBoolean(MOVIE_ADULT, movie.getAdult());
         movieBundle.putString(MOVIE_POSTER, movie.getPosterPath());
         movieBundle.putDouble(MOVIE_RATING, movie.getVoteAverage());
         return movieBundle;
@@ -72,13 +73,13 @@ public class MovieFactory {
      * @return A Movie object with the Bundle data
      */
     public static Movie fromBundle(Bundle movieBundle) {
-        return new Movie()
-                .setId(movieBundle.getLong(MOVIE_ID))
-                .setTitle(movieBundle.getString(MOVIE_TITLE))
-                .setOverview(movieBundle.getString(MOVIE_OVERVIEW))
-                .setReleaseDate(new Date(movieBundle.getLong(MOVIE_RELEASE)))
-                .setAdult(movieBundle.getBoolean(MOVIE_ADULT))
-                .setPosterPath(movieBundle.getString(MOVIE_POSTER))
-                .setVoteAverage(movieBundle.getDouble(MOVIE_RATING));
+        return new Movie(
+                movieBundle.getLong(MOVIE_ID),
+                movieBundle.getString(MOVIE_TITLE),
+                new Date(movieBundle.getLong(MOVIE_RELEASE)),
+                movieBundle.getString(MOVIE_POSTER),
+                movieBundle.getString(MOVIE_OVERVIEW),
+                movieBundle.getBoolean(MOVIE_ADULT),
+                movieBundle.getDouble(MOVIE_RATING));
     }
 }
