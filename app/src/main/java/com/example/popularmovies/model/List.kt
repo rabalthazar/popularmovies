@@ -7,21 +7,21 @@ import java.util.Date
  * Holds a list of movies, given an determined order: most popular or top rated
  * Created by rafael on 23/06/16.
  */
-data class List (
-    /**
-     * List order. Actually popular (@string/pref_order_popular) or top_rated (@string/pref_order_toprated)
-     */
-    var selection: String,
+data class List(
+        /**
+         * Movie list id
+         */
+        var id: Long = 0,
 
-    /**
-     * Date the list was fetched
-     */
-    var dateFetched: Date,
+        /**
+         * List order. Actually popular (@string/pref_order_popular) or top_rated (@string/pref_order_toprated)
+         */
+        var selection: String = "",
 
-    /**
-     * Movie list id
-     */
-    var id: Long? = null
+        /**
+         * Date the list was fetched
+         */
+        var dateFetched: Date = Date()
 ) {
     /**
      * List of movies in the list

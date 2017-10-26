@@ -64,8 +64,9 @@ public class MoviesFetcher {
         if (jsonMovieListStr == null) {
             return;
         }
-        List movies = new List(selection, new Date(), null);
+        List movies = new List();
         if (parseMovieListJson(movies, jsonMovieListStr)) {
+            movies.setSelection(selection);
             addMovieList(movies);
         }
     }
