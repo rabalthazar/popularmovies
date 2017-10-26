@@ -75,7 +75,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
             return;
         }
         ImageView moviePoster = view.findViewById(R.id.movie_poster);
-        ImageLoader.loadFromPosterPath(getContext(), data.getString(COL_MOVIE_POSTER_PATH), moviePoster);
+        ImageLoader.INSTANCE.loadFromPosterPath(getContext(), data.getString(COL_MOVIE_POSTER_PATH), moviePoster);
         TextView movieTitle = view.findViewById(R.id.movie_title);
         movieTitle.setText(data.getString(COL_MOVIE_TITLE));
         TextView movieOverview = view.findViewById(R.id.movie_overview);

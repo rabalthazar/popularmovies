@@ -34,7 +34,7 @@ public class MoviesLoader extends AsyncTaskLoader<Cursor> {
 
     @Override
     public Cursor loadInBackground() {
-        final String moviesOrder = Utilities.getPreferredSelection(getContext());
+        final String moviesOrder = Utilities.INSTANCE.getPreferredSelection(getContext());
         if (needsFetching(moviesOrder)) {
             MoviesFetcher moviesFetcher = new MoviesFetcher(getContext());
             moviesFetcher.fetchMovies(moviesOrder);

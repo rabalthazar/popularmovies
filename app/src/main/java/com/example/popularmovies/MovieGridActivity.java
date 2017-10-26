@@ -28,7 +28,7 @@ public class MovieGridActivity extends AppCompatActivity {
                     .commit();
         }
 
-        mSelectionOrder = Utilities.getPreferredSelection(this);
+        mSelectionOrder = Utilities.INSTANCE.getPreferredSelection(this);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class MovieGridActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        String selection = Utilities.getPreferredSelection(this);
+        String selection = Utilities.INSTANCE.getPreferredSelection(this);
         if (!selection.equals(mSelectionOrder)) {
             MovieGridFragment movieGridFragment = (MovieGridFragment) getSupportFragmentManager()
                     .findFragmentByTag(MovieGridFragment.FRAGMENT_TAG);
