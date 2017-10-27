@@ -4,34 +4,25 @@ import android.content.ComponentName
 import android.content.pm.PackageManager
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
-
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.greaterThan
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.hamcrest.Matchers.equalTo
-import org.hamcrest.Matchers.greaterThan
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertThat
-import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 
 @RunWith(AndroidJUnit4::class)
 class TestProvider {
     private val mContext = InstrumentationRegistry.getTargetContext()
 
-    @Before
-    fun deleteAllRecordsFromProvider() {
+    @Before fun deleteAllRecordsFromProvider() {
         val contentResolver = mContext.contentResolver
         contentResolver.delete(MoviesContract.MovieListEntry.CONTENT_URI, null, null)
         contentResolver.delete(MoviesContract.ListEntry.CONTENT_URI, null, null)
         contentResolver.delete(MoviesContract.MovieEntry.CONTENT_URI, null, null)
     }
 
-    @Test
-    fun testProviderRegistry() {
+    @Test fun testProviderRegistry() {
         val packageManager = mContext.packageManager
 
         val componentName = ComponentName(mContext.packageName,
@@ -47,8 +38,7 @@ class TestProvider {
 
     }
 
-    @Test
-    fun testProviderIsEmpty() {
+    @Test fun testProviderIsEmpty() {
         val contentResolver = mContext.contentResolver
         val listCursor = contentResolver.query(MoviesContract.ListEntry.CONTENT_URI, null, null, null, null)
         assertNotNull(listCursor)
@@ -66,8 +56,7 @@ class TestProvider {
         movieListCursor.close()
     }
 
-    @Test
-    fun testListContent() {
+    @Test fun testListContent() {
         val contentResolver = mContext.contentResolver
         val uriMatcher = MoviesProvider.buildUriMatcher()
 
@@ -106,8 +95,7 @@ class TestProvider {
         cursor.close()
     }
 
-    @Test
-    fun testMovieContent() {
+    @Test fun testMovieContent() {
         val contentResolver = mContext.contentResolver
         val uriMatcher = MoviesProvider.buildUriMatcher()
 
@@ -142,8 +130,7 @@ class TestProvider {
         cursor.close()
     }
 
-    @Test
-    fun testMovieListContent() {
+    @Test fun testMovieListContent() {
         val contentResolver = mContext.contentResolver
         val uriMatcher = MoviesProvider.buildUriMatcher()
 

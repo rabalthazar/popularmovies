@@ -1,17 +1,14 @@
 package com.example.popularmovies.data
 
 import android.support.test.runner.AndroidJUnit4
-
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.assertEquals
 
 @RunWith(AndroidJUnit4::class)
 class TestUriMatcher {
 
-    @Test
-    fun matchUris() {
+    @Test fun matchUris() {
         val uriMatcher = MoviesProvider.buildUriMatcher()
         assertEquals(MoviesProvider.LIST.toLong(), uriMatcher.match(TEST_LIST_DIR).toLong())
         assertEquals(MoviesProvider.LIST_BY_ID.toLong(), uriMatcher.match(TEST_LIST_ITEM).toLong())
