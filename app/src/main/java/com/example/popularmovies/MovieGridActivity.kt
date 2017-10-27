@@ -58,7 +58,7 @@ class MovieGridActivity : AppCompatActivity() {
         if (selection != mSelectionOrder) {
             val movieGridFragment = supportFragmentManager
                     .findFragmentByTag(MovieGridFragment.fragmentTag) as MovieGridFragment
-            movieGridFragment?.onSelectionChanged()
+            movieGridFragment.onSelectionChanged()
             mSelectionOrder = selection
         }
     }

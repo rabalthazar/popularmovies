@@ -62,7 +62,7 @@ object MovieFactory {
         movieBundle.putLong(MOVIE_ID, movie.id)
         movieBundle.putString(MOVIE_TITLE, movie.title)
         movieBundle.putString(MOVIE_OVERVIEW, movie.overview)
-        movieBundle.putLong(MOVIE_RELEASE, movie.releaseDate!!.time)
+        movieBundle.putLong(MOVIE_RELEASE, movie.releaseDate.time)
         movieBundle.putBoolean(MOVIE_ADULT, movie.adult)
         movieBundle.putString(MOVIE_POSTER, movie.posterPath)
         movieBundle.putDouble(MOVIE_RATING, movie.voteAverage)
