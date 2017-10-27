@@ -7,15 +7,9 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.Loader
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.GridView
-
 import com.example.popularmovies.data.MoviesContract
 import com.example.popularmovies.data.MoviesLoader
 import com.example.popularmovies.util.MovieArrayAdapter
@@ -28,9 +22,9 @@ class MovieGridFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
     /**
      * The adapter that feeds the movie grid
      */
-    protected var mMoviesAdapter: MovieArrayAdapter? = null
+    private var mMoviesAdapter: MovieArrayAdapter? = null
 
-    protected var mForceFetch: Boolean = false
+    private var mForceFetch: Boolean = false
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -51,8 +45,8 @@ class MovieGridFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
         // Get a reference to the GridView, and attach this adapter to it.
         val gridView = rootView.findViewById<GridView>(R.id.grid_movies)
         gridView.adapter = mMoviesAdapter
-        gridView.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, position, l ->
-            val cursor = mMoviesAdapter!!.getItem(position) as Cursor
+        gridView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            val cursor = mMoviesAdapter?.getItem(position) as Cursor?
             if (cursor != null) {
                 val movieUri = MoviesContract.MovieEntry.buildUri(cursor.getLong(COL_MOVIE_ID))
                 val intent = Intent(activity, MovieDetailActivity::class.java)
@@ -71,17 +65,15 @@ class MovieGridFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-
-
-        if (id == R.id.action_refresh) {
-            mForceFetch = true
-            onSelectionChanged()
-            return true
+        return when (item.itemId) {
+            R.id.action_refresh -> {
+                mForceFetch = true
+                onSelectionChanged()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
-
 
     fun onSelectionChanged() {
         loaderManager.restartLoader(MOVIES_LOADER, null, this).forceLoad()
@@ -89,7 +81,7 @@ class MovieGridFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        Log.d(fragmentTag, "CreateLoader")
+        Log.d(FRAGMENT_TAG, "CreateLoader")
         return MoviesLoader(context, mForceFetch)
     }
 
@@ -102,7 +94,7 @@ class MovieGridFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     companion object {
-        val fragmentTag: String
+        val FRAGMENT_TAG: String
             get() = MovieGridFragment::class.java.simpleName
 
         private const val MOVIES_LOADER = 0

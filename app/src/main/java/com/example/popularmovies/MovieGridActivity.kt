@@ -24,7 +24,7 @@ class MovieGridActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .add(R.id.movie_grid_fragment, MovieGridFragment(), MovieGridFragment.fragmentTag)
+                    .add(R.id.movie_grid_fragment, MovieGridFragment(), MovieGridFragment.FRAGMENT_TAG)
                     .commit()
         }
 
@@ -57,7 +57,7 @@ class MovieGridActivity : AppCompatActivity() {
         val selection = Utilities.getPreferredSelection(this)
         if (selection != mSelectionOrder) {
             val movieGridFragment = supportFragmentManager
-                    .findFragmentByTag(MovieGridFragment.fragmentTag) as MovieGridFragment
+                    .findFragmentByTag(MovieGridFragment.FRAGMENT_TAG) as MovieGridFragment
             movieGridFragment.onSelectionChanged()
             mSelectionOrder = selection
         }

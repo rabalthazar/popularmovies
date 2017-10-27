@@ -3,11 +3,9 @@ package com.example.popularmovies.data
 import android.content.Context
 import android.database.Cursor
 import android.support.v4.content.AsyncTaskLoader
-
 import com.example.popularmovies.util.MoviesFetcher
 import com.example.popularmovies.util.Utilities
-
-import java.util.Date
+import java.util.*
 
 class MoviesLoader(context: Context, private var forceFetch: Boolean) : AsyncTaskLoader<Cursor>(context) {
 
@@ -52,7 +50,7 @@ class MoviesLoader(context: Context, private var forceFetch: Boolean) : AsyncTas
                 onReleaseResources(cursor)
             }
         }
-        var oldCursor: Cursor? = mMoviesCursor
+        val oldCursor: Cursor? = mMoviesCursor
         mMoviesCursor = cursor
 
         if (isStarted) {

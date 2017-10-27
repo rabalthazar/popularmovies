@@ -2,31 +2,23 @@ package com.example.popularmovies.data
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
-
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.greaterThan
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import java.util.HashSet
-
-import org.hamcrest.Matchers.equalTo
-import org.hamcrest.Matchers.greaterThan
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertThat
-import org.junit.Assert.assertTrue
+import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class TestDb {
     private val mContext = InstrumentationRegistry.getTargetContext()
 
-    @Before
-    fun deleteDatabase() {
+    @Before fun deleteDatabase() {
         mContext.deleteDatabase(MoviesDbHelper.DATABASE_NAME)
     }
 
-    @Test
-    fun testCreateDb() {
+    @Test fun testCreateDb() {
         val tableNameHashSet = HashSet<String>()
         tableNameHashSet.add(MoviesContract.MovieEntry.TABLE_NAME)
         tableNameHashSet.add(MoviesContract.ListEntry.TABLE_NAME)
@@ -124,8 +116,7 @@ class TestDb {
         db.close()
     }
 
-    @Test
-    fun testMovieTable() {
+    @Test fun testMovieTable() {
         val dbHelper = MoviesDbHelper(mContext)
         val db = dbHelper.writableDatabase
 
@@ -159,8 +150,7 @@ class TestDb {
         db.close()
     }
 
-    @Test
-    fun testListTable() {
+    @Test fun testListTable() {
         val dbHelper = MoviesDbHelper(mContext)
         val db = dbHelper.writableDatabase
 
@@ -194,8 +184,7 @@ class TestDb {
         db.close()
     }
 
-    @Test
-    fun testMovieListTable() {
+    @Test fun testMovieListTable() {
         val dbHelper = MoviesDbHelper(mContext)
         val db = dbHelper.writableDatabase
 

@@ -5,16 +5,13 @@ import android.content.Context
 import android.database.SQLException
 import android.net.Uri
 import android.util.Log
-
 import com.example.popularmovies.BuildConfig
 import com.example.popularmovies.data.MoviesContract
 import com.example.popularmovies.model.List
 import com.example.popularmovies.model.Movie
-
 import org.json.JSONException
 import org.json.JSONObject
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Loads data from the TMDB API
@@ -66,10 +63,9 @@ class MoviesFetcher(private val mContext: Context) {
         try {
             json = JSONObject(jsonStr)
             val resultsJson = json.getJSONArray(TMDB_RESULTS)
-            for (i in 0 until resultsJson.length()) {
+            (0 until resultsJson.length()).forEach { i ->
                 val movie = MovieFactory.fromTMDBJsonObject(resultsJson.getJSONObject(i))
                 movies.add(movie)
-
             }
         } catch (e: JSONException) {
             Log.d(LOG_TAG, e.message, e)
@@ -131,16 +127,16 @@ class MoviesFetcher(private val mContext: Context) {
         movieValues.put(MoviesContract.MovieEntry.COLUMN_VOTE_AVG, movie.voteAverage)
         val movieCursor = mContext.contentResolver.query(movieUri, null, null, null, null)
         if (movieCursor == null || !movieCursor.moveToFirst()) {
-            try {
+            movieCursor?.close()
+            return try {
                 val newMovieUri = mContext.contentResolver.insert(
                         MoviesContract.MovieEntry.CONTENT_URI,
                         movieValues
                 )
-                movieCursor?.close()
-                return MoviesContract.MovieEntry.getIdFromUri(newMovieUri)
+                MoviesContract.MovieEntry.getIdFromUri(newMovieUri)
             } catch (exception: SQLException) {
                 Log.d(LOG_TAG, "Failed to insert movie into database")
-                return -1L
+                -1L
             }
 
         }
@@ -162,7 +158,7 @@ class MoviesFetcher(private val mContext: Context) {
             movieListValues.put(MoviesContract.MovieListEntry.COLUMN_ORDER, movieListOrder++)
             movieListValuesList.add(movieListValues)
         }
-        val movieListValuesArray = movieListValuesList.toTypedArray<ContentValues>()
+        val movieListValuesArray = movieListValuesList.toTypedArray()
         return mContext.contentResolver.bulkInsert(movieListBySelectionUri, movieListValuesArray)
     }
 }

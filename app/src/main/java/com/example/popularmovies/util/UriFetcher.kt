@@ -40,7 +40,7 @@ object UriFetcher {
                 buffer.append(line).append("\n")
                 line = reader.readLine()
             }
-            if (buffer.length == 0) {
+            if (buffer.isEmpty()) {
                 return null
             }
         } catch (e: IOException) {

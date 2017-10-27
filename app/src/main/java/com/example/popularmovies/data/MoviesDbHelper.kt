@@ -11,7 +11,6 @@ import com.example.popularmovies.data.MoviesContract.MovieListEntry
 /**
  * A SQLite helper to create, update and instance the app's database
  * Created by rafael on 24/06/16.
- * @property context The app context
  */
 class MoviesDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 

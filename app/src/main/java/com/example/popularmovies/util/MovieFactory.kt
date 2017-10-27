@@ -1,29 +1,25 @@
 package com.example.popularmovies.util
 
 import android.os.Bundle
-
 import com.example.popularmovies.model.Movie
-
 import org.json.JSONException
 import org.json.JSONObject
-
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 /**
  * Helper Factory class to convert movies to and from the various formats used in the app
  * Created by rafael on 23/05/16.
  */
 object MovieFactory {
-    val MOVIE_ID = "id"
-    val MOVIE_TITLE = "title"
-    val MOVIE_OVERVIEW = "overview"
-    val MOVIE_RELEASE = "release_date"
-    val MOVIE_ADULT = "adult"
-    val MOVIE_POSTER = "poster_path"
-    val MOVIE_RATING = "vote_average"
+    private const val MOVIE_ID = "id"
+    private const val MOVIE_TITLE = "title"
+    private const val MOVIE_OVERVIEW = "overview"
+    private const val MOVIE_RELEASE = "release_date"
+    private const val MOVIE_ADULT = "adult"
+    private const val MOVIE_POSTER = "poster_path"
+    private const val MOVIE_RATING = "vote_average"
 
     /**
      * Creates a Movie object from a JSON in the TMDB format
@@ -34,11 +30,10 @@ object MovieFactory {
     @Throws(JSONException::class)
     fun fromTMDBJsonObject(movieJson: JSONObject): Movie {
         val format = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
-        var releaseDate: Date?
-        try {
-            releaseDate = format.parse(movieJson.getString(MOVIE_RELEASE))
+        val releaseDate: Date? = try {
+            format.parse(movieJson.getString(MOVIE_RELEASE))
         } catch (e: ParseException) {
-            releaseDate = null
+            null
         }
 
         return Movie(

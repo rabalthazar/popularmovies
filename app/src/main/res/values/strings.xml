@@ -7,7 +7,6 @@
     <string name="release_date">Release Date</string>
     <string name="user_rating">User Rating</string>
 
-
     <string name="title_activity_settings">Settings</string>
     <string name="pref_order_label">Sort movies by</string>
     <string name="pref_order_key" translatable="false">movies_order</string>
@@ -18,4 +17,7 @@
     <string name="pref_order_toprated_opt">Top Rated</string>
 
     <string name="a11y_poster_image">Poster image</string>
+
+    <string name="date_placeholder">xx/xx/xxxx</string>
+    <string name="number_placeholder">x.xx</string>
 </resources>
