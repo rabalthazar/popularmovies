@@ -75,13 +75,13 @@ public class TestProvider {
     @Test
     public void testListContent() {
         ContentResolver contentResolver = mContext.getContentResolver();
-        UriMatcher uriMatcher = MoviesProvider.buildUriMatcher();
+        UriMatcher uriMatcher = MoviesProvider.Companion.buildUriMatcher();
 
         ContentValues list = TestUtilities.createTopRatedListValues();
         Uri listUri = contentResolver.insert(MoviesContract.ListEntry.CONTENT_URI, list);
         assertNotNull(listUri);
         Integer listMatch = uriMatcher.match(listUri);
-        assertThat(listMatch, equalTo(MoviesProvider.LIST_BY_ID));
+        assertThat(listMatch, equalTo(MoviesProvider.Companion.getLIST_BY_ID()));
 
         Long listId = MoviesContract.ListEntry.getIdFromUri(listUri);
         assertThat(listId, greaterThan(0L));
@@ -115,13 +115,13 @@ public class TestProvider {
     @Test
     public void testMovieContent() {
         ContentResolver contentResolver = mContext.getContentResolver();
-        UriMatcher uriMatcher = MoviesProvider.buildUriMatcher();
+        UriMatcher uriMatcher = MoviesProvider.Companion.buildUriMatcher();
 
         ContentValues movie = TestUtilities.createEmpireStrikesBackValues();
         Uri movieUri = contentResolver.insert(MoviesContract.MovieEntry.CONTENT_URI, movie);
         assertNotNull(movieUri);
         Integer movieMatch = uriMatcher.match(movieUri);
-        assertThat(movieMatch, equalTo(MoviesProvider.MOVIE_BY_ID));
+        assertThat(movieMatch, equalTo(MoviesProvider.Companion.getMOVIE_BY_ID()));
 
         Long movieId = MoviesContract.ListEntry.getIdFromUri(movieUri);
         assertThat(movieId, equalTo(TestUtilities.TEST_MOVIE2_ID));
@@ -151,26 +151,26 @@ public class TestProvider {
     @Test
     public void testMovieListContent() {
         ContentResolver contentResolver = mContext.getContentResolver();
-        UriMatcher uriMatcher = MoviesProvider.buildUriMatcher();
+        UriMatcher uriMatcher = MoviesProvider.Companion.buildUriMatcher();
 
         ContentValues list = TestUtilities.createMostPopularListValues();
         Uri listUri = contentResolver.insert(MoviesContract.ListEntry.CONTENT_URI, list);
         Integer listMatch = uriMatcher.match(listUri);
-        assertThat(listMatch, equalTo(MoviesProvider.LIST_BY_ID));
+        assertThat(listMatch, equalTo(MoviesProvider.Companion.getLIST_BY_ID()));
         Long listId = MoviesContract.ListEntry.getIdFromUri(listUri);
         assertThat(listId, greaterThan(0L));
 
         ContentValues movie1 = TestUtilities.createReturnOfTheJediValues();
         Uri movie1Uri = contentResolver.insert(MoviesContract.MovieEntry.CONTENT_URI, movie1);
         Integer movie1Match = uriMatcher.match(movie1Uri);
-        assertThat(movie1Match, equalTo(MoviesProvider.MOVIE_BY_ID));
+        assertThat(movie1Match, equalTo(MoviesProvider.Companion.getMOVIE_BY_ID()));
         Long movie1Id = MoviesContract.ListEntry.getIdFromUri(movie1Uri);
         assertThat(movie1Id, equalTo(TestUtilities.TEST_MOVIE3_ID));
 
         ContentValues movie2 = TestUtilities.createStarWarsValues();
         Uri movie2Uri = contentResolver.insert(MoviesContract.MovieEntry.CONTENT_URI, movie2);
         Integer movie2Match = uriMatcher.match(movie2Uri);
-        assertThat(movie2Match, equalTo(MoviesProvider.MOVIE_BY_ID));
+        assertThat(movie2Match, equalTo(MoviesProvider.Companion.getMOVIE_BY_ID()));
         Long movie2Id = MoviesContract.ListEntry.getIdFromUri(movie2Uri);
         assertThat(movie2Id, equalTo(TestUtilities.TEST_MOVIE1_ID));
 
@@ -178,13 +178,13 @@ public class TestProvider {
         Uri movieList1Uri = contentResolver.insert(MoviesContract.MovieListEntry.CONTENT_URI, movieList1);
         assertNotNull(movieList1Uri);
         Integer movieList1Match = uriMatcher.match(movieList1Uri);
-        assertThat(movieList1Match, equalTo(MoviesProvider.MOVIE_LIST_BY_ID));
+        assertThat(movieList1Match, equalTo(MoviesProvider.Companion.getMOVIE_LIST_BY_ID()));
         Long movieList1Id = MoviesContract.MovieListEntry.getIdFromUri(movieList1Uri);
 
         ContentValues movieList2 = TestUtilities.createMovieListValues(listId, movie2Id, 1);
         Uri movieList2Uri = contentResolver.insert(MoviesContract.MovieListEntry.CONTENT_URI, movieList2);
         Integer movieList2Match = uriMatcher.match(movieList2Uri);
-        assertThat(movieList2Match, equalTo(MoviesProvider.MOVIE_LIST_BY_ID));
+        assertThat(movieList2Match, equalTo(MoviesProvider.Companion.getMOVIE_LIST_BY_ID()));
 
         Cursor cursor = contentResolver.query(movieList1Uri, null, null, null, null);
         assertNotNull(cursor);

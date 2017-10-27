@@ -27,15 +27,15 @@ public class TestUriMatcher {
 
     @Test
     public void matchUris() {
-        UriMatcher uriMatcher = MoviesProvider.buildUriMatcher();
-        assertEquals(MoviesProvider.LIST, uriMatcher.match(TEST_LIST_DIR));
-        assertEquals(MoviesProvider.LIST_BY_ID, uriMatcher.match(TEST_LIST_ITEM));
+        UriMatcher uriMatcher = MoviesProvider.Companion.buildUriMatcher();
+        assertEquals(MoviesProvider.Companion.getLIST(), uriMatcher.match(TEST_LIST_DIR));
+        assertEquals(MoviesProvider.Companion.getLIST_BY_ID(), uriMatcher.match(TEST_LIST_ITEM));
 
-        assertEquals(MoviesProvider.MOVIE, uriMatcher.match(TEST_MOVIE_DIR));
-        assertEquals(MoviesProvider.MOVIE_BY_ID, uriMatcher.match(TEST_MOVIE_ITEM));
+        assertEquals(MoviesProvider.Companion.getMOVIE(), uriMatcher.match(TEST_MOVIE_DIR));
+        assertEquals(MoviesProvider.Companion.getMOVIE_BY_ID(), uriMatcher.match(TEST_MOVIE_ITEM));
         //assertEquals(MoviesProvider.MOVIES_BY_SELECTION, uriMatcher.match(TEST_MOVIES_BY_SELECTION));
 
-        assertEquals(MoviesProvider.MOVIE_LIST, uriMatcher.match(TEST_MOVIE_LIST_DIR));
-        assertEquals(MoviesProvider.MOVIE_LIST_BY_ID, uriMatcher.match(TEST_MOVIE_LIST_ITEM));
+        assertEquals(MoviesProvider.Companion.getMOVIE_LIST(), uriMatcher.match(TEST_MOVIE_LIST_DIR));
+        assertEquals(MoviesProvider.Companion.getMOVIE_LIST_BY_ID(), uriMatcher.match(TEST_MOVIE_LIST_ITEM));
     }
 }
