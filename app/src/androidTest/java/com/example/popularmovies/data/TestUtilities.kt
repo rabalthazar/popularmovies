@@ -2,11 +2,7 @@ package com.example.popularmovies.data
 
 import android.content.ContentValues
 import android.database.Cursor
-
-import com.example.popularmovies.data.MoviesContract.ListEntry
-import com.example.popularmovies.data.MoviesContract.MovieEntry
-import com.example.popularmovies.data.MoviesContract.MovieListEntry
-
+import com.example.popularmovies.data.MoviesContract.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 
@@ -110,8 +106,7 @@ internal object TestUtilities {
     }
 
     fun validateCurrentRecord(error: String, valueCursor: Cursor, expectedValues: ContentValues) {
-        val valueSet = expectedValues.valueSet()
-        for ((columnName, value) in valueSet) {
+        expectedValues.valueSet().forEach { (columnName, value) ->
             val idx = valueCursor.getColumnIndex(columnName)
             assertFalse("Column '$columnName' not found. $error", idx == -1)
             val expectedValue = value.toString()

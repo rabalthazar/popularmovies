@@ -46,9 +46,7 @@ class MoviesLoader(context: Context, private var forceFetch: Boolean) : AsyncTas
         if (isReset) {
             // An async query came in while the loader is stopped.  We
             // don't need the result.
-            if (cursor != null) {
-                onReleaseResources(cursor)
-            }
+            onReleaseResources(cursor)
         }
         val oldCursor: Cursor? = mMoviesCursor
         mMoviesCursor = cursor
@@ -68,7 +66,7 @@ class MoviesLoader(context: Context, private var forceFetch: Boolean) : AsyncTas
     }
 
     private fun onReleaseResources(cursor: Cursor) {
-        if (cursor != null && !cursor.isClosed) {
+        if (!cursor.isClosed) {
             cursor.close()
         }
     }

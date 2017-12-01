@@ -149,15 +149,14 @@ class MoviesProvider : ContentProvider() {
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
-        var selection = selection
         val db = mDbOpener?.writableDatabase ?: return -1
+        var selectionStr: String = selection ?: "1"
         val match = sUriMatcher.match(uri)
         // this makes delete all rows return the number of rows deleted
-        if (null == selection) selection = "1"
         val rowsDeleted: Int = when (match) {
-            LIST -> db.delete(MoviesContract.ListEntry.TABLE_NAME, selection, selectionArgs)
-            MOVIE -> db.delete(MoviesContract.MovieEntry.TABLE_NAME, selection, selectionArgs)
-            MOVIE_LIST -> db.delete(MoviesContract.MovieListEntry.TABLE_NAME, selection, selectionArgs)
+            LIST -> db.delete(MoviesContract.ListEntry.TABLE_NAME, selectionStr, selectionArgs)
+            MOVIE -> db.delete(MoviesContract.MovieEntry.TABLE_NAME, selectionStr, selectionArgs)
+            MOVIE_LIST -> db.delete(MoviesContract.MovieListEntry.TABLE_NAME, selectionStr, selectionArgs)
             else -> throw UnsupportedOperationException("Unknown uri: " + uri)
         }
         val contentResolver = context?.contentResolver
@@ -210,21 +209,16 @@ class MoviesProvider : ContentProvider() {
     }
 
     private fun getMovies(projection: Array<String>?, listSelector: String?, sortOrder: String?): Cursor? {
-        var listSelector = listSelector
-        var sortOrder = sortOrder
         val db = mDbOpener?.readableDatabase ?: return null
-        if (null == listSelector) {
-            listSelector = MoviesContract.ListSelections.MOST_POPULAR.toString()
-        }
-        if (null == sortOrder) {
-            sortOrder = sMovieOrder
-        }
+        var listSelectorStr: String = listSelector ?: MoviesContract.ListSelections.MOST_POPULAR.toString()
+        var sortOrderStr: String = sortOrder ?: sMovieOrder
+
         return sMoviesByListQueryBuilder.query(
                 db,
                 projection,
                 LIST_SELECTION,
-                arrayOf(listSelector), null, null,
-                sortOrder
+                arrayOf(listSelectorStr), null, null,
+                sortOrderStr
         )
     }
 
