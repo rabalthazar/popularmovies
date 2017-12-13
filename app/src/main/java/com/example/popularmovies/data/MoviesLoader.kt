@@ -42,7 +42,7 @@ class MoviesLoader(context: Context, private var forceFetch: Boolean) : AsyncTas
         return false
     }
 
-    override fun deliverResult(cursor: Cursor) {
+    fun deliverResult(cursor: Cursor) {
         if (isReset) {
             // An async query came in while the loader is stopped.  We
             // don't need the result.

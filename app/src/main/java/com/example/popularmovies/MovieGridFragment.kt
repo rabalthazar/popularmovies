@@ -38,7 +38,7 @@ class MovieGridFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        mMoviesAdapter = MovieArrayAdapter(activity, null, 0)
+        mMoviesAdapter = MovieArrayAdapter(activity!!, null, 0)
 
         val rootView = inflater.inflate(R.layout.fragment_movie_grid, container, false)
 
@@ -80,9 +80,12 @@ class MovieGridFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
         mForceFetch = false
     }
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor>? {
         Log.d(FRAGMENT_TAG, "CreateLoader")
-        return MoviesLoader(context, mForceFetch)
+        if (context != null) {
+            return MoviesLoader(context!!, mForceFetch)
+        }
+        return null
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor) {
