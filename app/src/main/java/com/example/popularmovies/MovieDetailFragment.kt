@@ -9,10 +9,9 @@ import android.support.v4.content.Loader
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import com.example.popularmovies.data.MoviesContract
 import com.example.popularmovies.util.ImageLoader
+import kotlinx.android.synthetic.main.fragment_movie_detail.*
 import java.text.NumberFormat
 import java.util.*
 
@@ -44,18 +43,12 @@ class MovieDetailFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
         if (!data.moveToFirst()) {
             return
         }
-        val view = view ?: return
         val context = context ?: return
-        val moviePoster = view.findViewById<ImageView>(R.id.movie_poster)
         ImageLoader.loadFromPosterPath(context, data.getString(COL_MOVIE_POSTER_PATH), moviePoster)
-        val movieTitle = view.findViewById<TextView>(R.id.movie_title)
         movieTitle.text = data.getString(COL_MOVIE_TITLE)
-        val movieOverview = view.findViewById<TextView>(R.id.movie_overview)
         movieOverview.text = data.getString(COL_MOVIE_OVERVIEW)
-        val movieRelease = view.findViewById<TextView>(R.id.movie_release)
         val dateFormat = android.text.format.DateFormat.getDateFormat(context)
         movieRelease.text = dateFormat.format(Date(data.getLong(COL_MOVIE_RELEASE_DATE)))
-        val movieRating = view.findViewById<TextView>(R.id.movie_rating)
         movieRating.text = NumberFormat.getNumberInstance().format(data.getDouble(COL_MOVIE_VOTE_AVG))
     }
 

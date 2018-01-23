@@ -9,10 +9,10 @@ import android.support.v4.content.Loader
 import android.util.Log
 import android.view.*
 import android.widget.AdapterView
-import android.widget.GridView
 import com.example.popularmovies.data.MoviesContract
 import com.example.popularmovies.data.MoviesLoader
 import com.example.popularmovies.util.MovieArrayAdapter
+import kotlinx.android.synthetic.main.fragment_movie_grid.*
 
 /**
  * Displays a grid with a list of movie posters
@@ -33,6 +33,7 @@ class MovieGridFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setHasOptionsMenu(true)
     }
 
@@ -40,12 +41,14 @@ class MovieGridFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
                               savedInstanceState: Bundle?): View {
         mMoviesAdapter = MovieArrayAdapter(activity!!, null, 0)
 
-        val rootView = inflater.inflate(R.layout.fragment_movie_grid, container, false)
+        return inflater.inflate(R.layout.fragment_movie_grid, container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         // Get a reference to the GridView, and attach this adapter to it.
-        val gridView = rootView.findViewById<GridView>(R.id.grid_movies)
-        gridView.adapter = mMoviesAdapter
-        gridView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+        moviesGrid.adapter = mMoviesAdapter
+        moviesGrid.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             val cursor = mMoviesAdapter?.getItem(position) as Cursor?
             if (cursor != null) {
                 val movieUri = MoviesContract.MovieEntry.buildUri(cursor.getLong(COL_MOVIE_ID))
@@ -54,8 +57,6 @@ class MovieGridFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
                 startActivity(intent)
             }
         }
-
-        return rootView
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

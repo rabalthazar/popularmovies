@@ -3,12 +3,10 @@ package com.example.popularmovies
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-
 import com.example.popularmovies.util.Utilities
+import kotlinx.android.synthetic.main.activity_movie_grid.*
 
 /**
  * Holds the movie grid fragment
@@ -20,7 +18,6 @@ class MovieGridActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_grid)
-        val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()

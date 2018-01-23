@@ -10,7 +10,7 @@
     tools:showIn="@layout/activity_movie_grid">
 
     <GridView
-        android:id="@+id/grid_movies"
+        android:id="@+id/moviesGrid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnWidth="90dp"
