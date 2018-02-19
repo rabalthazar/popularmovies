@@ -1,6 +1,6 @@
 package com.example.popularmovies.model
 
-import java.util.Date
+import java.util.*
 
 /**
  * Model class for a movie
@@ -20,7 +20,7 @@ data class Movie (
     /**
      * Movie release date
      */
-    var releaseDate: Date,
+    var releaseDate: Date?,
 
     /**
      * Poster path in TMDB

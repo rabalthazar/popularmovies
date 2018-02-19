@@ -39,7 +39,7 @@ object MovieFactory {
         return Movie(
                 movieJson.getLong(MOVIE_ID),
                 movieJson.getString(MOVIE_TITLE),
-                releaseDate!!,
+                releaseDate,
                 movieJson.getString(MOVIE_POSTER),
                 movieJson.getString(MOVIE_OVERVIEW),
                 movieJson.getBoolean(MOVIE_ADULT),
@@ -57,7 +57,10 @@ object MovieFactory {
         movieBundle.putLong(MOVIE_ID, movie.id)
         movieBundle.putString(MOVIE_TITLE, movie.title)
         movieBundle.putString(MOVIE_OVERVIEW, movie.overview)
-        movieBundle.putLong(MOVIE_RELEASE, movie.releaseDate.time)
+        val releaseDateTs = movie.releaseDate?.time
+        if (releaseDateTs !== null) {
+            movieBundle.putLong(MOVIE_RELEASE, releaseDateTs)
+        }
         movieBundle.putBoolean(MOVIE_ADULT, movie.adult)
         movieBundle.putString(MOVIE_POSTER, movie.posterPath)
         movieBundle.putDouble(MOVIE_RATING, movie.voteAverage)
@@ -70,12 +73,13 @@ object MovieFactory {
      * @return A Movie object with the Bundle data
      */
     fun fromBundle(movieBundle: Bundle): Movie {
+        val releaseDateTs = if (movieBundle.containsKey(MOVIE_RELEASE)) movieBundle.getLong(MOVIE_RELEASE) else null
         return Movie(
                 movieBundle.getLong(MOVIE_ID),
-                movieBundle.getString(MOVIE_TITLE)!!,
-                Date(movieBundle.getLong(MOVIE_RELEASE)),
-                movieBundle.getString(MOVIE_POSTER)!!,
-                movieBundle.getString(MOVIE_OVERVIEW)!!,
+                movieBundle.getString(MOVIE_TITLE),
+                if (releaseDateTs !== null ) Date(releaseDateTs) else null,
+                movieBundle.getString(MOVIE_POSTER),
+                movieBundle.getString(MOVIE_OVERVIEW),
                 movieBundle.getBoolean(MOVIE_ADULT),
                 movieBundle.getDouble(MOVIE_RATING))
     }

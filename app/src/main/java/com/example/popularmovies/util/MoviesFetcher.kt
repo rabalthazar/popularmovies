@@ -122,7 +122,7 @@ class MoviesFetcher(private val mContext: Context) {
         movieValues.put(MoviesContract.MovieEntry.COLUMN_TITLE, movie.title)
         movieValues.put(MoviesContract.MovieEntry.COLUMN_OVERVIEW, movie.overview)
         movieValues.put(MoviesContract.MovieEntry.COLUMN_ADULT, movie.adult)
-        movieValues.put(MoviesContract.MovieEntry.COLUMN_RELEASE_DATE, movie.releaseDate.time)
+        movieValues.put(MoviesContract.MovieEntry.COLUMN_RELEASE_DATE, movie.releaseDate?.time)
         movieValues.put(MoviesContract.MovieEntry.COLUMN_POSTER_PATH, movie.posterPath)
         movieValues.put(MoviesContract.MovieEntry.COLUMN_VOTE_AVG, movie.voteAverage)
         val movieCursor = mContext.contentResolver.query(movieUri, null, null, null, null)

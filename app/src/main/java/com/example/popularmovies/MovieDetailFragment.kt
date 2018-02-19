@@ -43,12 +43,13 @@ class MovieDetailFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
         if (!data.moveToFirst()) {
             return
         }
-        val context = context ?: return
-        ImageLoader.loadFromPosterPath(context, data.getString(COL_MOVIE_POSTER_PATH), moviePoster)
+        val localContext = context ?: return
+        val releaseDateTs = if (!data.isNull(COL_MOVIE_RELEASE_DATE)) data.getLong(COL_MOVIE_RELEASE_DATE) else null
+        ImageLoader.loadFromPosterPath(localContext, data.getString(COL_MOVIE_POSTER_PATH), moviePoster)
         movieTitle.text = data.getString(COL_MOVIE_TITLE)
         movieOverview.text = data.getString(COL_MOVIE_OVERVIEW)
-        val dateFormat = android.text.format.DateFormat.getDateFormat(context)
-        movieRelease.text = dateFormat.format(Date(data.getLong(COL_MOVIE_RELEASE_DATE)))
+        val dateFormat = android.text.format.DateFormat.getDateFormat(localContext)
+        movieRelease.text = if (releaseDateTs !== null) dateFormat.format(Date(releaseDateTs)) else localContext.getString(R.string.date_placeholder)
         movieRating.text = NumberFormat.getNumberInstance().format(data.getDouble(COL_MOVIE_VOTE_AVG))
     }
 

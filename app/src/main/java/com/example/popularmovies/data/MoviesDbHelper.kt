@@ -3,10 +3,7 @@ package com.example.popularmovies.data
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-
-import com.example.popularmovies.data.MoviesContract.ListEntry
-import com.example.popularmovies.data.MoviesContract.MovieEntry
-import com.example.popularmovies.data.MoviesContract.MovieListEntry
+import com.example.popularmovies.data.MoviesContract.*
 
 /**
  * A SQLite helper to create, update and instance the app's database
@@ -20,7 +17,7 @@ class MoviesDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 MovieEntry._ID + " INTEGER PRIMARY KEY," +
                 MovieEntry.COLUMN_TITLE + " TEXT NOT NULL," +
                 MovieEntry.COLUMN_OVERVIEW + " TEXT NOT NULL," +
-                MovieEntry.COLUMN_RELEASE_DATE + " INTEGER NOT NULL," +
+                MovieEntry.COLUMN_RELEASE_DATE + " INTEGER," +
                 MovieEntry.COLUMN_POSTER_PATH + " TEXT NOT NULL," +
                 MovieEntry.COLUMN_ADULT + " INTEGER NOT NULL," +
                 MovieEntry.COLUMN_VOTE_AVG + " REAL NOT NULL" +
@@ -61,7 +58,7 @@ class MoviesDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         /**
          * The current database version. Must be increased every time the db structure changes
          */
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
 
         /**
          * The database name
