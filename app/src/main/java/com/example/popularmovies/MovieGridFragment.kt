@@ -81,12 +81,9 @@ class MovieGridFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
         mForceFetch = false
     }
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor>? {
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
         Log.d(FRAGMENT_TAG, "CreateLoader")
-        if (context != null) {
-            return MoviesLoader(context!!, mForceFetch)
-        }
-        return null
+        return MoviesLoader(context!!, mForceFetch)
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor) {

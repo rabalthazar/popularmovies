@@ -34,6 +34,8 @@ class MoviesFetcher(private val mContext: Context) {
      */
     private val API_KEY_PARAM = "api_key"
 
+    private val TMDB_RESULTS = "results"
+
     /**
      * Fetches the json movie list from the TMDB API and returns it a List class
      * @param selection The list from where to fetch
@@ -57,8 +59,6 @@ class MoviesFetcher(private val mContext: Context) {
     }
 
     private fun parseMovieListJson(movies: List, jsonStr: String): Boolean? {
-        val TMDB_RESULTS = "results"
-
         val json: JSONObject
         try {
             json = JSONObject(jsonStr)

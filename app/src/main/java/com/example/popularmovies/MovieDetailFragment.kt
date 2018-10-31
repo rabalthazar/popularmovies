@@ -30,13 +30,10 @@ class MovieDetailFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
         return inflater.inflate(R.layout.fragment_movie_detail, container, false)
     }
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor>? {
-        val intent = activity?.intent
-        val movieByIdUri = intent?.data
-        if (activity != null && movieByIdUri != null) {
-            return CursorLoader(activity!!, movieByIdUri, MOVIE_COLUMNS, null, null, null)
-        }
-        return null
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
+        val intent = activity!!.intent
+        val movieByIdUri = intent.data
+        return CursorLoader(activity!!, movieByIdUri, MOVIE_COLUMNS, null, null, null)
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor) {

@@ -93,7 +93,7 @@ class MoviesProvider : ContentProvider() {
                         sortOrder
                 )
             }
-            else -> throw UnsupportedOperationException("Unknown query uri: " + uri)
+            else -> throw UnsupportedOperationException("Unknown query uri: $uri")
         }
         val contentResolver = context?.contentResolver
         if (contentResolver != null) {
@@ -115,7 +115,7 @@ class MoviesProvider : ContentProvider() {
             MOVIE_LIST -> MoviesContract.MovieListEntry.CONTENT_TYPE
             MOVIE_LIST_BY_ID -> MoviesContract.MovieListEntry.CONTENT_ITEM_TYPE
             MOVIE_LIST_BY_SELECTION -> MoviesContract.MovieListEntry.CONTENT_TYPE
-            else -> throw UnsupportedOperationException("Unknown content URI: " + uri)
+            else -> throw UnsupportedOperationException("Unknown content URI: $uri")
         }
     }
 
@@ -126,38 +126,38 @@ class MoviesProvider : ContentProvider() {
             LIST -> {
                 val _id = database.insert(MoviesContract.ListEntry.TABLE_NAME, null, values)
                 if (_id <= 0) {
-                    throw SQLException("Failed to insert row into " + uri)
+                    throw SQLException("Failed to insert row into $uri")
                 }
                 MoviesContract.ListEntry.buildUri(_id)
             }
             MOVIE -> {
                 val _id = database.insert(MoviesContract.MovieEntry.TABLE_NAME, null, values)
                 if (_id <= 0) {
-                    throw SQLException("Failed to insert row into " + uri)
+                    throw SQLException("Failed to insert row into $uri")
                 }
                 MoviesContract.MovieEntry.buildUri(_id)
             }
             MOVIE_LIST -> {
                 val _id = database.insert(MoviesContract.MovieListEntry.TABLE_NAME, null, values)
                 if (_id <= 0) {
-                    throw SQLException("Failed to insert row into " + uri)
+                    throw SQLException("Failed to insert row into $uri")
                 }
                 MoviesContract.MovieListEntry.buildUri(_id)
             }
-            else -> throw UnsupportedOperationException("Unknown uri: " + uri)
+            else -> throw UnsupportedOperationException("Unknown uri: $uri")
         }
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
         val db = mDbOpener?.writableDatabase ?: return -1
-        var selectionStr: String = selection ?: "1"
+        val selectionStr: String = selection ?: "1"
         val match = sUriMatcher.match(uri)
         // this makes delete all rows return the number of rows deleted
         val rowsDeleted: Int = when (match) {
             LIST -> db.delete(MoviesContract.ListEntry.TABLE_NAME, selectionStr, selectionArgs)
             MOVIE -> db.delete(MoviesContract.MovieEntry.TABLE_NAME, selectionStr, selectionArgs)
             MOVIE_LIST -> db.delete(MoviesContract.MovieListEntry.TABLE_NAME, selectionStr, selectionArgs)
-            else -> throw UnsupportedOperationException("Unknown uri: " + uri)
+            else -> throw UnsupportedOperationException("Unknown uri: $uri")
         }
         val contentResolver = context?.contentResolver
         if (rowsDeleted > 0 && contentResolver != null) {
@@ -188,7 +188,7 @@ class MoviesProvider : ContentProvider() {
                         arrayOf(java.lang.Long.toString(movieId!!))
                 )
             }
-            else -> throw UnsupportedOperationException("Unknown update uri: " + uri)
+            else -> throw UnsupportedOperationException("Unknown update uri: $uri")
         }
         val contentResolver = context?.contentResolver
         if (rowsUpdated > 0 && contentResolver != null) {
@@ -210,8 +210,8 @@ class MoviesProvider : ContentProvider() {
 
     private fun getMovies(projection: Array<String>?, listSelector: String?, sortOrder: String?): Cursor? {
         val db = mDbOpener?.readableDatabase ?: return null
-        var listSelectorStr: String = listSelector ?: MoviesContract.ListSelections.MOST_POPULAR.toString()
-        var sortOrderStr: String = sortOrder ?: sMovieOrder
+        val listSelectorStr: String = listSelector ?: MoviesContract.ListSelections.MOST_POPULAR.toString()
+        val sortOrderStr: String = sortOrder ?: sMovieOrder
 
         return sMoviesByListQueryBuilder.query(
                 db,
@@ -235,10 +235,10 @@ class MoviesProvider : ContentProvider() {
                 values
                         .map { db.insert(MoviesContract.MovieListEntry.TABLE_NAME, null, it) }
                         .filter { it > 0 }
-                        .forEach { rowsInserted++ }
+                        .forEach { _ -> rowsInserted++ }
                 clearOrphanedMovies()
             }
-            else -> throw UnsupportedOperationException("Unknown bulk insert uri: " + uri)
+            else -> throw UnsupportedOperationException("Unknown bulk insert uri: $uri")
         }
         val contentResolver = context?.contentResolver
         if (rowsDeleted + rowsInserted > 0 && contentResolver != null) {
@@ -277,50 +277,50 @@ class MoviesProvider : ContentProvider() {
         /**
          * Constant for list requests
          */
-        val LIST = 100
+        const val LIST = 100
 
         /**
          * Constant for movie list requests (ordered by popularity by default)
          */
-        val LIST_BY_ID = 101
+        const val LIST_BY_ID = 101
 
-        val LIST_BY_SELECTION = 102
-
-        /**
-         * Constant for specific movie requests
-         */
-        val MOVIE = 200
+        const val LIST_BY_SELECTION = 102
 
         /**
          * Constant for specific movie requests
          */
-        val MOVIE_BY_ID = 201
+        const val MOVIE = 200
 
-        val MOVIES_BY_SELECTION = 202
+        /**
+         * Constant for specific movie requests
+         */
+        const val MOVIE_BY_ID = 201
+
+        const val MOVIES_BY_SELECTION = 202
 
 
-        val MOVIE_LIST = 300
+        const val MOVIE_LIST = 300
 
-        val MOVIE_LIST_BY_ID = 301
+        const val MOVIE_LIST_BY_ID = 301
 
-        val MOVIE_LIST_BY_SELECTION = 302
+        const val MOVIE_LIST_BY_SELECTION = 302
 
         /**
          * Static UriMatcher for the provider
          */
         private val sUriMatcher = buildUriMatcher()
 
-        private val BY_ID_SELECTION = BaseColumns._ID + "=?"
+        private const val BY_ID_SELECTION = BaseColumns._ID + "=?"
 
-        private val LIST_SELECTION = MoviesContract.ListEntry.TABLE_NAME + "." +
+        private const val LIST_SELECTION = MoviesContract.ListEntry.TABLE_NAME + "." +
                 MoviesContract.ListEntry.COLUMN_SELECTION + "=?"
 
-        private val BY_LIST_SELECTION_SELECTION = MoviesContract.MovieListEntry.COLUMN_LIST_KEY +
+        private const val BY_LIST_SELECTION_SELECTION = MoviesContract.MovieListEntry.COLUMN_LIST_KEY +
                 " IN (SELECT " + MoviesContract.ListEntry.TABLE_NAME + "." + MoviesContract.ListEntry._ID +
                 " FROM " + MoviesContract.ListEntry.TABLE_NAME + " WHERE " + MoviesContract.ListEntry.TABLE_NAME +
                 "." + MoviesContract.ListEntry.COLUMN_SELECTION + "=?)"
 
-        private val sMovieOrder = MoviesContract.MovieEntry.COLUMN_VOTE_AVG + " DESC"
+        private const val sMovieOrder = MoviesContract.MovieEntry.COLUMN_VOTE_AVG + " DESC"
 
         private val sMoviesByListQueryBuilder = SQLiteQueryBuilder()
 

@@ -10,37 +10,37 @@ import com.example.popularmovies.data.MoviesContract.*
  * Created by rafael on 24/06/16.
  */
 class MoviesDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+    // Movie table creation command
+    private val SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + MovieEntry.TABLE_NAME + " (" +
+            MovieEntry._ID + " INTEGER PRIMARY KEY," +
+            MovieEntry.COLUMN_TITLE + " TEXT NOT NULL," +
+            MovieEntry.COLUMN_OVERVIEW + " TEXT NOT NULL," +
+            MovieEntry.COLUMN_RELEASE_DATE + " INTEGER," +
+            MovieEntry.COLUMN_POSTER_PATH + " TEXT NOT NULL," +
+            MovieEntry.COLUMN_ADULT + " INTEGER NOT NULL," +
+            MovieEntry.COLUMN_VOTE_AVG + " REAL NOT NULL" +
+            " );"
+
+    // List table creation command
+    private val SQL_CREATE_LIST_TABLE = "CREATE TABLE " + ListEntry.TABLE_NAME + " (" +
+            ListEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            ListEntry.COLUMN_SELECTION + " TEXT NOT NULL," +
+            ListEntry.COLUMN_DATE_FETCHED + " INTEGER NOT NULL" +
+            " );"
+
+    // Movies and lists relation table creation command
+    private val SQL_CREATE_MOVIE_LIST_TABLE = "CREATE TABLE " + MovieListEntry.TABLE_NAME + " (" +
+            MovieListEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            MovieListEntry.COLUMN_LIST_KEY + " INTEGER NOT NULL," +
+            MovieListEntry.COLUMN_MOVIE_KEY + " INTEGER NOT NULL," +
+            MovieListEntry.COLUMN_ORDER + " INTEGER NOT NULL," +
+            " FOREIGN KEY (" + MovieListEntry.COLUMN_LIST_KEY + ") REFERENCES " +
+            ListEntry.TABLE_NAME + "(" + ListEntry._ID + ")," +
+            " FOREIGN KEY (" + MovieListEntry.COLUMN_MOVIE_KEY + ") REFERENCES " +
+            MovieEntry.TABLE_NAME + "(" + MovieEntry._ID + ")" +
+            " );"
 
     override fun onCreate(db: SQLiteDatabase) {
-        // Movie table creation command
-        val SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + MovieEntry.TABLE_NAME + " (" +
-                MovieEntry._ID + " INTEGER PRIMARY KEY," +
-                MovieEntry.COLUMN_TITLE + " TEXT NOT NULL," +
-                MovieEntry.COLUMN_OVERVIEW + " TEXT NOT NULL," +
-                MovieEntry.COLUMN_RELEASE_DATE + " INTEGER," +
-                MovieEntry.COLUMN_POSTER_PATH + " TEXT NOT NULL," +
-                MovieEntry.COLUMN_ADULT + " INTEGER NOT NULL," +
-                MovieEntry.COLUMN_VOTE_AVG + " REAL NOT NULL" +
-                " );"
-
-        // List table creation command
-        val SQL_CREATE_LIST_TABLE = "CREATE TABLE " + ListEntry.TABLE_NAME + " (" +
-                ListEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                ListEntry.COLUMN_SELECTION + " TEXT NOT NULL," +
-                ListEntry.COLUMN_DATE_FETCHED + " INTEGER NOT NULL" +
-                " );"
-
-        // Movies and lists relation table creation command
-        val SQL_CREATE_MOVIE_LIST_TABLE = "CREATE TABLE " + MovieListEntry.TABLE_NAME + " (" +
-                MovieListEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                MovieListEntry.COLUMN_LIST_KEY + " INTEGER NOT NULL," +
-                MovieListEntry.COLUMN_MOVIE_KEY + " INTEGER NOT NULL," +
-                MovieListEntry.COLUMN_ORDER + " INTEGER NOT NULL," +
-                " FOREIGN KEY (" + MovieListEntry.COLUMN_LIST_KEY + ") REFERENCES " +
-                ListEntry.TABLE_NAME + "(" + ListEntry._ID + ")," +
-                " FOREIGN KEY (" + MovieListEntry.COLUMN_MOVIE_KEY + ") REFERENCES " +
-                MovieEntry.TABLE_NAME + "(" + MovieEntry._ID + ")" +
-                " );"
 
         db.execSQL(SQL_CREATE_MOVIE_TABLE)
         db.execSQL(SQL_CREATE_LIST_TABLE)

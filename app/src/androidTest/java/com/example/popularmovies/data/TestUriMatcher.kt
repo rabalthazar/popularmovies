@@ -22,9 +22,9 @@ class TestUriMatcher {
     }
 
     companion object {
-        private val LIST_ID: Long = 12
-        private val MOVIE_ID: Long = 234
-        private val MOVIE_LIST_ID: Long = 5
+        private const val LIST_ID: Long = 12
+        private const val MOVIE_ID: Long = 234
+        private const val MOVIE_LIST_ID: Long = 5
 
         private val TEST_LIST_DIR = MoviesContract.ListEntry.CONTENT_URI
         private val TEST_LIST_ITEM = MoviesContract.ListEntry.buildUri(LIST_ID)

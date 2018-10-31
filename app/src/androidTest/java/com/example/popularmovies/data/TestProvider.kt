@@ -71,7 +71,7 @@ class TestProvider {
 
         var cursor = contentResolver.query(listUri!!, null, null, null, null)
         assertNotNull(cursor)
-        assertTrue("Error: No Records returned from list query for uri " + listUri, cursor!!.moveToFirst())
+        assertTrue("Error: No Records returned from list query for uri $listUri", cursor!!.moveToFirst())
 
         val idx = cursor.getColumnIndex(MoviesContract.ListEntry._ID)
         assertThat("Error: List id does not match", listId, equalTo(cursor.getLong(idx)))
@@ -85,7 +85,7 @@ class TestProvider {
 
         cursor = contentResolver.query(MoviesContract.ListEntry.CONTENT_URI, null, null, null, null)
         assertNotNull(cursor)
-        assertTrue("Error: No Records returned from list query for uri " + listUri, cursor!!.moveToFirst())
+        assertTrue("Error: No Records returned from list query for uri $listUri", cursor!!.moveToFirst())
 
         TestUtilities.validateCurrentRecord("Error: List Query Validation Failed",
                 cursor, list)
@@ -110,7 +110,7 @@ class TestProvider {
 
         var cursor = contentResolver.query(movieUri!!, null, null, null, null)
         assertNotNull(cursor)
-        assertTrue("Error: No Records returned from movie query for uri " + movieUri, cursor!!.moveToFirst())
+        assertTrue("Error: No Records returned from movie query for uri $movieUri", cursor!!.moveToFirst())
 
         val idx = cursor.getColumnIndex(MoviesContract.MovieEntry._ID)
         assertThat("Error: Movie id does not match", movieId, equalTo(cursor.getLong(idx)))
@@ -169,7 +169,7 @@ class TestProvider {
 
         var cursor = contentResolver.query(movieList1Uri!!, null, null, null, null)
         assertNotNull(cursor)
-        assertTrue("Error: No Records returned from movie query for uri " + movieList1Uri, cursor!!.moveToFirst())
+        assertTrue("Error: No Records returned from movie query for uri $movieList1Uri", cursor!!.moveToFirst())
 
         val idx = cursor.getColumnIndex(MoviesContract.MovieListEntry._ID)
         assertThat("Error: Movie id does not match", movieList1Id, equalTo(cursor.getLong(idx)))
