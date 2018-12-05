@@ -76,10 +76,10 @@ object MovieFactory {
         val releaseDateTs = if (movieBundle.containsKey(MOVIE_RELEASE)) movieBundle.getLong(MOVIE_RELEASE) else null
         return Movie(
                 movieBundle.getLong(MOVIE_ID),
-                movieBundle.getString(MOVIE_TITLE),
+                movieBundle.getString(MOVIE_TITLE)!!,
                 if (releaseDateTs !== null ) Date(releaseDateTs) else null,
-                movieBundle.getString(MOVIE_POSTER),
-                movieBundle.getString(MOVIE_OVERVIEW),
+                movieBundle.getString(MOVIE_POSTER)!!,
+                movieBundle.getString(MOVIE_OVERVIEW)!!,
                 movieBundle.getBoolean(MOVIE_ADULT),
                 movieBundle.getDouble(MOVIE_RATING))
     }

@@ -41,6 +41,9 @@
             android:name=".data.MoviesProvider"
             android:exported="false" />
 
+        <uses-library android:name="android.test.runner"
+            android:required="false" />
+
     </application>
 
 </manifest>

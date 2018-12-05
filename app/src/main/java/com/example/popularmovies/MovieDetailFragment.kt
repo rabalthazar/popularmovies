@@ -31,9 +31,10 @@ class MovieDetailFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        val intent = activity!!.intent
-        val movieByIdUri = intent.data
-        return CursorLoader(activity!!, movieByIdUri, MOVIE_COLUMNS, null, null, null)
+        val localActivity = activity ?: throw Exception("No activity on creating movie detail loader")
+        val intent = localActivity.intent ?: throw Exception("No intent passed to activity on creating movie loader")
+        val movieByIdUri = intent.data ?: throw Exception("No URI passed to movie loader")
+        return CursorLoader(localActivity, movieByIdUri, MOVIE_COLUMNS, null, null, null)
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor) {

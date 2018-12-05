@@ -2,11 +2,11 @@ package com.example.popularmovies
 
 
 import android.os.Bundle
-import android.preference.ListPreference
-import android.preference.Preference
-import android.preference.PreferenceFragment
-import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.preference.ListPreference
+import android.support.v7.preference.Preference
+import android.support.v7.preference.PreferenceFragmentCompat
+import android.support.v7.preference.PreferenceManager
 
 /**
  * Activity that holds the settings fragment
@@ -17,7 +17,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         // Adds the general preferences fragment to the view
-        fragmentManager.beginTransaction()
+        supportFragmentManager.beginTransaction()
                 .replace(R.id.settings_container, GeneralPreferenceFragment())
                 .commit()
     }
@@ -27,9 +27,8 @@ class SettingsActivity : AppCompatActivity() {
      * This class implements the OnPreferenceChangeListener interface to show the current preference
      * value as a preference summary
      */
-    class GeneralPreferenceFragment : PreferenceFragment(), Preference.OnPreferenceChangeListener {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
+    class GeneralPreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
+        override fun onCreatePreferences(savedInstance: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.pref_general)
 
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_order_key)))
@@ -66,7 +65,7 @@ class SettingsActivity : AppCompatActivity() {
             onPreferenceChange(preference,
                     PreferenceManager
                             .getDefaultSharedPreferences(preference.context)
-                            .getString(preference.key, ""))
+                            .getString(preference.key, "") as Any)
         }
 
     }

@@ -2,8 +2,8 @@ package com.example.popularmovies.data
 
 import android.content.ComponentName
 import android.content.pm.PackageManager
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.greaterThan
 import org.junit.Assert.*
@@ -13,7 +13,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class TestProvider {
-    private val mContext = InstrumentationRegistry.getTargetContext()
+    private val mContext = InstrumentationRegistry.getInstrumentation().targetContext
 
     @Before fun deleteAllRecordsFromProvider() {
         val contentResolver = mContext.contentResolver

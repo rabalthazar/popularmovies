@@ -11,7 +11,7 @@ class MoviesLoader(context: Context, private var forceFetch: Boolean) : AsyncTas
 
     private var mMoviesCursor: Cursor? = null
 
-    override fun loadInBackground(): Cursor {
+    override fun loadInBackground(): Cursor? {
         val moviesOrder = Utilities.getPreferredSelection(context)
         if (needsFetching(moviesOrder)) {
             val moviesFetcher = MoviesFetcher(context)

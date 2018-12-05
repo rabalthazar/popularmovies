@@ -1,7 +1,7 @@
 package com.example.popularmovies.data
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.greaterThan
 import org.junit.Assert.*
@@ -12,7 +12,7 @@ import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class TestDb {
-    private val mContext = InstrumentationRegistry.getTargetContext()
+    private val mContext = InstrumentationRegistry.getInstrumentation().targetContext
 
     @Before fun deleteDatabase() {
         mContext.deleteDatabase(MoviesDbHelper.DATABASE_NAME)

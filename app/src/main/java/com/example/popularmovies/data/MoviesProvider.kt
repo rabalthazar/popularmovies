@@ -235,7 +235,7 @@ class MoviesProvider : ContentProvider() {
                 values
                         .map { db.insert(MoviesContract.MovieListEntry.TABLE_NAME, null, it) }
                         .filter { it > 0 }
-                        .forEach { _ -> rowsInserted++ }
+                        .forEach { rowsInserted++ }
                 clearOrphanedMovies()
             }
             else -> throw UnsupportedOperationException("Unknown bulk insert uri: $uri")
