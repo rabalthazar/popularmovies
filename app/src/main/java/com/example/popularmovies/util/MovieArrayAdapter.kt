@@ -2,12 +2,11 @@ package com.example.popularmovies.util
 
 import android.content.Context
 import android.database.Cursor
-import android.support.v4.widget.CursorAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-
+import androidx.cursoradapter.widget.CursorAdapter
 import com.example.popularmovies.MovieGridFragment
 import com.example.popularmovies.R
 

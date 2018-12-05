@@ -3,12 +3,12 @@ package com.example.popularmovies
 import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.LoaderManager
-import android.support.v4.content.Loader
 import android.util.Log
 import android.view.*
 import android.widget.AdapterView
+import androidx.fragment.app.Fragment
+import androidx.loader.app.LoaderManager
+import androidx.loader.content.Loader
 import com.example.popularmovies.data.MoviesContract
 import com.example.popularmovies.data.MoviesLoader
 import com.example.popularmovies.util.MovieArrayAdapter

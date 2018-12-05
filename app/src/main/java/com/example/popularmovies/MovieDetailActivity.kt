@@ -1,7 +1,7 @@
 package com.example.popularmovies
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 
 /**
  * Activity that holds the movie detail fragment
