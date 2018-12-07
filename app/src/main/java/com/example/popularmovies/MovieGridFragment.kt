@@ -35,6 +35,7 @@ class MovieGridFragment : Fragment() {
             viewModel = ViewModelProviders.of(this).get(MoviesViewModel::class.java)
             mMoviesAdapter = MovieArrayAdapter(this, R.id.moviesGrid)
             viewModel.data.observe(this, Observer<List<Movie>> {
+                mMoviesAdapter?.clear()
                 mMoviesAdapter?.addAll(it)
             })
             viewModel.loadData(mForceFetch)

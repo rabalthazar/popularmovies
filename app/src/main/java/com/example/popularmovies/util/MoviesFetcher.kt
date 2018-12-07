@@ -100,7 +100,9 @@ class MoviesFetcher(context: Context) {
         for (movie in movies) {
             insertOrUpdateMovie(movie)
         }
-        return fillMovieList(list, movies)
+        return fillMovieList(list, movies).also {
+            clearOrphanMovies()
+        }
     }
 
     private fun insertOrUpdateList(selection: String): ListModel {
@@ -130,8 +132,16 @@ class MoviesFetcher(context: Context) {
                 listId = list.id
                 movieId = movie.id
                 order = idx
-                movieListDao.insert(this)
+                id = movieListDao.insert(this)
             }
+        }
+    }
+
+    private fun clearOrphanMovies() {
+        val movieDao = database.movieDao()
+        val orphans = movieDao.findOrphans()
+        orphans.forEach {
+            movieDao.delete(it)
         }
     }
 }

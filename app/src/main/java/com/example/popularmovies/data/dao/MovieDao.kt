@@ -11,6 +11,9 @@ interface MovieDao {
     @Query("SELECT * FROM movie WHERE _id IN (:movieIds)")
     fun loadByIds(movieIds: LongArray): List<Movie>
 
+    @Query("SELECT * FROM movie m WHERE m._id NOT IN (SELECT ml.movie_id FROM movie_list ml WHERE ml.movie_id = m._id)")
+    fun findOrphans(): List<Movie>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movie: Movie): Long
 
