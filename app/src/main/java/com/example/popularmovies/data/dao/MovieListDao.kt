@@ -11,11 +11,11 @@ interface MovieListDao {
     @Query("SELECT * FROM movie_list")
     fun getAll(): List<MovieList>
 
-    @Query("SELECT * FROM movie_list WHERE list_id = :listId")
+    @Query("SELECT * FROM movie_list WHERE list_id = :listId ORDER BY \"order\"")
     fun findByListId(listId: Long): List<MovieList>
 
     @Insert
-    fun insert(movieList: MovieList)
+    fun insert(movieList: MovieList): Long
 
     @Delete
     fun delete(vararg movieLists: MovieList)

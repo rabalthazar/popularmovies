@@ -13,6 +13,6 @@ class DateTypeConverter {
 
     @TypeConverter
     fun toLong(value: Date?): Long? {
-        return if (value == null) null else value.getTime()
+        return value?.time
     }
 }

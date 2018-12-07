@@ -18,7 +18,7 @@ import com.example.popularmovies.model.List as ListModel
  */
 class MoviesFetcher(context: Context) {
 
-    enum class ListSelections private constructor(private val selection: String) {
+    enum class ListSelections constructor(private val selection: String) {
         MOST_POPULAR("popular"),
         TOP_RATED("top_rated");
 
@@ -125,10 +125,11 @@ class MoviesFetcher(context: Context) {
         movieLists.forEach {
             movieListDao.delete(it)
         }
-        movies.forEach {
-            var movieList = MovieList().apply {
+        movies.forEachIndexed {idx, movie ->
+            MovieList().apply {
                 listId = list.id
-                movieId = it.id
+                movieId = movie.id
+                order = idx
                 movieListDao.insert(this)
             }
         }

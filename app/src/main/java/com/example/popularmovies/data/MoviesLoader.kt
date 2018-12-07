@@ -10,7 +10,7 @@ import java.util.*
 class MoviesLoader(
         private val application: Application,
         private var forceFetch: Boolean,
-        val liveDataHolder: MoviesLiveData
+        private val liveDataHolder: MoviesLiveData
 ) : AsyncTask<Void, Void, List<Movie>>() {
 
     private val database = MoviesDbHelper.getDatabase(application)

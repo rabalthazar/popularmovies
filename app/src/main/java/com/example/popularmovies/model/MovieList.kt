@@ -9,10 +9,10 @@ import com.example.popularmovies.model.List as ListModel
 
 @Entity(
         tableName = "movie_list",
-        foreignKeys = arrayOf(
+        foreignKeys = [
                 ForeignKey(entity = ListModel::class, parentColumns = arrayOf("_id"), childColumns = arrayOf("list_id")),
                 ForeignKey(entity = Movie::class, parentColumns = arrayOf("_id"), childColumns = arrayOf("movie_id"))
-        )
+        ]
 )
 data class MovieList(
         @PrimaryKey(autoGenerate = true)
@@ -23,5 +23,7 @@ data class MovieList(
         var listId: Long = 0L,
 
         @ColumnInfo(name = "movie_id")
-        var movieId: Long = 0L
+        var movieId: Long = 0L,
+
+        var order: Int = 0
 )

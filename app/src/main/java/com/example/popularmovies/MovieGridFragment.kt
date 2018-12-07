@@ -26,10 +26,6 @@ class MovieGridFragment : Fragment() {
 
     private lateinit var viewModel: MoviesViewModel
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
