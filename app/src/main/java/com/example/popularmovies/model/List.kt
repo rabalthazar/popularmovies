@@ -1,17 +1,22 @@
 package com.example.popularmovies.model
 
-import java.util.ArrayList
-import java.util.Date
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.util.*
 
 /**
  * Holds a list of movies, given an determined order: most popular or top rated
  * Created by rafael on 23/06/16.
  */
+@Entity(tableName = "list")
 data class List(
         /**
          * Movie list id
          */
-        var id: Long = 0,
+        @PrimaryKey(autoGenerate = true)
+        @ColumnInfo(name = "_id")
+        var id: Long = 0L,
 
         /**
          * List order. Actually popular (@string/pref_order_popular) or top_rated (@string/pref_order_toprated)
@@ -21,32 +26,6 @@ data class List(
         /**
          * Date the list was fetched
          */
+        @ColumnInfo(name = "date_fetched")
         var dateFetched: Date = Date()
-) {
-    /**
-     * List of movies in the list
-     */
-    val movies = ArrayList<Movie>()
-
-    fun getMovie(idx: Int): Movie? {
-        return if (movies.size < idx)
-            movies[idx]
-        else
-            null
-    }
-
-    fun add(movie: Movie): List {
-        movies.add(movie)
-        return this
-    }
-
-    fun remove(movie: Movie): List {
-        movies.remove(movie)
-        return this
-    }
-
-    fun clear(): List {
-        movies.clear()
-        return this
-    }
-}
+)

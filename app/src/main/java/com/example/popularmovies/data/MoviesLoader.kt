@@ -1,88 +1,52 @@
 package com.example.popularmovies.data
 
-import android.content.Context
-import android.database.Cursor
-import androidx.loader.content.AsyncTaskLoader
+import android.app.Application
+import android.os.AsyncTask
+import com.example.popularmovies.model.Movie
 import com.example.popularmovies.util.MoviesFetcher
 import com.example.popularmovies.util.Utilities
 import java.util.*
 
-class MoviesLoader(context: Context, private var forceFetch: Boolean) : AsyncTaskLoader<Cursor>(context) {
+class MoviesLoader(
+        private val application: Application,
+        private var forceFetch: Boolean,
+        val liveDataHolder: MoviesLiveData
+) : AsyncTask<Void, Void, List<Movie>>() {
 
-    private var mMoviesCursor: Cursor? = null
+    private val database = MoviesDbHelper.getDatabase(application)
 
-    override fun loadInBackground(): Cursor? {
-        val moviesOrder = Utilities.getPreferredSelection(context)
+    override fun doInBackground(vararg params: Void?): List<Movie> {
+        val moviesOrder = Utilities.getPreferredSelection(application)
         if (needsFetching(moviesOrder)) {
-            val moviesFetcher = MoviesFetcher(context)
+            val moviesFetcher = MoviesFetcher(application)
             moviesFetcher.fetchMovies(moviesOrder)
         }
-        val moviesUri = MoviesContract.MovieEntry.buildBySelectionUri(moviesOrder)
-        return context.contentResolver.query(moviesUri, MOVIE_COLUMNS, null, null, null)
+        val listDao = database.listDao()
+        val movieDao = database.movieDao()
+        val movieListDao = database.movieListDao()
+        val list = listDao.findBySelection(moviesOrder) ?: return emptyList()
+        val movieLists = movieListDao.findByListId(list.id)
+        val movieIds = movieLists.map { it.movieId }
+        return movieDao.loadByIds(movieIds.toLongArray())
+    }
+
+    override fun onPostExecute(result: List<Movie>) {
+        liveDataHolder.setValueExternally(result)
     }
 
     private fun needsFetching(moviesOrder: String): Boolean {
         if (forceFetch) {
             return true
         }
-        val listUri = MoviesContract.ListEntry.buildBySelectionUri(moviesOrder)
-        val listCursor = context.contentResolver.query(listUri, null, null, null, null) ?: return true
-        if (!listCursor.moveToFirst()) {
-            listCursor.close()
-            return true
-        }
-        val dateFetchedColumn = listCursor.getColumnIndex(MoviesContract.ListEntry.COLUMN_DATE_FETCHED)
-        val dateFetched = listCursor.getLong(dateFetchedColumn)
+        val dateFetched  = database.listDao().findBySelection(moviesOrder)?.dateFetched?.time ?: return true
         val now = Date().time
-        if (now - dateFetched > FETCH_THRESHOLD) {
-            listCursor.close()
+        if (now - dateFetched > MoviesLoader.FETCH_THRESHOLD) {
             return true
         }
-        listCursor.close()
         return false
-    }
-
-    fun deliverResult(cursor: Cursor) {
-        if (isReset) {
-            // An async query came in while the loader is stopped.  We
-            // don't need the result.
-            onReleaseResources(cursor)
-        }
-        val oldCursor: Cursor? = mMoviesCursor
-        mMoviesCursor = cursor
-
-        if (isStarted) {
-            // If the Loader is currently started, we can immediately
-            // deliver its results.
-            super.deliverResult(cursor)
-        }
-
-        // At this point we can release the resources associated with
-        // 'oldApps' if needed; now that the new result is delivered we
-        // know that it is no longer in use.
-        if (oldCursor != null) {
-            onReleaseResources(oldCursor)
-        }
-    }
-
-    private fun onReleaseResources(cursor: Cursor) {
-        if (!cursor.isClosed) {
-            cursor.close()
-        }
     }
 
     companion object {
         private const val FETCH_THRESHOLD = 3600000L
-
-        val MOVIE_COLUMNS: Array<String>
-            get() = arrayOf(
-                    MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry._ID,
-                    MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_TITLE,
-                    MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_OVERVIEW,
-                    MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_RELEASE_DATE,
-                    MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_VOTE_AVG,
-                    MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_POSTER_PATH,
-                    MoviesContract.MovieEntry.TABLE_NAME + "." + MoviesContract.MovieEntry.COLUMN_ADULT
-            )
     }
 }
