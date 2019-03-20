@@ -11,7 +11,8 @@ import com.squareup.picasso.Picasso
  */
 object ImageLoader {
     fun loadFromPosterPath(context: Context, posterPath: String, imageView: ImageView) {
-        Picasso.with(context)
+        Picasso
+                .get()
                 .load(MoviePosterUriBuilder.from(posterPath))
                 .into(imageView)
     }

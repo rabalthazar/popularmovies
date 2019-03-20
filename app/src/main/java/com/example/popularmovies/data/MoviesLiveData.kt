@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import com.example.popularmovies.model.Movie
 
-class MoviesLiveData(val application: Application): LiveData<List<Movie>>() {
+class MoviesLiveData(private val application: Application): LiveData<List<Movie>>() {
     fun load(forceFetch: Boolean) {
         val loader = MoviesLoader(application, forceFetch, this)
         loader.execute()

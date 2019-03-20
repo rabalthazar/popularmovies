@@ -16,7 +16,6 @@
         android:padding="5dp"
         android:scaleType="fitCenter"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:contentDescription="@string/a11y_poster_image" />
 
@@ -24,10 +23,8 @@
         android:id="@+id/movieTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/moviePoster"
         android:layout_toStartOf="@id/moviePoster"
         android:text="@string/movie_title"
         android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -39,10 +36,8 @@
         android:text="@string/movie_description"
         android:id="@+id/movieOverview"
         android:layout_below="@+id/moviePoster"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -51,10 +46,8 @@
         android:text="@string/release_date"
         android:id="@+id/movieReleaseLabel"
         android:layout_below="@+id/movieOverview"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
         android:textStyle="bold" />
 
@@ -64,7 +57,6 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/movieReleaseLabel"
         android:layout_toEndOf="@+id/movieReleaseLabel"
-        android:layout_toRightOf="@+id/movieReleaseLabel"
         android:text="@string/date_placeholder"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -75,10 +67,8 @@
         android:text="@string/user_rating"
         android:id="@+id/movieRatingLabel"
         android:layout_below="@+id/movieReleaseLabel"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
         android:textStyle="bold" />
 
@@ -88,7 +78,6 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/movieRatingLabel"
         android:layout_toEndOf="@+id/movieRatingLabel"
-        android:layout_toRightOf="@+id/movieRatingLabel"
         android:text="@string/number_placeholder"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 </RelativeLayout>

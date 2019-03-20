@@ -12,12 +12,12 @@
     <string name="pref_order_key" translatable="false">movies_order</string>
     <string name="pref_order_default" translatable="false">@string/pref_order_popular</string>
     <string name="pref_order_popular" translatable="false">popular</string>
-    <string name="pref_order_toprated" translatable="false">top_rated</string>
+    <string name="pref_order_top_rated" translatable="false">top_rated</string>
     <string name="pref_order_popular_opt">Most Popular</string>
-    <string name="pref_order_toprated_opt">Top Rated</string>
+    <string name="pref_order_top_rated_opt">Top Rated</string>
 
     <string name="a11y_poster_image">Poster image</string>
 
-    <string name="date_placeholder">xx/xx/xxxx</string>
+    <string name="date_placeholder">dd/mm/yyyy</string>
     <string name="number_placeholder">x.xx</string>
 </resources>

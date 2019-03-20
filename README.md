@@ -1,3 +1,3 @@
 # Popular Movies
 
-This is just Udacity's Developing Android Apps final project app
+This is just Udacity Developing Android Apps course final project app

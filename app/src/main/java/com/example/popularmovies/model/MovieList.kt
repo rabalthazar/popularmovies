@@ -1,9 +1,6 @@
 package com.example.popularmovies.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.example.popularmovies.model.List as ListModel
 
 
@@ -12,7 +9,8 @@ import com.example.popularmovies.model.List as ListModel
         foreignKeys = [
                 ForeignKey(entity = ListModel::class, parentColumns = arrayOf("_id"), childColumns = arrayOf("list_id")),
                 ForeignKey(entity = Movie::class, parentColumns = arrayOf("_id"), childColumns = arrayOf("movie_id"))
-        ]
+        ],
+        indices = [Index(value = arrayOf("list_id")), Index(value = arrayOf("movie_id"))]
 )
 data class MovieList(
         @PrimaryKey(autoGenerate = true)

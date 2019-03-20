@@ -17,7 +17,7 @@ internal object TestUtilities {
     private const val TEST_MOVIE1_TITLE = "Star Wars"
     private const val TEST_MOVIE1_OVERVIEW = "Princess Leia is captured and held hostage " +
             "by the evil Imperial forces in their effort to take over the galactic Empire. " +
-            "Venturesome Luke Skywalker and dashing captain Han Solo team together with the loveable " +
+            "Venturesome Luke Skywalker and dashing captain Han Solo team together with the lovable " +
             "robot duo R2-D2 and C-3PO to rescue the beautiful princess and restore peace and justice in the Empire."
     private const val TEST_MOVIE1_RELEASE = 227674800L // Mar 20, 1977
     private const val TEST_MOVIE1_VOTE_AVG = 7.9
@@ -94,16 +94,4 @@ internal object TestUtilities {
             movieList1.listId == movieList2.listId &&
             movieList1.movieId == movieList2.movieId &&
             movieList1.order == movieList2.order
-
-
-//    fun validateCurrentRecord(error: String, valueCursor: Cursor, expectedValues: ContentValues) {
-//        expectedValues.valueSet().forEach { (columnName, value) ->
-//            val idx = valueCursor.getColumnIndex(columnName)
-//            assertFalse("Column '$columnName' not found. $error", idx == -1)
-//            val expectedValue = value.toString()
-//            assertEquals("Value '" + valueCursor.getString(idx) +
-//                    "' did not match the expected value '" +
-//                    expectedValue + "'. " + error, expectedValue, valueCursor.getString(idx))
-//        }
-//    }
 }

@@ -19,7 +19,7 @@ data class List(
         var id: Long = 0L,
 
         /**
-         * List order. Actually popular (@string/pref_order_popular) or top_rated (@string/pref_order_toprated)
+         * List order. Actually popular (@string/pref_order_popular) or top_rated (@string/pref_order_top_rated)
          */
         var selection: String = "",
 

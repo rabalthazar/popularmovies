@@ -3,6 +3,7 @@ package com.example.popularmovies.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.util.*
 
@@ -28,12 +29,14 @@ data class Movie(
      * Movie release date
      */
     @ColumnInfo(name = "release_date")
+    @SerializedName("release_date")
     var releaseDate: Date?,
 
     /**
      * Poster path in TMDB
      */
     @ColumnInfo(name = "poster_path")
+    @SerializedName("poster_path")
     var posterPath: String,
 
     /**
@@ -50,5 +53,6 @@ data class Movie(
      * User rating
      */
     @ColumnInfo(name = "vote_average")
+    @SerializedName("vote_average")
     var voteAverage: Double
 ) : Serializable
