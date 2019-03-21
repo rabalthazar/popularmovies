@@ -1,12 +1,12 @@
 package com.example.popularmovies
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import com.example.popularmovies.data.MoviesViewModel
 import com.example.popularmovies.model.Movie
 import com.example.popularmovies.util.MovieArrayAdapter
@@ -48,14 +48,13 @@ class MovieGridFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.invalidateOptionsMenu()
         // Get a reference to the GridView, and attach this adapter to it.
         moviesGrid.adapter = mMoviesAdapter
         moviesGrid.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            mMoviesAdapter?.getItem(position)?.let {
-                val intent = Intent(activity, MovieDetailActivity::class.java)
-                intent.putExtra("MOVIE_DATA", it)
-                startActivity(intent)
-            }
+            val bundle = Bundle()
+            bundle.putInt("moviePos", position)
+            view.findNavController().navigate(R.id.movieDetailAction, bundle)
         }
     }
 
@@ -76,13 +75,8 @@ class MovieGridFragment : Fragment() {
         }
     }
 
-    fun onSelectionChanged() {
+    private fun onSelectionChanged() {
         viewModel.loadData(mForceFetch)
         mForceFetch = false
-    }
-
-    companion object {
-        val FRAGMENT_TAG: String
-            get() = MovieGridFragment::class.java.simpleName
     }
 }

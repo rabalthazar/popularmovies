@@ -6,6 +6,7 @@
 /.idea/libraries
 /.idea/caches/
 /.idea/dictionaries/
+/.idea/navEditor.xml
 .DS_Store
 /build
 /captures

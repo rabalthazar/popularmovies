@@ -5,27 +5,20 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.example.popularmovies.util.Utilities
-import kotlinx.android.synthetic.main.activity_movie_grid.*
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import kotlinx.android.synthetic.main.activity_main.*
 
-/**
- * Holds the movie grid fragment
- * @see MovieGridFragment
- */
-class MovieGridActivity : AppCompatActivity() {
-    private var mSelectionOrder: String? = null
-
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie_grid)
+        setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                    .add(R.id.movie_grid_fragment, MovieGridFragment(), MovieGridFragment.FRAGMENT_TAG)
-                    .commit()
-        }
 
-        mSelectionOrder = Utilities.getPreferredSelection(this)
+        val navController = findNavController(R.id.nav_host_fragment)
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -47,16 +40,5 @@ class MovieGridActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val selection = Utilities.getPreferredSelection(this)
-        if (selection != mSelectionOrder) {
-            val movieGridFragment = supportFragmentManager
-                    .findFragmentByTag(MovieGridFragment.FRAGMENT_TAG) as MovieGridFragment
-            movieGridFragment.onSelectionChanged()
-            mSelectionOrder = selection
-        }
     }
 }
