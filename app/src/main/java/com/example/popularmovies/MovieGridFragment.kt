@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.popularmovies.data.MoviesViewModel
 import com.example.popularmovies.model.Movie
 import com.example.popularmovies.util.MovieArrayAdapter
@@ -38,7 +39,6 @@ class MovieGridFragment : Fragment() {
                 mMoviesAdapter?.clear()
                 mMoviesAdapter?.addAll(it)
             })
-            viewModel.loadData(mForceFetch)
         } ?: throw Exception("Invalid Activity")
     }
 
@@ -48,7 +48,7 @@ class MovieGridFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.invalidateOptionsMenu()
+        viewModel.loadData(mForceFetch)
         // Get a reference to the GridView, and attach this adapter to it.
         moviesGrid.adapter = mMoviesAdapter
         moviesGrid.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
@@ -69,6 +69,10 @@ class MovieGridFragment : Fragment() {
             R.id.action_refresh -> {
                 mForceFetch = true
                 onSelectionChanged()
+                true
+            }
+            R.id.action_settings -> {
+                findNavController().navigate(R.id.settingsAction)
                 true
             }
             else -> super.onOptionsItemSelected(item)

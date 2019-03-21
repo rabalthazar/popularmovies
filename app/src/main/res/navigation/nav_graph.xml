@@ -7,19 +7,30 @@
     <fragment
         android:id="@+id/movieGridFragment"
         android:name="com.example.popularmovies.MovieGridFragment"
-        android:label="Popular Movies"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_movie_grid">
         <action
             android:id="@+id/movieDetailAction"
-            app:destination="@id/movieDetailFragment" />
+            app:destination="@id/movieDetailFragment"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/settingsAction"
+            app:destination="@id/settingsFragment"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.example.popularmovies.MovieDetailFragment"
-        android:label="Movie Details"
+        android:label="@string/movie_details"
         tools:layout="@layout/fragment_movie_detail">
         <argument
             android:name="moviePos"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.popularmovies.SettingsFragment"
+        android:label="@string/title_activity_settings" />
 </navigation>

@@ -2,10 +2,10 @@ package com.example.popularmovies
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.popularmovies.data.MoviesViewModel
 import com.example.popularmovies.model.Movie
@@ -21,7 +21,7 @@ class MovieDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+        setHasOptionsMenu(false)
 
         activity?.run {
             viewModel = ViewModelProviders.of(this).get(MoviesViewModel::class.java)
@@ -35,17 +35,14 @@ class MovieDetailFragment : Fragment() {
 
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        val menuItem = menu.findItem(R.id.action_settings) ?: return
-        menuItem.isVisible = false
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val moviePos = (arguments?.getInt("moviePos")) ?: return
-        val movie = (viewModel.data.value?.get(moviePos)) ?: return
-        showMovieDetails(movie)
+        viewModel.data.observe(this, Observer<List<Movie>?> { movieList ->
+            movieList?.get(moviePos)?.let { showMovieDetails(it) }
+        })
     }
+
     private fun showMovieDetails(movie: Movie) {
         movieTitle.text = movie.title
         movieOverview.text = movie.overview
