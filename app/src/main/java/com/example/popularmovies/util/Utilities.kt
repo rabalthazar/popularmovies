@@ -1,7 +1,7 @@
 package com.example.popularmovies.util
 
 import android.content.Context
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 
 import com.example.popularmovies.R
 

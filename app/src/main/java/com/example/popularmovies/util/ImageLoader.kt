@@ -1,8 +1,6 @@
 package com.example.popularmovies.util
 
-import android.content.Context
 import android.widget.ImageView
-
 import com.squareup.picasso.Picasso
 
 /**
@@ -10,7 +8,7 @@ import com.squareup.picasso.Picasso
  * Created by rafael on 17/06/16.
  */
 object ImageLoader {
-    fun loadFromPosterPath(context: Context, posterPath: String, imageView: ImageView) {
+    fun loadFromPosterPath(posterPath: String, imageView: ImageView) {
         Picasso
                 .get()
                 .load(MoviePosterUriBuilder.from(posterPath))

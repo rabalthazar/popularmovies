@@ -10,7 +10,7 @@ class SettingsFragment: PreferenceFragmentCompat(), Preference.OnPreferenceChang
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
 
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_order_key)))
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_order_key))!!)
     }
 
     override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {

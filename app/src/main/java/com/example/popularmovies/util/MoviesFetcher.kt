@@ -27,7 +27,7 @@ class MoviesFetcher(context: Context) {
 
         companion object {
             operator fun contains(test: String): Boolean =
-                    ListSelections.values().map { it.toString() }.contains(test)
+                    values().map { it.toString() }.contains(test)
         }
     }
 
@@ -38,7 +38,7 @@ class MoviesFetcher(context: Context) {
      * @param selection The list from where to fetch
      */
     fun fetchMovies(selection: String) {
-        if (!MoviesFetcher.ListSelections.contains(selection)) {
+        if (!ListSelections.contains(selection)) {
             return
         }
 

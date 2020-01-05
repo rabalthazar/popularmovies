@@ -19,7 +19,7 @@ class MovieArrayAdapter(context: Context, resource: Int) : ArrayAdapter<Movie>(c
         val oldView: ImageView? = if (convertView is ImageView) convertView else null
         val imageView: ImageView = oldView ?: createFromLayoutResource(parent)
         val movie = this.getItem(position)
-        ImageLoader.loadFromPosterPath(context, movie.posterPath, imageView)
+        ImageLoader.loadFromPosterPath(movie?.posterPath ?: "", imageView)
         return imageView
     }
 

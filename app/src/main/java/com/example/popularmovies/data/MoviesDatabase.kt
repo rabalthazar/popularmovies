@@ -10,7 +10,7 @@ import com.example.popularmovies.model.Movie
 import com.example.popularmovies.model.MovieList
 import com.example.popularmovies.model.List as ListModel
 
-@Database(entities = [Movie::class, ListModel::class, MovieList::class], version = 5)
+@Database(entities = [Movie::class, ListModel::class, MovieList::class], version = 5, exportSchema = false)
 @TypeConverters(DateTypeConverter::class)
 abstract class MoviesDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao

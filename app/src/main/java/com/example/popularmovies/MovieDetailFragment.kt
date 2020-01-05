@@ -48,7 +48,7 @@ class MovieDetailFragment : Fragment() {
         movieOverview.text = movie.overview
         movieRating.text = NumberFormat.getNumberInstance().format(movie.voteAverage)
         context?.let {
-            ImageLoader.loadFromPosterPath(it, movie.posterPath, moviePoster)
+            ImageLoader.loadFromPosterPath(movie.posterPath, moviePoster)
             val releaseDate = movie.releaseDate
             val dateFormat = android.text.format.DateFormat.getDateFormat(it)
             movieRelease.text = if (releaseDate != null) dateFormat.format(releaseDate) else it.getString(R.string.date_placeholder)
