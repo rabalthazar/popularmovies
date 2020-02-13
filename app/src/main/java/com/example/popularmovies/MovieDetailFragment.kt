@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.example.popularmovies.data.MoviesViewModel
 import com.example.popularmovies.model.Movie
 import com.example.popularmovies.util.ImageLoader
@@ -24,9 +24,9 @@ class MovieDetailFragment : Fragment() {
         setHasOptionsMenu(false)
 
         activity?.run {
-            viewModel = ViewModelProviders.of(this).get(MoviesViewModel::class.java)
+            viewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
 
-        }
+        } ?: throw Exception("Invalid Activity")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

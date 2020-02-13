@@ -68,7 +68,7 @@ class MoviesFetcher(context: Context) {
             this.selection = selection
             dateFetched = Date()
         }
-        listDao.insert(list)
+        list.id = listDao.insert(list)
         return list
     }
 

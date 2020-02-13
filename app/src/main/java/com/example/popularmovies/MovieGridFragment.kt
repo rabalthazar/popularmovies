@@ -5,7 +5,7 @@ import android.view.*
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.popularmovies.data.MoviesViewModel
@@ -21,7 +21,7 @@ class MovieGridFragment : Fragment() {
     /**
      * The adapter that feeds the movie grid
      */
-    private var mMoviesAdapter: MovieArrayAdapter? = null
+    private lateinit var mMoviesAdapter: MovieArrayAdapter
 
     private var mForceFetch: Boolean = false
 
@@ -33,11 +33,11 @@ class MovieGridFragment : Fragment() {
         setHasOptionsMenu(true)
 
         activity?.run {
-            viewModel = ViewModelProviders.of(this).get(MoviesViewModel::class.java)
+            viewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
             mMoviesAdapter = MovieArrayAdapter(this, R.id.moviesGrid)
             viewModel.data.observe(this, Observer<List<Movie>> {
-                mMoviesAdapter?.clear()
-                mMoviesAdapter?.addAll(it)
+                mMoviesAdapter.clear()
+                mMoviesAdapter.addAll(it)
             })
         } ?: throw Exception("Invalid Activity")
     }

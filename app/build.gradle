@@ -18,6 +18,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.incremental": "true"
+                ]
+            }
+        }
     }
 
     buildTypes {
@@ -46,20 +53,21 @@ repositories {
 }
 
 dependencies {
+    def lifecycle_version = '2.2.0'
     def room_version = '2.2.3'
-    def nav_version = '2.2.0-rc04'
+    def nav_version = '2.2.0'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.preference:preference:1.1.0'
-    implementation 'com.google.android.material:material:1.2.0-alpha03'
+    implementation 'com.google.android.material:material:1.2.0-alpha04'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     implementation "androidx.room:room-runtime:$room_version"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
     kapt "androidx.room:room-compiler:$room_version"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
     testImplementation "androidx.room:room-testing:$room_version"
 
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -67,8 +75,8 @@ dependencies {
 
     implementation 'androidx.preference:preference-ktx:1.1.0'
 
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.1.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
     implementation 'com.squareup.retrofit2:retrofit:2.7.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
