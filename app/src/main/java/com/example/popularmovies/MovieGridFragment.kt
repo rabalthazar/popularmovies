@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.popularmovies.data.MoviesViewModel
+import com.example.popularmovies.databinding.FragmentMovieGridBinding
 import com.example.popularmovies.model.Movie
 import com.example.popularmovies.util.MovieArrayAdapter
-import kotlinx.android.synthetic.main.fragment_movie_grid.*
 
 /**
  * Displays a grid with a list of movie posters
@@ -26,6 +26,10 @@ class MovieGridFragment : Fragment() {
     private var mForceFetch: Boolean = false
 
     private lateinit var viewModel: MoviesViewModel
+
+    private var _binding: FragmentMovieGridBinding? = null
+
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,19 +47,26 @@ class MovieGridFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View =
-            inflater.inflate(R.layout.fragment_movie_grid, container, false)
+                              savedInstanceState: Bundle?): View {
+        _binding = FragmentMovieGridBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.loadData(mForceFetch)
         // Get a reference to the GridView, and attach this adapter to it.
-        moviesGrid.adapter = mMoviesAdapter
-        moviesGrid.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+        binding.moviesGrid.adapter = mMoviesAdapter
+        binding.moviesGrid.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             val bundle = Bundle()
             bundle.putInt("moviePos", position)
             view.findNavController().navigate(R.id.movieDetailAction, bundle)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
