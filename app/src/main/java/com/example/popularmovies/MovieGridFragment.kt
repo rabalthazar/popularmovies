@@ -39,7 +39,7 @@ class MovieGridFragment : Fragment() {
         activity?.run {
             viewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
             mMoviesAdapter = MovieArrayAdapter(this, R.id.moviesGrid)
-            viewModel.data.observe(this, Observer<List<Movie>> {
+            viewModel.data.observe(this, Observer {
                 mMoviesAdapter.clear()
                 mMoviesAdapter.addAll(it)
             })

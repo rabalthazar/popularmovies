@@ -42,7 +42,7 @@ class MovieDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val moviePos = (arguments?.getInt("moviePos")) ?: return
-        viewModel.data.observe(viewLifecycleOwner, Observer<List<Movie>?> { movieList ->
+        viewModel.data.observe(viewLifecycleOwner, Observer { movieList ->
             movieList?.get(moviePos)?.let { showMovieDetails(it) }
         })
     }
