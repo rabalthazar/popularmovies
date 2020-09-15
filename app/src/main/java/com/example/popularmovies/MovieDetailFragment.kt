@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.popularmovies.data.MoviesViewModel
 import com.example.popularmovies.databinding.FragmentMovieDetailBinding
@@ -42,7 +41,7 @@ class MovieDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val moviePos = (arguments?.getInt("moviePos")) ?: return
-        viewModel.data.observe(viewLifecycleOwner, Observer { movieList ->
+        viewModel.data.observe(viewLifecycleOwner, { movieList ->
             movieList?.get(moviePos)?.let { showMovieDetails(it) }
         })
     }

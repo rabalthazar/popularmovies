@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -38,7 +37,7 @@ class MovieGridFragment : Fragment() {
         activity?.run {
             viewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
             mMoviesAdapter = MovieArrayAdapter(this, R.id.moviesGrid)
-            viewModel.data.observe(this, Observer {
+            viewModel.data.observe(this, {
                 mMoviesAdapter.clear()
                 mMoviesAdapter.addAll(it)
             })
