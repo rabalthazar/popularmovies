@@ -10,7 +10,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.popularmovies.data.MoviesViewModel
 import com.example.popularmovies.databinding.FragmentMovieGridBinding
-import com.example.popularmovies.model.Movie
 import com.example.popularmovies.util.MovieArrayAdapter
 
 /**

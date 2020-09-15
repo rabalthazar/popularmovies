@@ -17,10 +17,11 @@ class MovieArrayAdapter(context: Context, resource: Int) : ArrayAdapter<Movie>(c
     private lateinit var binding: GridItemMovieBinding
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val oldView: ImageView? = if (convertView is ImageView) convertView else null
-        val imageView: ImageView = oldView ?: createFromLayoutResource(parent)
+        val imageView = if (convertView is ImageView) convertView else createFromLayoutResource(parent)
         val movie = this.getItem(position)
-        ImageLoader.loadFromPosterPath(movie?.posterPath ?: "", imageView)
+        movie?.posterPath?.let {
+            ImageLoader.loadFromPosterPath(it, imageView)
+        }
         return imageView
     }
 
@@ -32,6 +33,6 @@ class MovieArrayAdapter(context: Context, resource: Int) : ArrayAdapter<Movie>(c
     private fun createFromLayoutResource(parent: ViewGroup): ImageView {
         val inflater = LayoutInflater.from(parent.context)
         binding = GridItemMovieBinding.inflate(inflater, parent, false)
-        return binding.root as ImageView
+        return binding.gridPosterImageView
     }
 }
