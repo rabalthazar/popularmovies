@@ -32,7 +32,8 @@ class MoviesLoader(
         if (forceFetch) {
             return true
         }
-        val dateFetched  = database.listDao().findBySelection(moviesOrder)?.dateFetched?.time ?: return true
+        val dateFetched = database.listDao().findBySelection(moviesOrder)?.dateFetched?.time
+                ?: return true
         val now = Date().time
         return now - dateFetched > FETCH_THRESHOLD
     }

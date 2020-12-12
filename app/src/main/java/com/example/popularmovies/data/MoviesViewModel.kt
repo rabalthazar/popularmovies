@@ -6,14 +6,14 @@ import com.example.popularmovies.model.Movie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MoviesViewModel(application: Application): AndroidViewModel(application) {
+class MoviesViewModel(application: Application) : AndroidViewModel(application) {
     val data: MutableLiveData<List<Movie>> = MutableLiveData()
 
     fun loadData(forceFetch: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             val loader = MoviesLoader(getApplication(), forceFetch)
             val movies = loader.doLoad()
-            data.postValue(movies);
+            data.postValue(movies)
         }
     }
 }

@@ -83,7 +83,7 @@ class MoviesFetcher(context: Context) {
         movieLists.forEach {
             movieListDao.delete(it)
         }
-        movies.forEachIndexed {idx, movie ->
+        movies.forEachIndexed { idx, movie ->
             MovieList().apply {
                 listId = list.id
                 movieId = movie.id

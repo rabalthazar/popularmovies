@@ -50,6 +50,7 @@ class MovieDetailFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
     private fun showMovieDetails(movie: Movie) {
         binding.movieTitle.text = movie.title
         binding.movieOverview.text = movie.overview

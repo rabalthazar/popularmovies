@@ -6,7 +6,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 
-class SettingsFragment: PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
+class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
 
@@ -46,5 +46,4 @@ class SettingsFragment: PreferenceFragmentCompat(), Preference.OnPreferenceChang
                         .getDefaultSharedPreferences(preference.context)
                         .getString(preference.key, "") as Any)
     }
-
 }

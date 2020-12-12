@@ -11,6 +11,7 @@ import com.example.popularmovies.BuildConfig
 object MoviePosterUriBuilder {
     private val BASE_URI
         get() = "http://image.tmdb.org/t/p/"
+
     // TODO: use a dynamic image size according to the screen size
     private val IMG_SIZE
         get() = "w185"

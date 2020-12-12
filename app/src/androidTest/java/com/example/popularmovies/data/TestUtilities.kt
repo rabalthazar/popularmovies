@@ -48,11 +48,11 @@ internal object TestUtilities {
     private const val TEST_MOVIE3_POSTER_PATH = "/ghd5zOQnDaDW1mxO7R5fXXpZMu.jpg"
 
     fun createMostPopularListValues(): ListModel =
-        ListModel(0, TEST_LIST1_SELECTION, Date(TEST_LIST1_DATE))
+            ListModel(0, TEST_LIST1_SELECTION, Date(TEST_LIST1_DATE))
 
 
     fun createTopRatedListValues(): ListModel =
-        ListModel(0, TEST_LIST2_SELECTION, Date(TEST_LIST2_DATE))
+            ListModel(0, TEST_LIST2_SELECTION, Date(TEST_LIST2_DATE))
 
 
     fun createStarWarsValues(): Movie =
@@ -78,20 +78,20 @@ internal object TestUtilities {
 
     fun compareMovies(movie1: Movie, movie2: Movie): Boolean =
             movie1.id == movie2.id &&
-            movie1.title == movie2.title &&
-            movie1.overview == movie2.overview &&
-            movie1.releaseDate == movie2.releaseDate &&
-            movie1.posterPath == movie2.posterPath &&
-            movie1.voteAverage == movie2.voteAverage
+                    movie1.title == movie2.title &&
+                    movie1.overview == movie2.overview &&
+                    movie1.releaseDate == movie2.releaseDate &&
+                    movie1.posterPath == movie2.posterPath &&
+                    movie1.voteAverage == movie2.voteAverage
 
     fun compareLists(list1: ListModel, list2: ListModel): Boolean =
             list1.id == list2.id &&
-            list1.selection == list2.selection &&
-            list1.dateFetched.time == list2.dateFetched.time
+                    list1.selection == list2.selection &&
+                    list1.dateFetched.time == list2.dateFetched.time
 
     fun compareMovieLists(movieList1: MovieList, movieList2: MovieList): Boolean =
             movieList1.id == movieList2.id &&
-            movieList1.listId == movieList2.listId &&
-            movieList1.movieId == movieList2.movieId &&
-            movieList1.order == movieList2.order
+                    movieList1.listId == movieList2.listId &&
+                    movieList1.movieId == movieList2.movieId &&
+                    movieList1.order == movieList2.order
 }

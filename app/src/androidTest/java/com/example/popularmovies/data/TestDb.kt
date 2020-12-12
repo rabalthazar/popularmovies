@@ -16,7 +16,8 @@ import java.util.*
 class TestDb {
     private val mContext = InstrumentationRegistry.getInstrumentation().targetContext
 
-    @Test fun testCreateDb() {
+    @Test
+    fun testCreateDb() {
         val tableNameHashSet = HashSet<String>()
         tableNameHashSet.add("movie")
         tableNameHashSet.add("list")
@@ -113,7 +114,8 @@ class TestDb {
         db.close()
     }
 
-    @Test fun testMovieTable() {
+    @Test
+    fun testMovieTable() {
         val db = Room.inMemoryDatabaseBuilder(mContext, MoviesDatabase::class.java).build()
 
         val movieDao = db.movieDao()
@@ -131,7 +133,8 @@ class TestDb {
         db.close()
     }
 
-    @Test fun testListTable() {
+    @Test
+    fun testListTable() {
         val db = Room.inMemoryDatabaseBuilder(mContext, MoviesDatabase::class.java).build()
 
         val listDao = db.listDao()
@@ -150,7 +153,8 @@ class TestDb {
         db.close()
     }
 
-    @Test fun testMovieListTable() {
+    @Test
+    fun testMovieListTable() {
         val db = Room.inMemoryDatabaseBuilder(mContext, MoviesDatabase::class.java).build()
 
         val listDao = db.listDao()
