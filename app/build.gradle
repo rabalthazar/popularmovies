@@ -57,6 +57,7 @@ android {
         checkDependencies true
         checkGeneratedSources true
     }
+    namespace 'com.example.popularmovies'
 
 }
 
