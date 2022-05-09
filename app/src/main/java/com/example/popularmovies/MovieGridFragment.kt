@@ -35,12 +35,12 @@ class MovieGridFragment : Fragment() {
         setHasOptionsMenu(true)
 
         activity?.run {
-            viewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
+            viewModel = ViewModelProvider(this)[MoviesViewModel::class.java]
             mMoviesAdapter = MovieArrayAdapter(this, R.id.moviesGrid)
-            viewModel.data.observe(this, {
+            viewModel.data.observe(this) {
                 mMoviesAdapter.clear()
                 mMoviesAdapter.addAll(it)
-            })
+            }
         } ?: throw Exception("Invalid Activity")
     }
 

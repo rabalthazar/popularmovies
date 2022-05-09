@@ -27,7 +27,7 @@ class MovieDetailFragment : Fragment() {
         setHasOptionsMenu(false)
 
         activity?.run {
-            viewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
+            viewModel = ViewModelProvider(this)[MoviesViewModel::class.java]
 
         } ?: throw Exception("Invalid Activity")
     }
@@ -41,9 +41,9 @@ class MovieDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val moviePos = (arguments?.getInt("moviePos")) ?: return
-        viewModel.data.observe(viewLifecycleOwner, { movieList ->
+        viewModel.data.observe(viewLifecycleOwner) { movieList ->
             movieList?.get(moviePos)?.let { showMovieDetails(it) }
-        })
+        }
     }
 
     override fun onDestroyView() {
