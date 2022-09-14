@@ -8,14 +8,13 @@ android {
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions {
             jvmTarget = '1.8'
-            useIR = true
         }
     }
 
     defaultConfig {
         applicationId "com.example.popularmovies"
         minSdkVersion 23
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
 
