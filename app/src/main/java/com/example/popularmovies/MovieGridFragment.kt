@@ -3,6 +3,7 @@ package com.example.popularmovies
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -32,8 +33,6 @@ class MovieGridFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setHasOptionsMenu(true)
-
         activity?.run {
             viewModel = ViewModelProvider(this)[MoviesViewModel::class.java]
             mMoviesAdapter = MovieArrayAdapter(this, R.id.moviesGrid)
@@ -60,32 +59,33 @@ class MovieGridFragment : Fragment() {
             bundle.putInt("moviePos", position)
             view.findNavController().navigate(R.id.movieDetailAction, bundle)
         }
+
+        val menuHost = requireActivity()
+        menuHost.addMenuProvider(object: MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.movies_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_refresh -> {
+                        mForceFetch = true
+                        onSelectionChanged()
+                        true
+                    }
+                    R.id.action_settings -> {
+                        findNavController().navigate(R.id.settingsAction)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.movies_menu, menu)
-
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_refresh -> {
-                mForceFetch = true
-                onSelectionChanged()
-                true
-            }
-            R.id.action_settings -> {
-                findNavController().navigate(R.id.settingsAction)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun onSelectionChanged() {

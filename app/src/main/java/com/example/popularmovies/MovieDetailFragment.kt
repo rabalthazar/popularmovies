@@ -24,7 +24,6 @@ class MovieDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(false)
 
         activity?.run {
             viewModel = ViewModelProvider(this)[MoviesViewModel::class.java]
