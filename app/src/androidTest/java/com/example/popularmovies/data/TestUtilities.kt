@@ -3,7 +3,7 @@ package com.example.popularmovies.data
 import com.example.popularmovies.model.Movie
 import com.example.popularmovies.model.MovieList
 import com.example.popularmovies.util.MoviesFetcher
-import java.util.*
+import java.util.Date
 import com.example.popularmovies.model.List as ListModel
 
 internal object TestUtilities {
@@ -84,12 +84,12 @@ internal object TestUtilities {
                     movie1.posterPath == movie2.posterPath &&
                     movie1.voteAverage == movie2.voteAverage
 
-    fun compareLists(list1: ListModel, list2: ListModel): Boolean =
+    fun listsAreEqual(list1: ListModel, list2: ListModel): Boolean =
             list1.id == list2.id &&
                     list1.selection == list2.selection &&
                     list1.dateFetched.time == list2.dateFetched.time
 
-    fun compareMovieLists(movieList1: MovieList, movieList2: MovieList): Boolean =
+    fun movieListsAreEqual(movieList1: MovieList, movieList2: MovieList): Boolean =
             movieList1.id == movieList2.id &&
                     movieList1.listId == movieList2.listId &&
                     movieList1.movieId == movieList2.movieId &&

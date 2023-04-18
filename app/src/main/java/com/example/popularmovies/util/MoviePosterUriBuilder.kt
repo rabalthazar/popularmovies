@@ -9,14 +9,12 @@ import com.example.popularmovies.BuildConfig
  * Created by rafael on 16/06/16.
  */
 object MoviePosterUriBuilder {
-    private val BASE_URI
-        get() = "http://image.tmdb.org/t/p/"
+    private const val BASE_URI = "http://image.tmdb.org/t/p/"
 
     // TODO: use a dynamic image size according to the screen size
-    private val IMG_SIZE
-        get() = "w185"
-    private val API_KEY_PARAM
-        get() = "api_key"
+    private const val IMG_SIZE  = "w185"
+
+    private const val API_KEY_PARAM = "api_key"
 
     fun from(posterPath: String): Uri {
         return Uri.parse(BASE_URI).buildUpon()

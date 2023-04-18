@@ -27,7 +27,8 @@ class TestDb {
         assertEquals(true, db.isOpen)
 
         var c = db.query("SELECT name FROM sqlite_master WHERE type='table'", // columns to group by
-                null)
+            emptyArray()
+        )
         assertTrue("Error: This means that the database has not been created correctly",
                 c.moveToFirst())
 
@@ -40,7 +41,7 @@ class TestDb {
                 tableNameHashSet.isEmpty())
 
         // now, do our tables contain the correct columns?
-        c = db.query("PRAGMA table_info(movie)", null)
+        c = db.query("PRAGMA table_info(movie)", emptyArray())
 
         assertTrue("Error: Unable to query the database for movie table information.",
                 c.moveToFirst())
@@ -66,7 +67,7 @@ class TestDb {
         assertTrue("Error: The database doesn't contain all of the required movie entry columns",
                 movieColumnHashSet.isEmpty())
 
-        c = db.query("PRAGMA table_info(list)", null)
+        c = db.query("PRAGMA table_info(list)", emptyArray())
 
         assertTrue("Error: Unable to query the database for list table information.",
                 c.moveToFirst())
@@ -88,7 +89,7 @@ class TestDb {
         assertTrue("Error: The database doesn't contain all of the required list entry columns",
                 listColumnHashSet.isEmpty())
 
-        c = db.query("PRAGMA table_info(movie_list)", null)
+        c = db.query("PRAGMA table_info(movie_list)", emptyArray())
 
         assertTrue("Error: Unable to query the database for list table information.",
                 c.moveToFirst())
@@ -148,7 +149,7 @@ class TestDb {
 
         assertNotNull("Error: No Records returned from list query", fetchedList)
 
-        assertTrue("Error: List Query Validation Failed", TestUtilities.compareLists(list, fetchedList!!))
+        assertTrue("Error: List Query Validation Failed", TestUtilities.listsAreEqual(list, fetchedList!!))
 
         db.close()
     }
@@ -187,9 +188,9 @@ class TestDb {
 
         assertEquals("Error: No Records returned from movie list query", 2, movieLists.count())
 
-        assertTrue("Error: Movie List Query Validation Failed", TestUtilities.compareMovieLists(movieList1, movieLists[0]))
+        assertTrue("Error: Movie List Query Validation Failed", TestUtilities.movieListsAreEqual(movieList1, movieLists[0]))
 
-        assertTrue("Error: Movie List Query Validation Failed", TestUtilities.compareMovieLists(movieList2, movieLists[1]))
+        assertTrue("Error: Movie List Query Validation Failed", TestUtilities.movieListsAreEqual(movieList2, movieLists[1]))
 
         db.close()
     }
