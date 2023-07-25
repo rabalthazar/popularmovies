@@ -26,9 +26,6 @@
         android:name="com.example.popularmovies.MovieDetailFragment"
         android:label="@string/movie_details"
         tools:layout="@layout/fragment_movie_detail">
-        <argument
-            android:name="moviePos"
-            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
