@@ -8,7 +8,11 @@ import com.example.popularmovies.model.MovieList
 import com.example.popularmovies.service.TheMovieDBService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.*
+import java.util.Date
+import kotlin.collections.List
+import kotlin.collections.forEach
+import kotlin.collections.forEachIndexed
+import kotlin.collections.map
 import com.example.popularmovies.model.List as ListModel
 
 /**
@@ -17,7 +21,7 @@ import com.example.popularmovies.model.List as ListModel
  */
 class MoviesFetcher(context: Context) {
 
-    enum class ListSelections constructor(private val selection: String) {
+    enum class ListSelections(private val selection: String) {
         MOST_POPULAR("popular"),
         TOP_RATED("top_rated");
 
@@ -27,7 +31,7 @@ class MoviesFetcher(context: Context) {
 
         companion object {
             operator fun contains(test: String): Boolean =
-                    values().map { it.toString() }.contains(test)
+                    entries.map { it.toString() }.contains(test)
         }
     }
 
